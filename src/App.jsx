@@ -79,6 +79,7 @@ const IMG = [
 
 const STORAGE_KEY = "betterhomes.properties.v1";
 
+
 // Module-level cache so the seed fetch (properties.json) only ever
 // runs once, even if multiple components call loadProperties() at
 // nearly the same time on first load. Without this, a manual "Add
@@ -86,6 +87,113 @@ const STORAGE_KEY = "betterhomes.properties.v1";
 // flight could get silently overwritten once that fetch resolved.
 let seedLoadPromise = null;
 
+
+const AREA_GUIDES_STORAGE_KEY = "betterhomes.area-guides.v1";
+
+let areaGuideSeedPromise = null;
+
+function readStoredAreaGuides() {
+  const stored = localStorage.getItem(
+    AREA_GUIDES_STORAGE_KEY
+  );
+
+  if (!stored) return null;
+
+  try {
+    const parsed = JSON.parse(stored);
+
+    if (Array.isArray(parsed)) {
+      return parsed;
+    }
+
+    if (Array.isArray(parsed.guides)) {
+      return parsed.guides;
+    }
+
+    return null;
+  } catch (error) {
+    console.error(
+      "Error parsing area guides:",
+      error
+    );
+
+    return null;
+  }
+}
+
+async function loadAreaGuides() {
+  try {
+    const stored = readStoredAreaGuides();
+
+    if (stored) {
+      return stored;
+    }
+
+    if (!areaGuideSeedPromise) {
+      areaGuideSeedPromise = fetch(
+        "/data/area-guides.json"
+      )
+        .then(async (response) => {
+          if (!response.ok) {
+            return [];
+          }
+
+          const data = await response.json();
+
+          const guides = Array.isArray(data)
+            ? data
+            : data.guides || [];
+
+          const latest = readStoredAreaGuides();
+
+          if (latest) {
+            return latest;
+          }
+
+          localStorage.setItem(
+            AREA_GUIDES_STORAGE_KEY,
+            JSON.stringify(guides)
+          );
+
+          return guides;
+        })
+        .catch((error) => {
+          console.error(
+            "Could not load area guides:",
+            error
+          );
+
+          return [];
+        });
+    }
+
+    return await areaGuideSeedPromise;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+}
+
+function saveAreaGuides(next) {
+  localStorage.setItem(
+    AREA_GUIDES_STORAGE_KEY,
+    JSON.stringify(next)
+  );
+
+  window.dispatchEvent(
+    new Event("area-guides-updated")
+  );
+
+  return next;
+}
+
+function slugify(value) {
+  return String(value || "")
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
 
 function readStoredProperties() {
   const stored = localStorage.getItem(STORAGE_KEY);
@@ -935,12 +1043,17 @@ function csvToProperty(obj, purpose) {
 }
 
 function Admin() {
+  const [adminMode, setAdminMode] = useState("listings");
+
+  /* =========================================================
+     EXISTING PROPERTY LISTING LOGIC
+     ========================================================= */
+
   const [purpose, setPurpose] = useState("buy");
   const [properties, setProperties] = useState([]);
   const [message, setMessage] = useState("");
-  // Tracks whether the initial load (storage or seed fetch) has
-  // finished. Adding/importing is blocked until this is true so a
-  // fast submit can never race the seed fetch and get overwritten.
+
+  // Tracks whether the initial listing load has finished.
   const [loaded, setLoaded] = useState(false);
 
   const emptyForm = {
@@ -982,15 +1095,15 @@ function Admin() {
     }));
   };
 
-  // persist now takes an updater function and merges against whatever
-  // is actually in localStorage right now, instead of trusting the
-  // component's `properties` state alone. This is what prevents a
-  // fresh "Add listing" from being clobbered if the initial seed load
-  // for some reason resolves after it.
+  // Existing listing persistence logic kept intact.
   const persist = (updater) => {
     const stored = readStoredProperties();
     const base = stored || properties;
-    const next = typeof updater === "function" ? updater(base) : updater;
+
+    const next =
+      typeof updater === "function"
+        ? updater(base)
+        : updater;
 
     localStorage.setItem(
       STORAGE_KEY,
@@ -1018,7 +1131,10 @@ function Admin() {
       purpose
     );
 
-    persist((currentList) => [...currentList, newListing]);
+    persist((currentList) => [
+      ...currentList,
+      newListing,
+    ]);
 
     setMessage(
       `${purpose === "buy" ? "Buy" : "Rent"} listing added successfully.`
@@ -1026,186 +1142,1506 @@ function Admin() {
 
     setForm(emptyForm);
   }
-  function remove(id){persist((currentList)=>currentList.filter(p=>p.id!==id));setMessage("Listing removed.");}
-  async function importCsv(file){
-    const text=await file.text();const raw=parseCsv(text);
-    if(!raw.length){setMessage("CSV could not be read. Use the sample layout.");return}
-    const missing=CSV_COLUMNS.filter(c=>!(c in raw[0]));
-    if(missing.length){setMessage(`Missing CSV columns: ${missing.join(", ")}`);return}
-    const imported=raw.map(r=>csvToProperty(r,purpose));
-    persist((currentList)=>[...currentList,...imported]);setMessage(`${imported.length} ${purpose} listing(s) imported.`);
+
+  function remove(id) {
+    persist((currentList) =>
+      currentList.filter(
+        (p) => p.id !== id
+      )
+    );
+
+    setMessage("Listing removed.");
   }
-  return <div className="admin-page">
-    <div className="admin-top"><div><a href="/" className="logo">better<span>homes</span></a><p>Private Listing Administration</p></div><a href="/" className="admin-back">← Back to website</a></div>
-    <main className="admin-main">
-      <section className="admin-head"><div><p className="kicker">Admin portal</p><h1 className="serif">Manage property listings</h1><p>Add and publish the listings that appear on the public Buy and Rent pages. No visitor can create a listing.</p></div>
-        <div className="purpose-toggle"><button className={purpose==="buy"?"active":""} onClick={()=>setPurpose("buy")}>Buy</button><button className={purpose==="rent"?"active":""} onClick={()=>setPurpose("rent")}>Rent</button></div>
-      </section>
-      <section className="admin-grid">
-        <div className="admin-card"><div className="card-head"><div><h2>Add {purpose} listing</h2><p>Manual entry for one property.</p></div></div>
-{!loaded && <p className="admin-note">Loading existing listings…</p>}
-<form onSubmit={addManual} className="admin-form">
 
-  <input
-    required
-    value={form.title}
-    onChange={(e) =>
-      update({ title: e.target.value })
+  async function importCsv(file) {
+    const text = await file.text();
+    const raw = parseCsv(text);
+
+    if (!raw.length) {
+      setMessage(
+        "CSV could not be read. Use the sample layout."
+      );
+      return;
     }
-    placeholder="Property title"
-  />
 
-  <input
-    required
-    value={form.location}
-    onChange={(e) =>
-      update({ location: e.target.value })
+    const missing = CSV_COLUMNS.filter(
+      (c) => !(c in raw[0])
+    );
+
+    if (missing.length) {
+      setMessage(
+        `Missing CSV columns: ${missing.join(", ")}`
+      );
+      return;
     }
-    placeholder="Location"
-  />
 
-  <div className="form-row">
-    <input
-      required
-      type="number"
-      value={form.price}
-      onChange={(e) =>
-        update({ price: e.target.value })
-      }
-      placeholder={
-        purpose === "rent"
-          ? "Monthly rent"
-          : "Sale price"
-      }
-    />
+    const imported = raw.map((r) =>
+      csvToProperty(r, purpose)
+    );
 
-    <select
-      value={form.propertyType}
-      onChange={(e) =>
-        update({ propertyType: e.target.value })
-      }
-    >
-      <option>Apartment</option>
-      <option>Villa</option>
-      <option>Townhouse</option>
-      <option>Penthouse</option>
-      <option>Office</option>
-      <option>Retail</option>
-      <option>Warehouse</option>
-    </select>
-  </div>
+    persist((currentList) => [
+      ...currentList,
+      ...imported,
+    ]);
 
-  <div className="form-row">
+    setMessage(
+      `${imported.length} ${
+        purpose === "buy" ? "Buy" : "Rent"
+      } listing(s) imported.`
+    );
+  }
 
-    <input
-      type="number"
-      value={form.bedrooms}
-      onChange={(e) =>
-        update({ bedrooms: e.target.value })
-      }
-      placeholder="Bedrooms"
-    />
+  /* =========================================================
+     AREA GUIDES LOGIC
+     ========================================================= */
 
-    <input
-      type="number"
-      value={form.bathrooms}
-      onChange={(e) =>
-        update({ bathrooms: e.target.value })
-      }
-      placeholder="Bathrooms"
-    />
+  const AREA_GUIDES_KEY =
+    "betterhomes.area-guides.v1";
 
-  </div>
+  const [areaGuides, setAreaGuides] = useState([]);
+  const [guidesLoaded, setGuidesLoaded] = useState(false);
 
-  <input
-    type="number"
-    value={form.area}
-    onChange={(e) =>
-      update({ area: e.target.value })
+  const emptyGuideForm = {
+    title: "",
+    location: "",
+    readTime: "5 min read",
+    excerpt: "",
+    heroImage: "",
+    mapImage: "",
+    image2: "",
+    image3: "",
+    image4: "",
+    image5: "",
+    intro: "",
+    about: "",
+    living: "",
+    market: "",
+    schools: "",
+    lifestyle: "",
+    transport: "",
+    status: "published",
+  };
+
+  const [guideForm, setGuideForm] =
+    useState(emptyGuideForm);
+
+  function readAdminAreaGuides() {
+    const stored = localStorage.getItem(
+      AREA_GUIDES_KEY
+    );
+
+    if (!stored) {
+      return null;
     }
-    placeholder="Area (sq ft)"
-  />
 
-  <textarea
-    value={form.description}
-    onChange={(e) =>
-      update({ description: e.target.value })
+    try {
+      const parsed = JSON.parse(stored);
+
+      if (Array.isArray(parsed)) {
+        return parsed;
+      }
+
+      if (Array.isArray(parsed.guides)) {
+        return parsed.guides;
+      }
+
+      return null;
+    } catch (error) {
+      console.error(
+        "Error reading area guides:",
+        error
+      );
+
+      return null;
     }
-    placeholder="Property description"
-    rows="5"
-  />
+  }
 
-  <div className="image-input-section">
+  async function loadAdminAreaGuides() {
+    try {
+      const stored = readAdminAreaGuides();
 
-    <div className="image-input-title">
-      Property Images
-    </div>
+      if (stored) {
+        setAreaGuides(stored);
+        setGuidesLoaded(true);
+        return;
+      }
 
-    <p className="image-input-help">
-      Add up to 5 property image URLs.
-      The first image becomes the main property image.
-    </p>
+      let seedGuides = [];
 
-    {[1, 2, 3, 4, 5].map((number) => (
-      <div className="image-input-row" key={number}>
+      try {
+        const response = await fetch(
+          "/data/area-guides.json"
+        );
 
-        <div className="image-number">
-          {number}
+        if (response.ok) {
+          const data = await response.json();
+
+          seedGuides = Array.isArray(data)
+            ? data
+            : data.guides || [];
+        }
+      } catch (error) {
+        console.warn(
+          "Area guide seed file could not be loaded:",
+          error
+        );
+      }
+
+      const latest = readAdminAreaGuides();
+
+      if (latest) {
+        setAreaGuides(latest);
+      } else {
+        localStorage.setItem(
+          AREA_GUIDES_KEY,
+          JSON.stringify(seedGuides)
+        );
+
+        setAreaGuides(seedGuides);
+      }
+
+      setGuidesLoaded(true);
+    } catch (error) {
+      console.error(
+        "Error loading area guides:",
+        error
+      );
+
+      setAreaGuides([]);
+      setGuidesLoaded(true);
+    }
+  }
+
+  useEffect(() => {
+    loadAdminAreaGuides();
+
+    const refreshGuides = () => {
+      const latest = readAdminAreaGuides();
+
+      if (latest) {
+        setAreaGuides(latest);
+      }
+    };
+
+    window.addEventListener(
+      "area-guides-updated",
+      refreshGuides
+    );
+
+    window.addEventListener(
+      "storage",
+      refreshGuides
+    );
+
+    return () => {
+      window.removeEventListener(
+        "area-guides-updated",
+        refreshGuides
+      );
+
+      window.removeEventListener(
+        "storage",
+        refreshGuides
+      );
+    };
+  }, []);
+
+  const updateGuide = (patch) => {
+    setGuideForm((currentForm) => ({
+      ...currentForm,
+      ...patch,
+    }));
+  };
+
+  const persistGuides = (updater) => {
+    const stored = readAdminAreaGuides();
+    const base = stored || areaGuides;
+
+    const next =
+      typeof updater === "function"
+        ? updater(base)
+        : updater;
+
+    localStorage.setItem(
+      AREA_GUIDES_KEY,
+      JSON.stringify(next)
+    );
+
+    setAreaGuides(next);
+
+    window.dispatchEvent(
+      new Event("area-guides-updated")
+    );
+
+    return next;
+  };
+
+  function makeGuideId() {
+    if (
+      typeof crypto !== "undefined" &&
+      typeof crypto.randomUUID === "function"
+    ) {
+      return crypto.randomUUID();
+    }
+
+    return `guide-${Date.now()}-${Math.random()
+      .toString(36)
+      .slice(2)}`;
+  }
+
+  function makeGuideSlug(title) {
+    return String(title || "")
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+  }
+
+  function addAreaGuide(e) {
+    e.preventDefault();
+
+    const title =
+      guideForm.title.trim();
+
+    if (!title) {
+      setMessage(
+        "Please enter an area guide title."
+      );
+      return;
+    }
+
+    const slug = makeGuideSlug(title);
+
+    const existingSlug = areaGuides.some(
+      (guide) =>
+        String(guide.slug || "")
+          .toLowerCase() ===
+        slug.toLowerCase()
+    );
+
+    if (existingSlug) {
+      setMessage(
+        "An area guide with this title already exists."
+      );
+      return;
+    }
+
+    const newGuide = {
+      id: makeGuideId(),
+      slug,
+      ...guideForm,
+    };
+
+    persistGuides(
+      (currentGuides) => [
+        ...currentGuides,
+        newGuide,
+      ]
+    );
+
+    setMessage(
+      `${title} added successfully.`
+    );
+
+    setGuideForm(
+      emptyGuideForm
+    );
+  }
+
+  function removeAreaGuide(id) {
+    persistGuides(
+      (currentGuides) =>
+        currentGuides.filter(
+          (guide) =>
+            guide.id !== id
+        )
+    );
+
+    setMessage(
+      "Area guide removed."
+    );
+  }
+
+  /* =========================================================
+     UI
+     ========================================================= */
+
+  return (
+    <div className="admin-page">
+
+      {/* TOP BAR */}
+
+      <div className="admin-top">
+
+        <div>
+          <a
+            href="/"
+            className="logo"
+          >
+            better<span>homes</span>
+          </a>
+
+          <p>
+            Private Website Administration
+          </p>
         </div>
 
-        <input
-          value={form[`image${number}`]}
-          onChange={(e) =>
-            update({
-              [`image${number}`]: e.target.value,
-            })
-          }
-          placeholder={`Image ${number} URL`}
-        />
+        <a
+          href="/"
+          className="admin-back"
+        >
+          ← Back to website
+        </a>
 
       </div>
-    ))}
 
-  </div>
+      <main className="admin-main">
 
-  <select
-    value={form.status}
-    onChange={(e) =>
-      update({ status: e.target.value })
-    }
-  >
-    <option value="published">
-      Publish immediately
-    </option>
+        {/* ADMIN MODE HEADER */}
 
-    <option value="draft">
-      Save as draft
-    </option>
-  </select>
+        <section className="admin-head">
 
-  <button className="button-coral" type="submit" disabled={!loaded}>
-    Add {purpose} listing
-  </button>
+          <div>
 
-</form> 
-        </div>
-        <div className="admin-card csv-card">
-          <div className="card-head"><div><h2>CSV tools</h2><p>Import many listings without hardcoded data.</p></div></div>
-          <div className="csv-actions">
-            <button className="tool-button" onClick={()=>downloadSampleCsv(purpose)}>↓ Download sample {purpose} CSV layout</button>
-            <label className="tool-button">↑ Upload {purpose} CSV<input type="file" accept=".csv,text/csv" hidden disabled={!loaded} onChange={e=>e.target.files?.[0]&&importCsv(e.target.files[0])}/></label>
-            <a className="tool-button" href="/admin">↻ Refresh admin data</a>
+            <p className="kicker">
+              Admin portal
+            </p>
+
+            <h1 className="serif">
+              Manage website content
+            </h1>
+
+            <p>
+              Manage property listings and area
+              guides that appear on the public website.
+            </p>
+
           </div>
-          <div className="csv-schema"><strong>Required columns</strong><code>{CSV_COLUMNS.join(", ")}</code></div>
-        </div>
-      </section>
-      {message&&<div className="admin-message">{message}</div>}
-      <section className="admin-card"><div className="card-head"><div><h2>{purpose==="buy"?"Buy":"Rent"} listings</h2><p>{current.length} listing(s) in the admin data store.</p></div></div>
-        <div className="admin-table-wrap"><table><thead><tr><th>Property</th><th>Location</th><th>Type</th><th>Price</th><th>Status</th><th></th></tr></thead><tbody>{current.length?current.map(p=><tr key={p.id}><td><strong>{p.title}</strong><small>{p.bedrooms} bed · {p.area} sq ft</small></td><td>{p.location}</td><td>{p.propertyType}</td><td>{money(p.price,p.purpose)}</td><td><span className={p.status==="published"?"status live":"status"}>{p.status}</span></td><td><button className="delete-button" onClick={()=>remove(p.id)}>Delete</button></td></tr>):<tr><td colSpan="6" className="table-empty">No {purpose} listings yet. Add one above or upload a CSV.</td></tr>}</tbody></table></div>
-      </section>
-      <div className="admin-note">Development note: this demo stores listings in browser localStorage. The same data contract can be moved directly to Supabase/PostgreSQL for production without changing the CSV layout.</div>
-    </main>
-  </div>;
+
+          <div className="admin-mode-toggle">
+
+            <button
+              type="button"
+              className={
+                adminMode === "listings"
+                  ? "active"
+                  : ""
+              }
+              onClick={() =>
+                setAdminMode("listings")
+              }
+            >
+              Listings
+            </button>
+
+            <button
+              type="button"
+              className={
+                adminMode === "guides"
+                  ? "active"
+                  : ""
+              }
+              onClick={() =>
+                setAdminMode("guides")
+              }
+            >
+              Area Guides
+            </button>
+
+          </div>
+
+        </section>
+
+        {/* =================================================
+            LISTINGS MODE
+            ================================================= */}
+
+        {adminMode === "listings" && (
+          <>
+
+            <section className="admin-head">
+
+              <div>
+
+                <p className="kicker">
+                  Property listings
+                </p>
+
+                <h2 className="serif">
+                  Manage property listings
+                </h2>
+
+                <p>
+                  Add and publish the listings
+                  that appear on the public Buy
+                  and Rent pages. No visitor can
+                  create a listing.
+                </p>
+
+              </div>
+
+              <div className="purpose-toggle">
+
+                <button
+                  type="button"
+                  className={
+                    purpose === "buy"
+                      ? "active"
+                      : ""
+                  }
+                  onClick={() =>
+                    setPurpose("buy")
+                  }
+                >
+                  Buy
+                </button>
+
+                <button
+                  type="button"
+                  className={
+                    purpose === "rent"
+                      ? "active"
+                      : ""
+                  }
+                  onClick={() =>
+                    setPurpose("rent")
+                  }
+                >
+                  Rent
+                </button>
+
+              </div>
+
+            </section>
+
+            <section className="admin-grid">
+
+              {/* ADD LISTING */}
+
+              <div className="admin-card">
+
+                <div className="card-head">
+
+                  <div>
+
+                    <h2>
+                      Add {purpose} listing
+                    </h2>
+
+                    <p>
+                      Manual entry for one property.
+                    </p>
+
+                  </div>
+
+                </div>
+
+                {!loaded && (
+                  <p className="admin-note">
+                    Loading existing listings…
+                  </p>
+                )}
+
+                <form
+                  onSubmit={addManual}
+                  className="admin-form"
+                >
+
+                  <input
+                    required
+                    value={form.title}
+                    onChange={(e) =>
+                      update({
+                        title: e.target.value,
+                      })
+                    }
+                    placeholder="Property title"
+                  />
+
+                  <input
+                    required
+                    value={form.location}
+                    onChange={(e) =>
+                      update({
+                        location:
+                          e.target.value,
+                      })
+                    }
+                    placeholder="Location"
+                  />
+
+                  <div className="form-row">
+
+                    <input
+                      required
+                      type="number"
+                      value={form.price}
+                      onChange={(e) =>
+                        update({
+                          price:
+                            e.target.value,
+                        })
+                      }
+                      placeholder={
+                        purpose === "rent"
+                          ? "Monthly rent"
+                          : "Sale price"
+                      }
+                    />
+
+                    <select
+                      value={
+                        form.propertyType
+                      }
+                      onChange={(e) =>
+                        update({
+                          propertyType:
+                            e.target.value,
+                        })
+                      }
+                    >
+
+                      <option>
+                        Apartment
+                      </option>
+
+                      <option>
+                        Villa
+                      </option>
+
+                      <option>
+                        Townhouse
+                      </option>
+
+                      <option>
+                        Penthouse
+                      </option>
+
+                      <option>
+                        Office
+                      </option>
+
+                      <option>
+                        Retail
+                      </option>
+
+                      <option>
+                        Warehouse
+                      </option>
+
+                    </select>
+
+                  </div>
+
+                  <div className="form-row">
+
+                    <input
+                      type="number"
+                      value={
+                        form.bedrooms
+                      }
+                      onChange={(e) =>
+                        update({
+                          bedrooms:
+                            e.target.value,
+                        })
+                      }
+                      placeholder="Bedrooms"
+                    />
+
+                    <input
+                      type="number"
+                      value={
+                        form.bathrooms
+                      }
+                      onChange={(e) =>
+                        update({
+                          bathrooms:
+                            e.target.value,
+                        })
+                      }
+                      placeholder="Bathrooms"
+                    />
+
+                  </div>
+
+                  <input
+                    type="number"
+                    value={form.area}
+                    onChange={(e) =>
+                      update({
+                        area:
+                          e.target.value,
+                      })
+                    }
+                    placeholder="Area (sq ft)"
+                  />
+
+                  <textarea
+                    value={
+                      form.description
+                    }
+                    onChange={(e) =>
+                      update({
+                        description:
+                          e.target.value,
+                      })
+                    }
+                    placeholder="Property description"
+                    rows="5"
+                  />
+
+                  <div className="image-input-section">
+
+                    <div className="image-input-title">
+                      Property Images
+                    </div>
+
+                    <p className="image-input-help">
+                      Add up to 5 property image
+                      URLs. The first image becomes
+                      the main property image.
+                    </p>
+
+                    {[1, 2, 3, 4, 5].map(
+                      (number) => (
+                        <div
+                          className="image-input-row"
+                          key={number}
+                        >
+
+                          <div className="image-number">
+                            {number}
+                          </div>
+
+                          <input
+                            value={
+                              form[
+                                `image${number}`
+                              ]
+                            }
+                            onChange={(e) =>
+                              update({
+                                [`image${number}`]:
+                                  e.target.value,
+                              })
+                            }
+                            placeholder={
+                              `Image ${number} URL`
+                            }
+                          />
+
+                        </div>
+                      )
+                    )}
+
+                  </div>
+
+                  <select
+                    value={form.status}
+                    onChange={(e) =>
+                      update({
+                        status:
+                          e.target.value,
+                      })
+                    }
+                  >
+
+                    <option value="published">
+                      Publish immediately
+                    </option>
+
+                    <option value="draft">
+                      Save as draft
+                    </option>
+
+                  </select>
+
+                  <button
+                    className="button-coral"
+                    type="submit"
+                    disabled={!loaded}
+                  >
+                    Add {purpose} listing
+                  </button>
+
+                </form>
+
+              </div>
+
+              {/* CSV */}
+
+              <div className="admin-card csv-card">
+
+                <div className="card-head">
+
+                  <div>
+
+                    <h2>
+                      CSV tools
+                    </h2>
+
+                    <p>
+                      Import many listings without
+                      hardcoded data.
+                    </p>
+
+                  </div>
+
+                </div>
+
+                <div className="csv-actions">
+
+                  <button
+                    className="tool-button"
+                    type="button"
+                    onClick={() =>
+                      downloadSampleCsv(
+                        purpose
+                      )
+                    }
+                  >
+                    ↓ Download sample{" "}
+                    {purpose} CSV layout
+                  </button>
+
+                  <label className="tool-button">
+
+                    ↑ Upload {purpose} CSV
+
+                    <input
+                      type="file"
+                      accept=".csv,text/csv"
+                      hidden
+                      disabled={!loaded}
+                      onChange={(e) =>
+                        e.target.files?.[0] &&
+                        importCsv(
+                          e.target.files[0]
+                        )
+                      }
+                    />
+
+                  </label>
+
+                  <a
+                    className="tool-button"
+                    href="/admin"
+                  >
+                    ↻ Refresh admin data
+                  </a>
+
+                </div>
+
+                <div className="csv-schema">
+
+                  <strong>
+                    Required columns
+                  </strong>
+
+                  <code>
+                    {CSV_COLUMNS.join(
+                      ", "
+                    )}
+                  </code>
+
+                </div>
+
+              </div>
+
+            </section>
+
+            {message && (
+              <div className="admin-message">
+                {message}
+              </div>
+            )}
+
+            {/* LISTINGS TABLE */}
+
+            <section className="admin-card">
+
+              <div className="card-head">
+
+                <div>
+
+                  <h2>
+                    {purpose === "buy"
+                      ? "Buy"
+                      : "Rent"}{" "}
+                    listings
+                  </h2>
+
+                  <p>
+                    {current.length} listing(s)
+                    in the admin data store.
+                  </p>
+
+                </div>
+
+              </div>
+
+              <div className="admin-table-wrap">
+
+                <table>
+
+                  <thead>
+
+                    <tr>
+                      <th>Property</th>
+                      <th>Location</th>
+                      <th>Type</th>
+                      <th>Price</th>
+                      <th>Status</th>
+                      <th></th>
+                    </tr>
+
+                  </thead>
+
+                  <tbody>
+
+                    {current.length ? (
+                      current.map((p) => (
+
+                        <tr key={p.id}>
+
+                          <td>
+
+                            <strong>
+                              {p.title}
+                            </strong>
+
+                            <small>
+                              {p.bedrooms} bed ·{" "}
+                              {p.area} sq ft
+                            </small>
+
+                          </td>
+
+                          <td>
+                            {p.location}
+                          </td>
+
+                          <td>
+                            {p.propertyType}
+                          </td>
+
+                          <td>
+                            {money(
+                              p.price,
+                              p.purpose
+                            )}
+                          </td>
+
+                          <td>
+
+                            <span
+                              className={
+                                p.status ===
+                                "published"
+                                  ? "status live"
+                                  : "status"
+                              }
+                            >
+                              {p.status}
+                            </span>
+
+                          </td>
+
+                          <td>
+
+                            <button
+                              className="delete-button"
+                              type="button"
+                              onClick={() =>
+                                remove(p.id)
+                              }
+                            >
+                              Delete
+                            </button>
+
+                          </td>
+
+                        </tr>
+
+                      ))
+                    ) : (
+
+                      <tr>
+
+                        <td
+                          colSpan="6"
+                          className="table-empty"
+                        >
+                          No {purpose} listings yet.
+                          Add one above or upload
+                          a CSV.
+                        </td>
+
+                      </tr>
+
+                    )}
+
+                  </tbody>
+
+                </table>
+
+              </div>
+
+            </section>
+
+            <div className="admin-note">
+              Development note: this demo stores
+              listings in browser localStorage. The
+              same data contract can be moved directly
+              to Supabase/PostgreSQL for production
+              without changing the CSV layout.
+            </div>
+
+          </>
+        )}
+
+        {/* =================================================
+            AREA GUIDES MODE
+            ================================================= */}
+
+        {adminMode === "guides" && (
+          <>
+
+            <section className="admin-head">
+
+              <div>
+
+                <p className="kicker">
+                  Area guides
+                </p>
+
+                <h2 className="serif">
+                  Manage Dubai area guides
+                </h2>
+
+                <p>
+                  Add and publish community guides
+                  that appear on the public Area Guides
+                  page.
+                </p>
+
+              </div>
+
+            </section>
+
+            <section className="admin-grid">
+
+              {/* ADD AREA GUIDE */}
+
+              <div className="admin-card">
+
+                <div className="card-head">
+
+                  <div>
+
+                    <h2>
+                      Add Area Guide
+                    </h2>
+
+                    <p>
+                      Create a complete guide for a
+                      Dubai community.
+                    </p>
+
+                  </div>
+
+                </div>
+
+                {!guidesLoaded && (
+                  <p className="admin-note">
+                    Loading existing area guides…
+                  </p>
+                )}
+
+                <form
+                  onSubmit={addAreaGuide}
+                  className="admin-form"
+                >
+
+                  <input
+                    required
+                    value={guideForm.title}
+                    onChange={(e) =>
+                      updateGuide({
+                        title:
+                          e.target.value,
+                      })
+                    }
+                    placeholder="Guide title e.g. Al Barsha 3 area guide"
+                  />
+
+                  <input
+                    value={
+                      guideForm.location
+                    }
+                    onChange={(e) =>
+                      updateGuide({
+                        location:
+                          e.target.value,
+                      })
+                    }
+                    placeholder="Location e.g. Al Barsha 3, Dubai"
+                  />
+
+                  <input
+                    value={
+                      guideForm.readTime
+                    }
+                    onChange={(e) =>
+                      updateGuide({
+                        readTime:
+                          e.target.value,
+                      })
+                    }
+                    placeholder="Reading time e.g. 5 min read"
+                  />
+
+                  <textarea
+                    required
+                    value={
+                      guideForm.excerpt
+                    }
+                    onChange={(e) =>
+                      updateGuide({
+                        excerpt:
+                          e.target.value,
+                      })
+                    }
+                    placeholder="Short description shown on the Area Guides cards"
+                    rows="4"
+                  />
+
+                  {/* IMAGES */}
+
+                  <div className="image-input-section">
+
+                    <div className="image-input-title">
+                      Guide Images
+                    </div>
+
+                    <p className="image-input-help">
+                      Add image URLs. Hero image is
+                      the main card and guide image.
+                    </p>
+
+                    <input
+                      required
+                      value={
+                        guideForm.heroImage
+                      }
+                      onChange={(e) =>
+                        updateGuide({
+                          heroImage:
+                            e.target.value,
+                        })
+                      }
+                      placeholder="Hero image URL"
+                    />
+
+                    <input
+                      value={
+                        guideForm.mapImage
+                      }
+                      onChange={(e) =>
+                        updateGuide({
+                          mapImage:
+                            e.target.value,
+                        })
+                      }
+                      placeholder="Map image URL"
+                    />
+
+                    {[2, 3, 4, 5].map(
+                      (number) => (
+                        <input
+                          key={number}
+                          value={
+                            guideForm[
+                              `image${number}`
+                            ]
+                          }
+                          onChange={(e) =>
+                            updateGuide({
+                              [`image${number}`]:
+                                e.target.value,
+                            })
+                          }
+                          placeholder={
+                            `Guide image ${number} URL`
+                          }
+                        />
+                      )
+                    )}
+
+                  </div>
+
+                  {/* CONTENT */}
+
+                  <textarea
+                    value={guideForm.intro}
+                    onChange={(e) =>
+                      updateGuide({
+                        intro:
+                          e.target.value,
+                      })
+                    }
+                    placeholder="Introduction"
+                    rows="5"
+                  />
+
+                  <textarea
+                    value={
+                      guideForm.about
+                    }
+                    onChange={(e) =>
+                      updateGuide({
+                        about:
+                          e.target.value,
+                      })
+                    }
+                    placeholder="About the area"
+                    rows="5"
+                  />
+
+                  <textarea
+                    value={
+                      guideForm.living
+                    }
+                    onChange={(e) =>
+                      updateGuide({
+                        living:
+                          e.target.value,
+                      })
+                    }
+                    placeholder="Living in the area"
+                    rows="5"
+                  />
+
+                  <textarea
+                    value={
+                      guideForm.market
+                    }
+                    onChange={(e) =>
+                      updateGuide({
+                        market:
+                          e.target.value,
+                      })
+                    }
+                    placeholder="Property market information"
+                    rows="5"
+                  />
+
+                  <textarea
+                    value={
+                      guideForm.schools
+                    }
+                    onChange={(e) =>
+                      updateGuide({
+                        schools:
+                          e.target.value,
+                      })
+                    }
+                    placeholder="Schools and education"
+                    rows="4"
+                  />
+
+                  <textarea
+                    value={
+                      guideForm.lifestyle
+                    }
+                    onChange={(e) =>
+                      updateGuide({
+                        lifestyle:
+                          e.target.value,
+                      })
+                    }
+                    placeholder="Lifestyle and things to do"
+                    rows="4"
+                  />
+
+                  <textarea
+                    value={
+                      guideForm.transport
+                    }
+                    onChange={(e) =>
+                      updateGuide({
+                        transport:
+                          e.target.value,
+                      })
+                    }
+                    placeholder="Getting around / transport"
+                    rows="4"
+                  />
+
+                  <select
+                    value={
+                      guideForm.status
+                    }
+                    onChange={(e) =>
+                      updateGuide({
+                        status:
+                          e.target.value,
+                      })
+                    }
+                  >
+
+                    <option value="published">
+                      Publish immediately
+                    </option>
+
+                    <option value="draft">
+                      Save as draft
+                    </option>
+
+                  </select>
+
+                  <button
+                    className="button-coral"
+                    type="submit"
+                    disabled={!guidesLoaded}
+                  >
+                    Add Area Guide
+                  </button>
+
+                </form>
+
+              </div>
+
+              {/* AREA GUIDE INFO CARD */}
+
+              <div className="admin-card csv-card">
+
+                <div className="card-head">
+
+                  <div>
+
+                    <h2>
+                      Area Guide publishing
+                    </h2>
+
+                    <p>
+                      Public guide workflow.
+                    </p>
+
+                  </div>
+
+                </div>
+
+                <div className="csv-actions">
+
+                  <a
+                    className="tool-button"
+                    href="/guides/area-guides"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    ↗ View Area Guides page
+                  </a>
+
+                  <a
+                    className="tool-button"
+                    href="/guides/area-guides/al-barsha-3"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    ↗ View sample guide
+                  </a>
+
+                </div>
+
+                <div className="csv-schema">
+
+                  <strong>
+                    Guide URL format
+                  </strong>
+
+                  <code>
+                    /guides/area-guides/
+                    &lt;guide-slug&gt;
+                  </code>
+
+                  <p>
+                    The slug is generated automatically
+                    from the guide title.
+                  </p>
+
+                </div>
+
+              </div>
+
+            </section>
+
+            {message && (
+              <div className="admin-message">
+                {message}
+              </div>
+            )}
+
+            {/* AREA GUIDE TABLE */}
+
+            <section className="admin-card">
+
+              <div className="card-head">
+
+                <div>
+
+                  <h2>
+                    Existing Area Guides
+                  </h2>
+
+                  <p>
+                    {areaGuides.length} guide(s)
+                    in the admin data store.
+                  </p>
+
+                </div>
+
+              </div>
+
+              <div className="admin-table-wrap">
+
+                <table>
+
+                  <thead>
+
+                    <tr>
+                      <th>Guide</th>
+                      <th>Location</th>
+                      <th>URL</th>
+                      <th>Status</th>
+                      <th></th>
+                    </tr>
+
+                  </thead>
+
+                  <tbody>
+
+                    {areaGuides.length ? (
+                      areaGuides.map(
+                        (guide) => (
+
+                          <tr
+                            key={guide.id}
+                          >
+
+                            <td>
+
+                              <strong>
+                                {guide.title}
+                              </strong>
+
+                              <small>
+                                {guide.readTime ||
+                                  "5 min read"}
+                              </small>
+
+                            </td>
+
+                            <td>
+                              {guide.location ||
+                                "—"}
+                            </td>
+
+                            <td>
+
+                              <a
+                                href={`/guides/area-guides/${guide.slug}`}
+                                target="_blank"
+                                rel="noreferrer"
+                                style={{
+                                  color:
+                                    "var(--ink)",
+                                  fontSize:
+                                    "12px",
+                                }}
+                              >
+                                /guides/area-guides/
+                                {guide.slug}
+                              </a>
+
+                            </td>
+
+                            <td>
+
+                              <span
+                                className={
+                                  guide.status ===
+                                  "published"
+                                    ? "status live"
+                                    : "status"
+                                }
+                              >
+                                {guide.status ||
+                                  "draft"}
+                              </span>
+
+                            </td>
+
+                            <td>
+
+                              <button
+                                className="delete-button"
+                                type="button"
+                                onClick={() =>
+                                  removeAreaGuide(
+                                    guide.id
+                                  )
+                                }
+                              >
+                                Delete
+                              </button>
+
+                            </td>
+
+                          </tr>
+
+                        )
+                      )
+                    ) : (
+
+                      <tr>
+
+                        <td
+                          colSpan="5"
+                          className="table-empty"
+                        >
+                          No area guides yet.
+                          Add your first guide above.
+                        </td>
+
+                      </tr>
+
+                    )}
+
+                  </tbody>
+
+                </table>
+
+              </div>
+
+            </section>
+
+            <div className="admin-note">
+              Area guides are currently stored in
+              browser localStorage for this demo.
+              They can later be moved to Supabase/
+              PostgreSQL without changing the public
+              guide structure.
+            </div>
+
+          </>
+        )}
+
+      </main>
+
+    </div>
+  );
 }
 
 function PropertyDetail({ id }) {
@@ -2078,22 +3514,27 @@ function Guides() {
     {
       title: "SELLER'S GUIDE",
       text: "Practical guidance to help you prepare, position and sell your property with confidence.",
+      path: "/guides/seller-guide",
     },
     {
       title: "BUYER'S GUIDE",
       text: "Understand the buying process, evaluate opportunities and make informed property decisions.",
+      path: "/guides/buyer-guide",
     },
     {
       title: "TENANT'S GUIDE",
       text: "Everything you need to know when searching for, renting and moving into your next home.",
+      path: "/guides/landlord-guide",
     },
     {
       title: "LANDLORD'S GUIDE",
       text: "Helpful advice for leasing your property, managing tenants and protecting your investment.",
+      path: "/guides/landlord-guide",
     },
     {
       title: "AREA GUIDE",
       text: "Explore Dubai's communities, lifestyle, property options and the areas worth knowing.",
+      path: "/guides/area-guides",
     },
   ];
 
@@ -2167,7 +3608,7 @@ function Guides() {
                     {guide.text}
                   </p>
 
-                  <a href="#contact">
+                  <a href={guide.path || "#contact"}>
                     <span>—</span>
                     Continue Reading
                   </a>
@@ -2199,10 +3640,10 @@ function Guides() {
                   professional guidance tailored to your goals.
                 </p>
 
-                <a
+                
                   href="#contact"
                   className="button-coral"
-                >
+                <a>
                   Contact us
                 </a>
 
@@ -4488,6 +5929,2033 @@ function EnquirePage() {
   );
 }
 
+function AreaGuides() {
+  const [guides, setGuides] = useState([]);
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    const refresh = () => {
+      loadAreaGuides().then(setGuides);
+    };
+
+    refresh();
+
+    window.addEventListener(
+      "area-guides-updated",
+      refresh
+    );
+
+    window.addEventListener(
+      "storage",
+      refresh
+    );
+
+    return () => {
+      window.removeEventListener(
+        "area-guides-updated",
+        refresh
+      );
+
+      window.removeEventListener(
+        "storage",
+        refresh
+      );
+    };
+  }, []);
+
+  const visibleGuides = guides.filter((guide) => {
+    if (
+      String(guide.status || "")
+        .toLowerCase() !== "published"
+    ) {
+      return false;
+    }
+
+    const text = `
+      ${guide.title || ""}
+      ${guide.location || ""}
+      ${guide.excerpt || ""}
+    `.toLowerCase();
+
+    return text.includes(
+      search.toLowerCase()
+    );
+  });
+
+  return (
+    <>
+      <Header />
+
+      <main className="area-guides-page">
+
+        <section className="area-guides-heading">
+
+          <div className="wrap">
+
+            <p className="area-guides-kicker">
+              GOLDEN KEY GUIDES
+            </p>
+
+            <h1>
+              Explore the best communities
+              <br />
+              to live in Dubai
+            </h1>
+
+            <p>
+              Everything you need to know about Dubai's
+              communities, neighbourhoods and the places
+              that make each area unique.
+            </p>
+
+            <div className="area-guides-search">
+
+              <input
+                value={search}
+                onChange={(e) =>
+                  setSearch(e.target.value)
+                }
+                placeholder="Search an area or community..."
+              />
+
+            </div>
+
+          </div>
+
+        </section>
+
+        <section className="area-guides-grid-section">
+
+          <div className="wrap">
+
+            {visibleGuides.length > 0 ? (
+
+              <div className="area-guides-grid">
+
+                {visibleGuides.map((guide) => (
+
+                  <a
+                    key={guide.id}
+                    href={`/guides/area-guides/${guide.slug}`}
+                    className="area-guide-card"
+                  >
+
+                    <div className="area-guide-card-image">
+
+                      <img
+                        src={guide.heroImage}
+                        alt={guide.title}
+                      />
+
+                      <span className="read-badge">
+                        {guide.readTime || "5 min read"}
+                      </span>
+
+                    </div>
+
+                    <div className="area-guide-card-body">
+
+                      <p className="area-guide-location">
+                        {guide.location}
+                      </p>
+
+                      <h2>
+                        {guide.title}
+                      </h2>
+
+                      <p>
+                        {guide.excerpt}
+                      </p>
+
+                      <span className="read-guide">
+                        Read Guide →
+                      </span>
+
+                    </div>
+
+                  </a>
+
+                ))}
+
+              </div>
+
+            ) : (
+
+              <div className="area-guides-empty">
+
+                <h2>
+                  No area guides found
+                </h2>
+
+                <p>
+                  Published area guides will appear here.
+                </p>
+
+              </div>
+
+            )}
+
+          </div>
+
+        </section>
+
+      </main>
+
+      <Footer />
+    </>
+  );
+}
+
+function AreaGuideDetail({ slug }) {
+  const [guides, setGuides] = useState([]);
+
+  useEffect(() => {
+    const refresh = () => {
+      loadAreaGuides().then(setGuides);
+    };
+
+    refresh();
+
+    window.addEventListener(
+      "area-guides-updated",
+      refresh
+    );
+
+    return () => {
+      window.removeEventListener(
+        "area-guides-updated",
+        refresh
+      );
+    };
+  }, []);
+
+  const guide = guides.find(
+    (item) => item.slug === slug
+  );
+
+  if (!guide) {
+    return (
+      <>
+        <Header />
+
+        <main className="page-placeholder">
+          <div className="wrap">
+
+            <h1 className="serif">
+              Area guide not found
+            </h1>
+
+            <a
+              href="/guides/area-guides"
+              className="button-outline"
+            >
+              ← Back to Area Guides
+            </a>
+
+          </div>
+        </main>
+
+        <Footer />
+      </>
+    );
+  }
+
+  return (
+    <>
+      <Header />
+
+      <main className="area-guide-detail">
+
+        {/* HERO */}
+
+        <section className="area-detail-hero">
+
+          <img
+            src={guide.heroImage}
+            alt={guide.title}
+          />
+
+          <div className="area-detail-hero-overlay" />
+
+          <div className="wrap">
+
+            <p>
+              GOLDEN KEY AREA GUIDE
+            </p>
+
+            <h1>
+              {guide.title}
+            </h1>
+
+            <span>
+              {guide.location}
+            </span>
+
+          </div>
+
+        </section>
+
+        {/* BODY */}
+
+        <section className="area-detail-section">
+
+          <div className="wrap area-detail-layout">
+
+            <article className="area-detail-content">
+
+              <p className="area-detail-breadcrumb">
+                Guides / Area Guides / {guide.title}
+              </p>
+
+              <h2>
+                Everything you need to know
+                about {guide.location}
+              </h2>
+
+              <p>
+                {guide.intro}
+              </p>
+
+              <h3>
+                About {guide.location}
+              </h3>
+
+              <p>
+                {guide.about}
+              </p>
+
+              {/* MAP */}
+
+              {guide.mapImage && (
+                <div className="area-detail-image map-image">
+
+                  <img
+                    src={guide.mapImage}
+                    alt={`${guide.title} map`}
+                  />
+
+                </div>
+              )}
+
+              <h3>
+                Living in {guide.location}
+              </h3>
+
+              <p>
+                {guide.living}
+              </p>
+
+              {/* IMAGE */}
+
+              {guide.image2 && (
+                <div className="area-detail-image">
+
+                  <img
+                    src={guide.image2}
+                    alt={guide.title}
+                  />
+
+                </div>
+              )}
+
+              {/* QUICK FACTS */}
+
+              <div className="area-facts">
+
+                <div>
+                  <strong>
+                    Location
+                  </strong>
+
+                  <span>
+                    {guide.location}
+                  </span>
+                </div>
+
+                <div>
+                  <strong>
+                    Guide time
+                  </strong>
+
+                  <span>
+                    {guide.readTime || "5 min read"}
+                  </span>
+                </div>
+
+                <div>
+                  <strong>
+                    Property
+                  </strong>
+
+                  <span>
+                    Residential
+                  </span>
+                </div>
+
+                <div>
+                  <strong>
+                    Area
+                  </strong>
+
+                  <span>
+                    Dubai
+                  </span>
+                </div>
+
+              </div>
+
+              {/* MARKET */}
+
+              <h3>
+                Property market
+              </h3>
+
+              <p>
+                {guide.market}
+              </p>
+
+              {guide.image3 && (
+                <div className="area-detail-image">
+
+                  <img
+                    src={guide.image3}
+                    alt={`${guide.title} property market`}
+                  />
+
+                </div>
+              )}
+
+              {/* SCHOOLS */}
+
+              <h3>
+                Schools and education
+              </h3>
+
+              <p>
+                {guide.schools}
+              </p>
+
+              {/* LIFESTYLE */}
+
+              {guide.image4 && (
+                <div className="area-detail-image">
+
+                  <img
+                    src={guide.image4}
+                    alt={`${guide.title} lifestyle`}
+                  />
+
+                </div>
+              )}
+
+              <h3>
+                Lifestyle and things to do
+              </h3>
+
+              <p>
+                {guide.lifestyle}
+              </p>
+
+              {/* TRANSPORT */}
+
+              <h3>
+                Getting around
+              </h3>
+
+              <p>
+                {guide.transport}
+              </p>
+
+              {guide.image5 && (
+                <div className="area-detail-image">
+
+                  <img
+                    src={guide.image5}
+                    alt={`${guide.title} attraction`}
+                  />
+
+                </div>
+              )}
+
+            </article>
+
+            {/* SIDEBAR FORM */}
+
+            <aside className="area-detail-sidebar">
+
+              <div className="area-detail-form">
+
+                <p>
+                  FIND YOUR NEXT PROPERTY
+                </p>
+
+                <h3>
+                  Looking in {guide.location}?
+                </h3>
+
+                <EnquiryForm compact />
+
+              </div>
+
+              <div className="area-guide-side-card">
+
+                <strong>
+                  Looking to move?
+                </strong>
+
+                <span>
+                  Browse properties available
+                  in Dubai.
+                </span>
+
+                <a href="/buy">
+                  View properties →
+                </a>
+
+              </div>
+
+            </aside>
+
+          </div>
+
+        </section>
+
+      </main>
+
+      <Footer />
+    </>
+  );
+}
+
+
+function AreaGuideAdmin({
+  guides,
+  loaded,
+  form,
+  updateGuide,
+  addAreaGuide,
+  removeAreaGuide,
+}) {
+  return (
+    <div className="area-admin">
+
+      <section className="admin-grid">
+
+        <div className="admin-card">
+
+          <div className="card-head">
+
+            <div>
+              <h2>
+                Add Area Guide
+              </h2>
+
+              <p>
+                Create a published community guide.
+              </p>
+            </div>
+
+          </div>
+
+          {!loaded && (
+            <p className="admin-note">
+              Loading existing area guides…
+            </p>
+          )}
+
+          <form
+            className="admin-form"
+            onSubmit={addAreaGuide}
+          >
+
+            <input
+              required
+              value={form.title}
+              onChange={(e) =>
+                updateGuide({
+                  title: e.target.value,
+                })
+              }
+              placeholder="Guide title"
+            />
+
+            <input
+              value={form.location}
+              onChange={(e) =>
+                updateGuide({
+                  location: e.target.value,
+                })
+              }
+              placeholder="Location"
+            />
+
+            <input
+              value={form.readTime}
+              onChange={(e) =>
+                updateGuide({
+                  readTime: e.target.value,
+                })
+              }
+              placeholder="Reading time e.g. 5 min read"
+            />
+
+            <textarea
+              required
+              value={form.excerpt}
+              onChange={(e) =>
+                updateGuide({
+                  excerpt: e.target.value,
+                })
+              }
+              placeholder="Short guide description"
+              rows="3"
+            />
+
+            <div className="image-input-section">
+
+              <div className="image-input-title">
+                Guide Images
+              </div>
+
+              <input
+                required
+                value={form.heroImage}
+                onChange={(e) =>
+                  updateGuide({
+                    heroImage: e.target.value,
+                  })
+                }
+                placeholder="Hero image URL"
+              />
+
+              <input
+                value={form.mapImage}
+                onChange={(e) =>
+                  updateGuide({
+                    mapImage: e.target.value,
+                  })
+                }
+                placeholder="Map image URL"
+              />
+
+              {[2, 3, 4, 5].map(
+                (number) => (
+                  <input
+                    key={number}
+                    value={
+                      form[`image${number}`]
+                    }
+                    onChange={(e) =>
+                      updateGuide({
+                        [`image${number}`]:
+                          e.target.value,
+                      })
+                    }
+                    placeholder={
+                      `Guide image ${number} URL`
+                    }
+                  />
+                )
+              )}
+
+            </div>
+
+            <textarea
+              value={form.intro}
+              onChange={(e) =>
+                updateGuide({
+                  intro: e.target.value,
+                })
+              }
+              placeholder="Introduction"
+              rows="5"
+            />
+
+            <textarea
+              value={form.about}
+              onChange={(e) =>
+                updateGuide({
+                  about: e.target.value,
+                })
+              }
+              placeholder="About the area"
+              rows="5"
+            />
+
+            <textarea
+              value={form.living}
+              onChange={(e) =>
+                updateGuide({
+                  living: e.target.value,
+                })
+              }
+              placeholder="Living in the area"
+              rows="5"
+            />
+
+            <textarea
+              value={form.market}
+              onChange={(e) =>
+                updateGuide({
+                  market: e.target.value,
+                })
+              }
+              placeholder="Property market"
+              rows="5"
+            />
+
+            <textarea
+              value={form.schools}
+              onChange={(e) =>
+                updateGuide({
+                  schools: e.target.value,
+                })
+              }
+              placeholder="Schools and education"
+              rows="4"
+            />
+
+            <textarea
+              value={form.lifestyle}
+              onChange={(e) =>
+                updateGuide({
+                  lifestyle: e.target.value,
+                })
+              }
+              placeholder="Lifestyle and things to do"
+              rows="4"
+            />
+
+            <textarea
+              value={form.transport}
+              onChange={(e) =>
+                updateGuide({
+                  transport: e.target.value,
+                })
+              }
+              placeholder="Getting around / transport"
+              rows="4"
+            />
+
+            <select
+              value={form.status}
+              onChange={(e) =>
+                updateGuide({
+                  status: e.target.value,
+                })
+              }
+            >
+              <option value="published">
+                Publish immediately
+              </option>
+
+              <option value="draft">
+                Save as draft
+              </option>
+            </select>
+
+            <button
+              className="button-coral"
+              type="submit"
+              disabled={!loaded}
+            >
+              Add Area Guide
+            </button>
+
+          </form>
+
+        </div>
+
+      </section>
+
+      <section className="admin-card">
+
+        <div className="card-head">
+
+          <div>
+            <h2>
+              Existing Area Guides
+            </h2>
+
+            <p>
+              {guides.length} guide(s)
+            </p>
+          </div>
+
+        </div>
+
+        <div className="admin-table-wrap">
+
+          <table>
+
+            <thead>
+              <tr>
+                <th>Guide</th>
+                <th>Location</th>
+                <th>Status</th>
+                <th></th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+              {guides.length > 0 ? (
+
+                guides.map((guide) => (
+
+                  <tr key={guide.id}>
+
+                    <td>
+                      <strong>
+                        {guide.title}
+                      </strong>
+
+                      <small>
+                        /guides/area-guides/
+                        {guide.slug}
+                      </small>
+                    </td>
+
+                    <td>
+                      {guide.location}
+                    </td>
+
+                    <td>
+                      <span
+                        className={
+                          guide.status ===
+                          "published"
+                            ? "status live"
+                            : "status"
+                        }
+                      >
+                        {guide.status}
+                      </span>
+                    </td>
+
+                    <td>
+
+                      <button
+                        className="delete-button"
+                        type="button"
+                        onClick={() =>
+                          removeAreaGuide(
+                            guide.id
+                          )
+                        }
+                      >
+                        Delete
+                      </button>
+
+                    </td>
+
+                  </tr>
+
+                ))
+
+              ) : (
+
+                <tr>
+                  <td
+                    colSpan="4"
+                    className="table-empty"
+                  >
+                    No area guides yet.
+                  </td>
+                </tr>
+
+              )}
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </section>
+
+    </div>
+  );
+}
+
+function LandlordGuide() {
+  const faqs = [
+    {
+      question: "What documents do I need to lease my property in Dubai?",
+      answer:
+        "You will generally need your property ownership documents and identification details, together with the relevant tenancy and property documentation required to complete the leasing process.",
+    },
+    {
+      question: "How do I know how much rent to charge?",
+      answer:
+        "Rental pricing should reflect the property's location, size, condition, amenities and current market demand. Golden Key can help you position your property competitively.",
+    },
+    {
+      question: "What are the benefits of listing exclusively with one agent?",
+      answer:
+        "An exclusive relationship can provide clearer accountability, a coordinated marketing strategy and a single point of contact throughout the leasing process.",
+    },
+    {
+      question: "Who handles maintenance and tenant issues during the tenancy?",
+      answer:
+        "Depending on the management arrangement, Golden Key can coordinate communication, maintenance requests and day-to-day property matters on the owner's behalf.",
+    },
+    {
+      question: "How do I make sure I'm choosing the right tenant?",
+      answer:
+        "Tenant selection should consider suitability, documentation, affordability and the overall quality of the application. Our team can guide you through the process.",
+    },
+    {
+      question: "How do I stay informed without being involved in every detail?",
+      answer:
+        "A structured management and reporting process keeps owners informed about important activity while allowing the day-to-day work to be handled by the management team.",
+    },
+  ];
+
+  return (
+    <>
+      <Header />
+
+      <main className="landlord-guide-page">
+
+        {/* HERO */}
+        <section className="landlord-hero">
+
+          <div className="landlord-hero-bg" />
+          <div className="landlord-hero-overlay" />
+
+          <div className="wrap landlord-hero-content">
+
+            <p className="landlord-eyebrow">
+              GOLDEN KEY LANDLORD GUIDE
+            </p>
+
+            <h1>
+              How to lease your
+              <br />
+              property in Dubai
+            </h1>
+
+            <p>
+              A practical step-by-step guide to help you
+              lease your property with confidence.
+            </p>
+
+            <div className="landlord-hero-actions">
+
+              <a
+                href="#landlord-content"
+                className="landlord-coral-button"
+              >
+                Download Guide
+              </a>
+
+              <a
+                href="#landlord-faq"
+                className="landlord-video-button"
+              >
+                <span>▶</span>
+                Watch Video
+              </a>
+
+            </div>
+
+          </div>
+        </section>
+
+        {/* INTRO + FORM */}
+        <section
+          className="section landlord-intro"
+          id="landlord-content"
+        >
+
+          <div className="wrap landlord-intro-grid">
+
+            <article className="landlord-copy">
+
+              <h2 className="landlord-serif">
+                Leasing your property
+                <br />
+                doesn't have to
+                <br />
+                be complicated
+              </h2>
+
+              <p>
+                Whether you're renting out one apartment or
+                managing several homes, there are important
+                decisions to make throughout the process.
+              </p>
+
+              <p>
+                From understanding your property's value and
+                choosing the right tenant to preparing the home
+                and completing the required formalities,
+                this guide brings everything together so you
+                know what to expect from the moment you decide
+                to lease your property.
+              </p>
+
+              <p>
+                You'll gain a clearer understanding of valuation,
+                documentation, marketing, viewings and the steps
+                involved once a lease is agreed.
+              </p>
+
+              <p>
+                Golden Key can also support landlords with
+                professional marketing, tenant coordination
+                and ongoing property management for owners
+                who prefer a more hands-off approach.
+              </p>
+
+            </article>
+
+            <aside className="landlord-form-card">
+
+              <p className="landlord-form-label">
+                GET IN TOUCH
+              </p>
+
+              <h3>
+                Need help leasing your
+                property?
+              </h3>
+
+              <p className="landlord-form-subtitle">
+                Schedule a call with our team.
+              </p>
+
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+
+                  alert(
+                    "Thank you. Your enquiry has been received."
+                  );
+                }}
+              >
+
+                <input
+                  required
+                  placeholder="Name"
+                />
+
+                <input
+                  required
+                  type="email"
+                  placeholder="Email Address"
+                />
+
+                <input
+                  required
+                  placeholder="Phone Number"
+                />
+
+                <textarea
+                  rows="6"
+                  placeholder="Message"
+                />
+
+                <button
+                  type="submit"
+                  className="landlord-coral-button"
+                >
+                  Submit
+                </button>
+
+              </form>
+
+            </aside>
+
+          </div>
+        </section>
+
+        {/* FAQ */}
+        <section
+          className="section landlord-faq"
+          id="landlord-faq"
+        >
+
+          <div className="wrap">
+
+            <h2 className="landlord-serif">
+              Frequently asked questions
+            </h2>
+
+            <div className="landlord-faq-list">
+
+              {faqs.map((faq, index) => (
+
+                <details
+                  key={faq.question}
+                  open={index === 0}
+                >
+
+                  <summary>
+                    <span>
+                      {faq.question}
+                    </span>
+
+                    <strong>
+                      {index === 0 ? "−" : "+"}
+                    </strong>
+                  </summary>
+
+                  <div className="landlord-faq-answer">
+                    <p>
+                      {faq.answer}
+                    </p>
+                  </div>
+
+                </details>
+
+              ))}
+
+            </div>
+
+          </div>
+
+        </section>
+
+      </main>
+
+      <Footer />
+    </>
+  );
+}
+
+
+function TenantGuide() {
+  const faqs = [
+    {
+      question: "What documents will I need to rent a home in Dubai?",
+      answer:
+        "You will generally need your passport, Emirates ID and residency or visa documentation, together with any supporting information requested for your tenancy application. Your Golden Key consultant will let you know exactly what is required for your property.",
+    },
+    {
+      question:
+        "How do I set up water, electricity and cooling once I move in?",
+      answer:
+        "Once your tenancy documentation is completed, your Golden Key consultant can guide you through the utility connections you need for your new home, including electricity, water and cooling services.",
+    },
+    {
+      question: "What is Ejari, and why do I need it?",
+      answer:
+        "Ejari is the tenancy registration system used in Dubai. Registering your tenancy helps formally document the rental agreement and provides an important part of the tenancy process.",
+    },
+    {
+      question: "Can I bring my pet with me?",
+      answer:
+        "Pet policies vary by property and community. Before signing a tenancy agreement, confirm that the property and building allow your type of pet and check any applicable community rules.",
+    },
+    {
+      question: "Do I need a move-in permit?",
+      answer:
+        "Some buildings and communities require tenants to arrange a move-in permit before moving into the property. Your Golden Key consultant can help you understand what your building requires.",
+    },
+    {
+      question: "Who handles maintenance during my tenancy?",
+      answer:
+        "Maintenance arrangements depend on the tenancy agreement and property management structure. Golden Key can help coordinate communication between you, the landlord and the relevant maintenance team.",
+    },
+  ];
+
+  return (
+    <>
+      <Header />
+
+      <main className="tenant-guide-page">
+
+        {/* HERO */}
+        <section className="tenant-hero">
+
+          <div className="tenant-hero-bg" />
+          <div className="tenant-hero-overlay" />
+
+          <div className="wrap tenant-hero-content">
+
+            <p className="tenant-eyebrow">
+              GOLDEN KEY TENANT GUIDE
+            </p>
+
+            <h1>
+              How to rent
+              <br />
+              in Dubai
+            </h1>
+
+            <p>
+              A step-by-step guide to help you
+              rent with confidence in Dubai.
+            </p>
+
+            <div className="tenant-hero-actions">
+
+              <a
+                href="#tenant-content"
+                className="tenant-coral-button"
+              >
+                Download now
+              </a>
+
+              <a
+                href="#tenant-faq"
+                className="tenant-video-button"
+              >
+                <span>▶</span>
+                Watch Video
+              </a>
+
+            </div>
+
+          </div>
+        </section>
+
+        {/* INTRO + FORM */}
+        <section
+          className="section tenant-intro"
+          id="tenant-content"
+        >
+
+          <div className="wrap tenant-intro-grid">
+
+            <article className="tenant-copy">
+
+              <h2 className="tenant-serif">
+                Renting in Dubai
+                <br />
+                doesn't have to
+                <br />
+                be complicated
+              </h2>
+
+              <p>
+                Dubai's rental market offers a wide variety
+                of homes, from modern city apartments and
+                luxury residences to spacious family villas.
+                But for new residents and experienced renters
+                alike, understanding the process can sometimes
+                feel overwhelming.
+              </p>
+
+              <p>
+                Golden Key has created this guide to make the
+                rental journey clearer, more practical and
+                easier to follow. We take you through the
+                key stages, from choosing a budget and area
+                to securing your property and preparing for
+                move-in.
+              </p>
+
+              <p>
+                You'll learn what to consider before choosing
+                a property, which documents you may need,
+                how the tenancy process works and what to
+                check before collecting your keys.
+              </p>
+
+            </article>
+
+            <aside className="tenant-form-card">
+
+              <p className="tenant-form-label">
+                GET IN TOUCH
+              </p>
+
+              <h3>
+                Need help renting
+                a property?
+              </h3>
+
+              <p className="tenant-form-subtitle">
+                Schedule a call with a Golden Key
+                property consultant.
+              </p>
+
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+
+                  alert(
+                    "Thank you. Your enquiry has been received."
+                  );
+                }}
+              >
+
+                <input
+                  required
+                  placeholder="Name"
+                />
+
+                <input
+                  required
+                  type="email"
+                  placeholder="Email Address"
+                />
+
+                <input
+                  required
+                  placeholder="Phone Number"
+                />
+
+                <textarea
+                  rows="6"
+                  placeholder="Tell us what you're looking for"
+                />
+
+                <button
+                  type="submit"
+                  className="tenant-coral-button"
+                >
+                  Submit
+                </button>
+
+              </form>
+
+            </aside>
+
+          </div>
+        </section>
+
+        {/* RENTING PROCESS */}
+        <section className="tenant-process">
+
+          <div className="wrap">
+
+            <p className="tenant-process-label">
+              THE RENTAL JOURNEY
+            </p>
+
+            <h2 className="tenant-serif">
+              Your step-by-step guide
+              <br />
+              to renting in Dubai
+            </h2>
+
+            {/* STEP 01 */}
+            <article className="tenant-step">
+
+              <div className="tenant-step-number">
+                01
+              </div>
+
+              <div className="tenant-step-content">
+
+                <h3>
+                  Set a budget & choose a location
+                </h3>
+
+                <p>
+                  Setting a realistic budget is one of the
+                  most important first steps. Consider the
+                  annual rent alongside your expected living
+                  costs, including utilities, internet,
+                  moving expenses, security deposit and any
+                  applicable agency fees.
+                </p>
+
+                <p>
+                  Rental prices in Dubai can vary considerably
+                  depending on the community, property type,
+                  size, amenities and whether the property is
+                  furnished or unfurnished.
+                </p>
+
+                <p>
+                  Start by identifying the areas that fit both
+                  your lifestyle and budget, then compare
+                  available properties before deciding where
+                  you want to live.
+                </p>
+
+              </div>
+
+            </article>
+
+            {/* STEP 02 */}
+            <article className="tenant-step">
+
+              <div className="tenant-step-number">
+                02
+              </div>
+
+              <div className="tenant-step-content">
+
+                <h3>
+                  Find the right real estate agent
+                </h3>
+
+                <p>
+                  A knowledgeable property consultant can
+                  significantly simplify your search,
+                  particularly in a competitive rental market.
+                </p>
+
+                <p>
+                  Your Golden Key consultant can help identify
+                  properties that match your requirements,
+                  arrange viewings and guide you through the
+                  negotiation and leasing process.
+                </p>
+
+                <p>
+                  Look for a consultant who understands the
+                  areas you are considering and communicates
+                  clearly throughout your search.
+                </p>
+
+              </div>
+
+            </article>
+
+            {/* STEP 03 */}
+            <article className="tenant-step">
+
+              <div className="tenant-step-number">
+                03
+              </div>
+
+              <div className="tenant-step-content">
+
+                <h3>
+                  Secure the property & sign the contract
+                </h3>
+
+                <p>
+                  Once you've found the right home and agreed
+                  on the terms, your consultant will guide you
+                  through the documents and payments required
+                  to secure the property.
+                </p>
+
+                <p>
+                  This may include identification documents,
+                  tenancy-related paperwork, the agreed rental
+                  payments and security deposit.
+                </p>
+
+                <p>
+                  Make sure you understand the terms of the
+                  tenancy agreement before signing. Any
+                  important arrangements agreed between you
+                  and the landlord should be clearly documented.
+                </p>
+
+              </div>
+
+            </article>
+
+            {/* STEP 04 */}
+            <article className="tenant-step">
+
+              <div className="tenant-step-number">
+                04
+              </div>
+
+              <div className="tenant-step-content">
+
+                <h3>
+                  Register your Ejari
+                </h3>
+
+                <p>
+                  Once your tenancy agreement has been signed,
+                  the tenancy should be registered through the
+                  Ejari system.
+                </p>
+
+                <p>
+                  Your Golden Key consultant can explain the
+                  documents and steps required for registration
+                  and help make sure the tenancy paperwork is
+                  properly completed.
+                </p>
+
+                <p>
+                  Keep your completed tenancy documentation
+                  safely stored, as it may be required when
+                  arranging other services connected to your
+                  new home.
+                </p>
+
+              </div>
+
+            </article>
+
+            {/* STEP 05 */}
+            <article className="tenant-step">
+
+              <div className="tenant-step-number">
+                05
+              </div>
+
+              <div className="tenant-step-content">
+
+                <h3>
+                  Complete a thorough move-in inspection
+                </h3>
+
+                <p>
+                  Before moving in, carefully inspect the
+                  property and document its condition.
+                </p>
+
+                <div className="tenant-tips">
+
+                  <div>
+                    <strong>
+                      Use a checklist
+                    </strong>
+
+                    <span>
+                      Review rooms, fixtures, appliances,
+                      doors, windows and other important areas.
+                    </span>
+                  </div>
+
+                  <div>
+                    <strong>
+                      Take photos and videos
+                    </strong>
+
+                    <span>
+                      Record any existing damage with clear
+                      images for your records.
+                    </span>
+                  </div>
+
+                  <div>
+                    <strong>
+                      Be meticulous
+                    </strong>
+
+                    <span>
+                      Check cupboards, drawers, appliances,
+                      fittings and other areas that are easy
+                      to overlook.
+                    </span>
+                  </div>
+
+                  <div>
+                    <strong>
+                      Get written confirmation
+                    </strong>
+
+                    <span>
+                      Make sure agreed pre-existing issues
+                      are documented appropriately.
+                    </span>
+                  </div>
+
+                </div>
+
+              </div>
+
+            </article>
+
+            {/* STEP 06 */}
+            <article className="tenant-step">
+
+              <div className="tenant-step-number">
+                06
+              </div>
+
+              <div className="tenant-step-content">
+
+                <h3>
+                  Connect your utilities
+                </h3>
+
+                <p>
+                  Once the tenancy documentation is complete,
+                  you'll need to arrange the utilities required
+                  for your home.
+                </p>
+
+                <p>
+                  Depending on the property, this can include
+                  electricity, water, cooling and other
+                  essential services.
+                </p>
+
+                <p>
+                  Your Golden Key consultant can help you
+                  understand what needs to be arranged for
+                  your particular property and community.
+                </p>
+
+                <a
+                  href="#tenant-content"
+                  className="tenant-text-link"
+                >
+                  Need more help renting in Dubai?
+                  Speak with Golden Key →
+                </a>
+
+              </div>
+
+            </article>
+
+          </div>
+        </section>
+
+        {/* FAQ */}
+        <section
+          className="section tenant-faq"
+          id="tenant-faq"
+        >
+
+          <div className="wrap">
+
+            <h2 className="tenant-serif">
+              Frequently asked questions
+            </h2>
+
+            <div className="tenant-faq-list">
+
+              {faqs.map((faq, index) => (
+
+                <details
+                  key={faq.question}
+                  open={index === 0}
+                >
+
+                  <summary>
+
+                    <span>
+                      {faq.question}
+                    </span>
+
+                    <strong>
+                      {index === 0 ? "−" : "+"}
+                    </strong>
+
+                  </summary>
+
+                  <div className="tenant-faq-answer">
+
+                    <p>
+                      {faq.answer}
+                    </p>
+
+                  </div>
+
+                </details>
+
+              ))}
+
+            </div>
+
+          </div>
+
+        </section>
+
+      </main>
+
+      <Footer />
+    </>
+  );
+}
+
+function BuyerGuide() {
+  return (
+    <>
+      <Header />
+
+      <main className="buyer-guide-page">
+
+        {/* HERO */}
+        <section className="buyer-hero">
+          <div className="buyer-hero-bg" />
+          <div className="buyer-hero-overlay" />
+
+          <div className="wrap buyer-hero-content">
+
+            <p className="buyer-eyebrow">
+              GOLDEN KEY BUYER GUIDE
+            </p>
+
+            <h1>
+              How to buy a
+              <br />
+              property in Dubai
+            </h1>
+
+            <p>
+              A step-by-step guide to help you
+              buy a property with confidence.
+            </p>
+
+            <div className="buyer-hero-actions">
+
+              <a
+                href="#buyer-content"
+                className="buyer-coral-button"
+              >
+                Download Brochure
+              </a>
+
+              <a
+                href="#buyer-cta"
+                className="buyer-video-button"
+              >
+                <span>▶</span>
+                Watch Video
+              </a>
+
+            </div>
+
+          </div>
+        </section>
+
+        {/* INTRO + FORM */}
+        <section
+          className="buyer-intro section"
+          id="buyer-content"
+        >
+          <div className="wrap buyer-intro-grid">
+
+            <article className="buyer-copy">
+
+              <h2 className="buyer-serif">
+                Buying a home in Dubai
+                <br />
+                is more than a
+                <br />
+                transaction; it’s the
+                <br />
+                start of a new chapter.
+              </h2>
+
+              <p>
+                Whether you're buying your first home
+                or making your next investment, the
+                process can feel overwhelming without
+                the right guidance.
+              </p>
+
+              <p>
+                Golden Key has created this practical
+                buyer's guide to help you understand
+                the journey from your first property
+                search through to completing your purchase.
+              </p>
+
+              <p className="buyer-highlight">
+                Our guide walks you through the key
+                stages of buying property in Dubai,
+                helping you make informed decisions
+                and move forward with confidence.
+              </p>
+
+            </article>
+
+            <aside className="buyer-form-card">
+
+              <p className="buyer-form-label">
+                GET IN TOUCH
+              </p>
+
+              <h3>
+                Need help buying?
+                <br />
+                Schedule a call with us
+              </h3>
+
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+
+                  alert(
+                    "Thank you. Your enquiry has been received."
+                  );
+                }}
+              >
+
+                <input
+                  required
+                  placeholder="Name"
+                />
+
+                <input
+                  required
+                  type="email"
+                  placeholder="Email Address"
+                />
+
+                <input
+                  required
+                  placeholder="Phone Number"
+                />
+
+                <textarea
+                  rows="6"
+                  placeholder="Message"
+                />
+
+                <button
+                  type="submit"
+                  className="buyer-coral-button"
+                >
+                  Submit
+                </button>
+
+              </form>
+
+            </aside>
+
+          </div>
+        </section>
+
+        {/* FINAL CTA */}
+        <section
+          className="buyer-cta"
+          id="buyer-cta"
+        >
+
+          <div className="wrap">
+
+            <p className="buyer-cta-label">
+              GET IN TOUCH
+            </p>
+
+            <h2>
+              Ready to find your
+              <br />
+              new home or next
+              <br />
+              investment?
+            </h2>
+
+            <p>
+              Connect with a Golden Key property
+              consultant and take the next step.
+            </p>
+
+            <a
+              href="/enquire"
+              className="buyer-coral-button"
+            >
+              Get In Touch
+            </a>
+
+          </div>
+
+        </section>
+
+      </main>
+
+      <Footer />
+    </>
+  );
+}
+
+
+function SellerGuide() {
+  return (
+    <>
+      <Header />
+
+      <main className="seller-guide-page">
+
+        {/* HERO */}
+        <section className="seller-hero">
+          <div className="seller-hero-bg" />
+          <div className="seller-hero-overlay" />
+
+          <div className="wrap seller-hero-content">
+
+            <p className="seller-eyebrow">
+              GOLDEN KEY SELLER GUIDE
+            </p>
+
+            <h1>
+              How to sell a
+              <br />
+              property in Dubai
+            </h1>
+
+            <p>
+              A step-by-step guide to help you sell
+              your property with confidence.
+            </p>
+
+            <div className="seller-hero-actions">
+
+              <a
+                href="#seller-content"
+                className="seller-coral-button"
+              >
+                Download Brochure
+              </a>
+
+              <a
+                href="#seller-cta"
+                className="seller-video-button"
+              >
+                <span>▶</span>
+                Watch Video
+              </a>
+
+            </div>
+
+          </div>
+        </section>
+
+        {/* INTRO + FORM */}
+        <section
+          className="section seller-intro"
+          id="seller-content"
+        >
+
+          <div className="wrap seller-intro-grid">
+
+            <article className="seller-copy">
+
+              <p className="seller-intro-small">
+                Selling a home is a major decision,
+                and the process should feel clear
+                from the start.
+              </p>
+
+              <h2 className="seller-serif">
+                Selling a home is a major
+                decision, and the process
+                should feel clear from the
+                start.
+              </h2>
+
+              <p>
+                Your property deserves a considered
+                approach. From understanding its market
+                position and choosing the right strategy
+                to preparing, marketing and negotiating,
+                every step can make a difference.
+              </p>
+
+              <p>
+                Golden Key's seller guide is designed
+                to help you understand the journey,
+                prepare your property effectively and
+                make decisions with greater clarity.
+              </p>
+
+              <p>
+                We cover the practical stages involved
+                in selling, from pricing and presentation
+                to viewings, offers and completion, so
+                you know what to expect throughout the
+                process.
+              </p>
+
+              <p className="seller-highlight">
+                With the right preparation and the right
+                guidance, selling your property can feel
+                straightforward, informed and well supported.
+              </p>
+
+            </article>
+
+            <aside className="seller-form-card">
+
+              <p className="seller-form-label">
+                GET IN TOUCH
+              </p>
+
+              <h3>
+                Need help selling?
+                <br />
+                Schedule a call with us
+              </h3>
+
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+
+                  alert(
+                    "Thank you. Your enquiry has been received."
+                  );
+                }}
+              >
+
+                <input
+                  required
+                  placeholder="Name"
+                />
+
+                <input
+                  required
+                  type="email"
+                  placeholder="Email Address"
+                />
+
+                <input
+                  required
+                  placeholder="Phone Number"
+                />
+
+                <textarea
+                  rows="6"
+                  placeholder="Tell us about your property"
+                />
+
+                <button
+                  type="submit"
+                  className="seller-coral-button"
+                >
+                  Submit
+                </button>
+
+              </form>
+
+            </aside>
+
+          </div>
+        </section>
+
+        {/* FINAL CTA */}
+        <section
+          className="seller-cta"
+          id="seller-cta"
+        >
+
+          <div className="wrap">
+
+            <p className="seller-cta-label">
+              GET IN TOUCH
+            </p>
+
+            <h2>
+              Ready to sell
+              <br />
+              your property?
+            </h2>
+
+            <p>
+              Connect with Golden Key and arrange
+              a conversation about your property,
+              its market position and the right next step.
+            </p>
+
+            <a
+              href="/enquire"
+              className="seller-coral-button"
+            >
+              Get In Touch
+            </a>
+
+          </div>
+
+        </section>
+
+      </main>
+
+      <Footer />
+    </>
+  );
+}
+
 // ---------------------------------------------------------------------------------------------------------------
 function App() {
   const path =
@@ -4540,6 +8008,10 @@ function App() {
   // SERVICES OVERVIEW
   if (path === "/services") {
     return <ServicesPage />;
+  }
+
+  if (path === "/guides/tenant-guide") {
+  return <TenantGuide />;
   }
 
   // SERVICES
@@ -4610,9 +8082,35 @@ if (path === "/services/citizenship-program") {
     return <Insights />;
   }
 
+  if (path === "/guides/area-guides") {
+  return <AreaGuides />;
+}
+
+  if (path.startsWith("/guides/area-guides/")) {
+    const slug = path.split(
+      "/guides/area-guides/"
+    )[1];
+
+    return (
+      <AreaGuideDetail slug={slug} />
+    );
+  }
+
+  if (path === "/guides/buyer-guide") {
+  return <BuyerGuide />;
+  }
+
+  if (path === "/guides/seller-guide") {
+  return <SellerGuide />;
+  }
+
   // GUIDES
   if (path === "/guides") {
     return <Guides />;
+  }
+
+  if (path === "/guides/landlord-guide") {
+  return <LandlordGuide />;
   }
 
   // ABOUT
