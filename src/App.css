@@ -7223,6 +7223,7 @@
    ========================================================= */
 
 @media (max-width: 700px) {
+  
 
   html,
   body {
@@ -7378,5 +7379,51 @@
   /* Kill accidental fixed widths */
   [style*="width"] {
     max-width: 100%;
+  }
+}
+
+@media (max-width: 700px) {
+
+  .diamond {
+    width: 145px !important;
+    height: 145px !important;
+  }
+
+  .diamond-inner {
+    width: 108px !important;
+    height: 108px !important;
+    min-height: 108px !important;
+
+    transform: rotate(-45deg);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+  }
+
+  .diamond strong span {
+    font-size: 34px !important;
+    line-height: .82 !important;
+    letter-spacing: -1.2px !important;
+
+    max-width: 108px;
+    overflow: hidden;
+    text-overflow: clip;
+    white-space: nowrap;
+  }
+
+  .diamond-inner > span {
+    width: 82px !important;
+    max-width: 82px !important;
+
+    margin-top: 9px !important;
+
+    font-size: 8px !important;
+    line-height: 1.12 !important;
+
+    text-align: center;
   }
 }
