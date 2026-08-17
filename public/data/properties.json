@@ -1,0 +1,52 @@
+{
+  "properties": [
+    {
+      "id": "seed-1",
+      "purpose": "buy",
+      "title": "Modern waterfront residence",
+      "location": "Dubai Marina",
+      "price": 3250000,
+      "propertyType": "Apartment",
+      "bedrooms": 2,
+      "area": 1240,
+      "image": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1400&q=88",
+      "status": "published"
+    },
+    {
+      "id": "seed-2",
+      "purpose": "buy",
+      "title": "Contemporary family villa",
+      "location": "Jumeirah",
+      "price": 7950000,
+      "propertyType": "Villa",
+      "bedrooms": 4,
+      "area": 4380,
+      "image": "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1400&q=88",
+      "status": "published"
+    },
+    {
+      "id": "seed-3",
+      "purpose": "rent",
+      "title": "Refined city apartment",
+      "location": "Downtown Dubai",
+      "price": 12500,
+      "propertyType": "Apartment",
+      "bedrooms": 1,
+      "area": 842,
+      "image": "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1400&q=88",
+      "status": "published"
+    },
+    {
+      "id": "seed-4",
+      "purpose": "buy",
+      "title": "Private garden residence",
+      "location": "Dubai Hills",
+      "price": 5400000,
+      "propertyType": "Villa",
+      "bedrooms": 3,
+      "area": 3120,
+      "image": "https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=1400&q=88",
+      "status": "published"
+    }
+  ]
+}
