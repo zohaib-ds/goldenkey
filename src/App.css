@@ -7197,6 +7197,8 @@
     align-items: flex-start;
   }
 
+  
+
   .buyer-copy p {
     font-size: 14px;
   }
@@ -7211,4 +7213,132 @@
     padding: 60px 20px;
   }
 
+}
+
+
+
+@media (max-width: 700px) {
+
+  .diamonds {
+    width: 100%;
+    max-width: 380px;
+    margin: 70px auto 0;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    justify-items: center;
+    align-items: center;
+
+    column-gap: -18px;
+    row-gap: 30px;
+
+    /* Allows the diamonds to visually overlap */
+    overflow: visible;
+  }
+
+  .diamond {
+    width: 145px;
+    height: 145px;
+
+    margin: -8px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+    z-index: 1;
+  }
+
+  .diamond:nth-child(1) {
+    z-index: 5;
+  }
+
+  .diamond:nth-child(2) {
+    z-index: 4;
+  }
+
+  .diamond:nth-child(3) {
+    z-index: 3;
+  }
+
+  .diamond:nth-child(4) {
+    z-index: 2;
+  }
+
+  .diamond:nth-child(5) {
+    grid-column: 1 / 3;
+    justify-self: center;
+    z-index: 5;
+
+    margin-top: -10px;
+  }
+
+  /*
+    IMPORTANT:
+    The inner content has its own fixed box,
+    so the number stays exactly centered
+    regardless of the diamond overlap.
+  */
+  .diamond-inner {
+    width: 120px;
+    height: 120px;
+    min-height: 120px;
+
+    transform: rotate(-45deg);
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    position: relative;
+    z-index: 10;
+  }
+
+  /* BIG NUMBER */
+  .diamond strong span {
+    display: block;
+
+    font-family: var(--serif);
+
+    font-size: 43px !important;
+    font-weight: 500;
+
+    line-height: .82;
+
+    letter-spacing: -1.8px;
+
+    white-space: nowrap;
+
+    text-align: center;
+
+    color: var(--dark);
+  }
+
+  /* LABEL */
+  .diamond-inner > span {
+    display: block;
+
+    width: 100px;
+    max-width: 100px;
+
+    margin-top: 12px;
+
+    font-size: 9px !important;
+    line-height: 1.15;
+
+    letter-spacing: .035em;
+
+    text-transform: uppercase;
+
+    text-align: center;
+
+    color: #5c6e74;
+  }
 }
