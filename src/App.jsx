@@ -398,23 +398,40 @@ function EnquiryForm({ compact = false, property = null }) {
     setError("");
 
     try {
-      const response = await fetch("/api/pixxi/lead", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...form,
+const response = await fetch("/api/pixxi/lead", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    ...form,
+    propertyReference:
+      property?.reference ||
+      property?.propertyReference ||
+      property?.referenceNumber ||
+      "",
+  }),
+});
 
-          propertyReference:
-            property?.reference ||
-            property?.propertyReference ||
-            property?.referenceNumber ||
-            "",
-        }),
-      });
+const raw = await response.text();
 
-      const data = await response.json();
+let data = {};
+
+try {
+  data = raw ? JSON.parse(raw) : {};
+} catch {
+  data = {
+    success: false,
+    error: raw || "Invalid server response",
+  };
+}
+
+if (!response.ok || !data.success) {
+  throw new Error(
+    data.error ||
+      `Lead submission failed (${response.status})`
+  );
+}
 
       if (!response.ok || !data.success) {
         throw new Error(
