@@ -34,18 +34,8 @@ export default async function handler(req, res) {
       email: body.email || "",
       phone: body.phone || "",
 
-      nationality: body.nationality || "",
-      budget: body.budget || "",
-      preferredSize: body.preferredSize || "",
-      propertyType: body.propertyType || "",
-
       message: body.message || "",
-
-      propertyReference:
-        body.propertyReference || "",
     };
-
-    console.log("PIXXI FORM PAYLOAD:", payload);
 
     const response = await fetch(
       "https://dataapi.pixxicrm.ae/pixxiapi/webhook/v1/form",
@@ -54,7 +44,6 @@ export default async function handler(req, res) {
 
         headers: {
           "Content-Type": "application/json",
-          Accept: "application/json",
           "X-PIXXI-TOKEN": token,
         },
 
@@ -66,38 +55,21 @@ export default async function handler(req, res) {
 
     let pixxiData = null;
 
-    if (rawText.trim()) {
-      try {
-        pixxiData = JSON.parse(rawText);
-      } catch {
-        pixxiData = {
-          raw: rawText,
-        };
-      }
+    try {
+      pixxiData = rawText
+        ? JSON.parse(rawText)
+        : null;
+    } catch {
+      pixxiData = rawText;
     }
 
-    console.log("PIXXI FORM RESPONSE:", {
-      status: response.status,
-      data: pixxiData,
-    });
-
-    const pixxiFailed =
-      !response.ok ||
-      pixxiData?.code >= 400 ||
-      pixxiData?.statusCode >= 400;
-
-    if (pixxiFailed) {
+    if (!response.ok) {
       return res.status(502).json({
         success: false,
-
-        status: response.status,
-
         error:
           pixxiData?.message ||
           pixxiData?.msg ||
-          pixxiData?.error ||
-          "Pixxi rejected the form.",
-
+          "Pixxi rejected the enquiry.",
         pixxi: pixxiData,
       });
     }
@@ -105,13 +77,13 @@ export default async function handler(req, res) {
     return res.status(200).json({
       success: true,
       status: response.status,
+      message: "Lead submitted successfully.",
       pixxi: pixxiData,
-      rawResponse: rawText || null,
     });
 
   } catch (error) {
     console.error(
-      "Pixxi form endpoint error:",
+      "Pixxi lead error:",
       error
     );
 
