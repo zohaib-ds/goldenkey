@@ -24,36 +24,20 @@ export default async function handler(req, res) {
       });
     }
 
-    const {
-      name = "",
-      email = "",
-      phone = "",
-      message = "",
-      propertyReference = "",
-      budget = "",
-      preferredSize = "",
-      propertyType = "",
-      nationality = "",
-    } = req.body || {};
-
-    if (!name || !email || !phone) {
-      return res.status(400).json({
-        success: false,
-        error: "Name, email and phone are required",
-      });
-    }
+    const body = req.body || {};
 
     const payload = {
       formId,
-      propertyReference,
-      name,
-      email,
-      phone,
-      nationality,
-      budget,
-      preferredSize,
-      propertyType,
-      message,
+      name: body.name || "",
+      email: body.email || "",
+      phone: body.phone || "",
+      nationality: body.nationality || "",
+      budget: body.budget || "",
+      preferredSize: body.preferredSize || "",
+      propertyType: body.propertyType || "",
+      message: body.message || "",
+      propertyReference:
+        body.propertyReference || "",
     };
 
     const response = await fetch(
@@ -63,27 +47,54 @@ export default async function handler(req, res) {
         headers: {
           "Content-Type": "application/json",
           "X-PIXXI-TOKEN": token,
+          Accept: "application/json",
         },
         body: JSON.stringify(payload),
       }
     );
 
-    const text = await response.text();
+    const rawText = await response.text();
 
-    let data;
+    let pixxiData = null;
 
-    try {
-      data = JSON.parse(text);
-    } catch {
-      data = { raw: text };
+    if (rawText) {
+      try {
+        pixxiData = JSON.parse(rawText);
+      } catch {
+        pixxiData = {
+          raw: rawText,
+        };
+      }
     }
 
-    return res.status(response.status).json({
-      success: response.ok,
-      data,
+    if (!response.ok) {
+      console.error(
+        "Pixxi lead rejected:",
+        response.status,
+        pixxiData
+      );
+
+      return res.status(response.status).json({
+        success: false,
+        status: response.status,
+        error:
+          pixxiData?.message ||
+          pixxiData?.error ||
+          "Pixxi rejected the lead.",
+        pixxi: pixxiData,
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      status: response.status,
+      pixxi: pixxiData,
     });
   } catch (error) {
-    console.error("Pixxi lead error:", error);
+    console.error(
+      "Pixxi lead endpoint error:",
+      error
+    );
 
     return res.status(500).json({
       success: false,

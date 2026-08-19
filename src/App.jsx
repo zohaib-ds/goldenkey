@@ -366,22 +366,102 @@ function money(v, purpose) {
   const value = Number(v) || 0;
   return purpose === "rent" ? `AED ${value.toLocaleString()} / month` : `AED ${value.toLocaleString()}`;
 }
-function EnquiryForm({ compact = false }) {
+function EnquiryForm({ compact = false, property = null }) {
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
+
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    propertyType: "",
+    budget: "",
+    preferredSize: "",
+    nationality: "",
+    message: "",
+  });
+
+  const update = (patch) => {
+    setForm((current) => ({
+      ...current,
+      ...patch,
+    }));
+  };
+
+  async function submitForm(e) {
+    e.preventDefault();
+
+    if (sending) return;
+
+    setSending(true);
+    setError("");
+
+    try {
+      const response = await fetch("/api/pixxi/lead", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...form,
+
+          propertyReference:
+            property?.reference ||
+            property?.propertyReference ||
+            property?.referenceNumber ||
+            "",
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(
+          data.error ||
+            "We could not submit your enquiry."
+        );
+      }
+
+      setSent(true);
+
+      setForm({
+        name: "",
+        email: "",
+        phone: "",
+        propertyType: "",
+        budget: "",
+        preferredSize: "",
+        nationality: "",
+        message: "",
+      });
+    } catch (err) {
+      console.error("Enquiry submission failed:", err);
+
+      setError(
+        err.message ||
+          "Something went wrong. Please try again."
+      );
+    } finally {
+      setSending(false);
+    }
+  }
 
   if (sent) {
     return (
       <div className="enquiry-success">
-        <div className="enquiry-success-icon">✓</div>
+        <div className="enquiry-success-icon">
+          ✓
+        </div>
 
         <h3>
           Thank you
         </h3>
 
         <p>
-          Your enquiry has been received.
-          A member of the Golden Key team
-          will contact you shortly.
+          Your enquiry has been sent successfully.
+          A member of the Golden Key team will
+          contact you shortly.
         </p>
       </div>
     );
@@ -394,10 +474,7 @@ function EnquiryForm({ compact = false }) {
           ? "enquiry-form compact"
           : "enquiry-form"
       }
-      onSubmit={(e) => {
-        e.preventDefault();
-        setSent(true);
-      }}
+      onSubmit={submitForm}
     >
 
       <div className="enquiry-form-row">
@@ -409,33 +486,34 @@ function EnquiryForm({ compact = false }) {
 
           <input
             required
+            value={form.name}
+            onChange={(e) =>
+              update({
+                name: e.target.value,
+              })
+            }
             placeholder="First Name"
           />
         </div>
 
         <div>
           <label>
-            Last Name
+            Email Address
           </label>
 
           <input
             required
-            placeholder="Last Name"
+            type="email"
+            value={form.email}
+            onChange={(e) =>
+              update({
+                email: e.target.value,
+              })
+            }
+            placeholder="Enter Your Email"
           />
         </div>
 
-      </div>
-
-      <div>
-        <label>
-          Email Address
-        </label>
-
-        <input
-          required
-          type="email"
-          placeholder="Enter Your Email"
-        />
       </div>
 
       <div>
@@ -445,6 +523,12 @@ function EnquiryForm({ compact = false }) {
 
         <input
           required
+          value={form.phone}
+          onChange={(e) =>
+            update({
+              phone: e.target.value,
+            })
+          }
           placeholder="Phone Number"
         />
       </div>
@@ -454,20 +538,101 @@ function EnquiryForm({ compact = false }) {
           I am interested in
         </label>
 
-        <select defaultValue="">
-          <option value="" disabled>
+        <select
+          value={form.propertyType}
+          onChange={(e) =>
+            update({
+              propertyType: e.target.value,
+            })
+          }
+        >
+          <option value="">
             Select an option
           </option>
 
-          <option>Buying a property</option>
-          <option>Renting a property</option>
-          <option>Selling a property</option>
-          <option>Property management</option>
-          <option>Property valuation</option>
-          <option>Development consultancy</option>
-          <option>General enquiry</option>
+          <option value="Buying a property">
+            Buying a property
+          </option>
+
+          <option value="Renting a property">
+            Renting a property
+          </option>
+
+          <option value="Selling a property">
+            Selling a property
+          </option>
+
+          <option value="Property management">
+            Property management
+          </option>
+
+          <option value="Property valuation">
+            Property valuation
+          </option>
+
+          <option value="Development consultancy">
+            Development consultancy
+          </option>
+
+          <option value="General enquiry">
+            General enquiry
+          </option>
         </select>
       </div>
+
+      <div>
+        <label>
+          Budget
+        </label>
+
+        <input
+          value={form.budget}
+          onChange={(e) =>
+            update({
+              budget: e.target.value,
+            })
+          }
+          placeholder="Your budget"
+        />
+      </div>
+
+      {!compact && (
+        <div>
+          <label>
+            Preferred Size
+          </label>
+
+          <input
+            value={form.preferredSize}
+            onChange={(e) =>
+              update({
+                preferredSize:
+                  e.target.value,
+              })
+            }
+            placeholder="e.g. 2 bedroom / 1,500 sq ft"
+          />
+        </div>
+      )}
+
+      {!compact && (
+        <div>
+          <label>
+            Nationality
+          </label>
+
+          <input
+            value={form.nationality}
+            onChange={(e) =>
+              update({
+                nationality:
+                  e.target.value,
+              })
+            }
+            placeholder="Nationality"
+          />
+        </div>
+      )}
 
       <div>
         <label>
@@ -476,15 +641,36 @@ function EnquiryForm({ compact = false }) {
 
         <textarea
           rows={compact ? 4 : 6}
+          value={form.message}
+          onChange={(e) =>
+            update({
+              message: e.target.value,
+            })
+          }
           placeholder="Tell us how we can help"
         />
       </div>
 
+      {error && (
+        <p
+          style={{
+            color: "#c94b4b",
+            fontSize: "13px",
+            margin: 0,
+          }}
+        >
+          {error}
+        </p>
+      )}
+
       <button
         type="submit"
         className="enquiry-submit"
+        disabled={sending}
       >
-        {compact
+        {sending
+          ? "Sending..."
+          : compact
           ? "Book Consultation"
           : "Send Enquiry"}
       </button>
