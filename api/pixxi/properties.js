@@ -183,30 +183,36 @@ export default async function handler(req, res) {
     );
 
 const requestBody = {
-  listingType,      // was: "NEW"
-  page,              // was: 1
-  size,               // was: 10
+  listingType,
+  page,
+  size,
   sort: "ID",
   sortType: "DESC",
 
   name: "",
+
   bedRoomNum: [],
   cityIds: [],
   regionIds: [],
   communityIds: [],
   developerIds: [],
   agentIds: [],
+
   propertyType: [],
+
   dateStart: "",
   dateEnd: "",
+
   completionStatusList: [],
+
   views: [],
+
   startPrice: 0,
   endPrice: 0,
+
   ssize: 0,
   esize: 0,
 };
-
     const response = await fetch(
       "https://dataapi.pixxicrm.ae/pixxiapi/v1/properties",
       {
@@ -224,11 +230,10 @@ const requestBody = {
       }
     );
 
-    const text =
-      await response.text();
-
+    const text = await response.text();
+      
     let data;
-
+      
     try {
       data = text
         ? JSON.parse(text)
@@ -237,6 +242,18 @@ const requestBody = {
       data = {
         raw: text,
       };
+    }
+    
+    console.log(
+      "RAW PIXXI RESPONSE:",
+      JSON.stringify(data)
+    );
+    
+    if (req.query?.debug === "1") {
+      return res.status(response.status).json({
+        success: response.ok,
+        pixxi: data,
+      });
     }
 
     if (!response.ok) {
