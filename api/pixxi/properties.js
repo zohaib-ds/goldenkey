@@ -182,37 +182,30 @@ export default async function handler(req, res) {
       500
     );
 
-    const requestBody = {
-      bedRoomNum: [],
-      cityIds: [],
-      regionIds: [],
-      communityIds: [],
-      developerIds: [],
-      agentIds: [],
+const requestBody = {
+  listingType,      // was: "NEW"
+  page,              // was: 1
+  size,               // was: 10
+  sort: "ID",
+  sortType: "DESC",
 
-      completionStatusList: [],
-
-      dateStart: "",
-      dateEnd: "",
-
-      name: "",
-
-      page,
-      size,
-
-      propertyType: [],
-
-      startPrice: 0,
-      endPrice: 0,
-
-      ssize: 0,
-      esize: 0,
-
-      listingType,
-
-      sort: "ID",
-      sortType: "DESC",
-    };
+  name: "",
+  bedRoomNum: [],
+  cityIds: [],
+  regionIds: [],
+  communityIds: [],
+  developerIds: [],
+  agentIds: [],
+  propertyType: [],
+  dateStart: "",
+  dateEnd: "",
+  completionStatusList: [],
+  views: [],
+  startPrice: 0,
+  endPrice: 0,
+  ssize: 0,
+  esize: 0,
+};
 
     const response = await fetch(
       "https://dataapi.pixxicrm.ae/pixxiapi/v1/properties",
