@@ -1,18 +1,3 @@
-function pick(obj, keys, fallback = "") {
-  for (const key of keys) {
-    if (
-      obj &&
-      obj[key] !== undefined &&
-      obj[key] !== null &&
-      obj[key] !== ""
-    ) {
-      return obj[key];
-    }
-  }
-
-  return fallback;
-}
-
 function normalizeImages(property) {
   const rawImages =
     property?.photos ||
@@ -28,9 +13,7 @@ function normalizeImages(property) {
   return rawImages
     .map((item) => {
       if (typeof item === "string") {
-        return item.startsWith("http")
-          ? item
-          : `https://dataapi.pixxicrm.ae${item}`;
+        return item;
       }
 
       return (
@@ -48,102 +31,79 @@ function normalizeProperty(property) {
   const images = normalizeImages(property);
 
   const listingType = String(
-    pick(property, [
-      "listingType",
-      "propertyType",
-    ])
+    property?.listingType || ""
   ).toUpperCase();
 
   const purpose =
     listingType === "RENT"
       ? "rent"
-      : listingType === "SELL"
-      ? "buy"
       : listingType === "NEW"
       ? "new"
       : "buy";
 
-  const propertyType =
-    property?.houseType?.[0] ||
-    property?.propertyType ||
-    "Apartment";
-
   return {
     id: String(
-      pick(property, [
-        "propertyId",
-        "id",
-      ])
+      property?.propertyId ??
+      property?.id ??
+      ""
     ),
 
-    externalId: pick(property, [
-      "propertyId",
-      "id",
-    ]),
+    externalId:
+      property?.propertyId ??
+      property?.id ??
+      "",
 
-    reference: pick(property, [
-      "propertyId",
-      "referenceNumber",
-      "reference",
-    ]),
+    reference: String(
+      property?.propertyId ??
+      property?.reference ??
+      ""
+    ),
 
-    title: pick(property, [
-      "title",
-      "name",
-    ]),
+    title:
+      property?.title ||
+      property?.name ||
+      "Property",
 
-    location: pick(property, [
-      "communityName",
-      "regionName",
-      "region",
-      "community",
-      "location",
-      "address",
-    ]),
+    location:
+      property?.community ||
+      property?.region ||
+      property?.location ||
+      "",
 
-    city: pick(property, [
-      "cityName",
-      "city",
-      "emirate",
-    ]),
+    city:
+      property?.cityName ||
+      property?.city ||
+      "",
 
     price: Number(
-      pick(
-        property,
-        ["price"],
-        0
-      )
+      property?.price || 0
     ),
 
     purpose,
 
-    propertyType,
+    propertyType:
+      Array.isArray(property?.propertyType)
+        ? property.propertyType[0]
+        : property?.propertyType ||
+          "Apartment",
 
-    bedrooms: pick(property, [
-      "bedRoomNum",
-      "bedrooms",
-      "bedroom",
-      "beds",
-    ]),
+    bedrooms:
+      property?.bedRooms ??
+      property?.bedrooms ??
+      "",
 
-    bathrooms: pick(property, [
-      "bathrooms",
-      "bathroom",
-      "baths",
-      "sellParameter.bathrooms",
-    ]),
+    bathrooms:
+      property?.bathrooms ??
+      "",
 
-    area: pick(property, [
-      "size",
-      "area",
-      "builtUpArea",
-      "propertySize",
-    ]),
+    area:
+      property?.size ??
+      property?.area ??
+      "",
 
-    description: pick(property, [
-      "description",
-      "remarks",
-    ]),
+    description:
+      property?.description ||
+      "",
 
     status:
       String(
@@ -153,24 +113,16 @@ function normalizeProperty(property) {
         : "draft",
 
     agent:
-      property?.agent || {
-        name: property?.agentName || "",
-        phone: property?.agentPhone || "",
-        email: property?.agentEmail || "",
-        avatar: property?.agentAvatar || "",
-      },
+      property?.agent ||
+      property?.agentInfo ||
+      null,
 
-    developer: {
-      id: property?.developerId || null,
-      name:
-        property?.developerName ||
-        property?.developer ||
-        "",
-    },
+    developer:
+      property?.developer ||
+      null,
 
     features:
       property?.amenities ||
-      property?.sellParameter?.amenities ||
       property?.features ||
       [],
 
@@ -186,14 +138,7 @@ function normalizeProperty(property) {
       property?.brochureUrl ||
       property?.brochure ||
       property?.pdfUrl ||
-      property?.pdf ||
       "",
-
-    videoLink:
-      property?.videoLink || "",
-
-    view360:
-      property?.View360 || "",
 
     raw: property,
   };
@@ -212,9 +157,10 @@ export default async function handler(req, res) {
       });
     }
 
-    const requestedPurpose = String(
-      req.query?.purpose || "buy"
-    ).toLowerCase();
+    const requestedPurpose =
+      String(
+        req.query?.purpose || "buy"
+      ).toLowerCase();
 
     const listingType =
       requestedPurpose === "rent"
@@ -230,67 +176,56 @@ export default async function handler(req, res) {
 
     const size = Math.min(
       Math.max(
-        Number(req.query?.size || 10),
+        Number(req.query?.size || 20),
         1
       ),
-      100
+      500
     );
-
-    const companyName =
-      "GOLDENKEY REAL ESTATE BUYING & SELLING BROKERAGE L.L.C";
-
-    const endpoint =
-      `https://dataapi.pixxicrm.ae/v1/properties/${encodeURIComponent(
-        companyName
-      )}`;
 
     const requestBody = {
       bedRoomNum: [],
       cityIds: [],
-      communityIds: [],
-      completionStatus: "",
-      dateEnd: "",
-      dateStart: "",
-      developerIds: [],
-      endPrice: 0,
-      esize: 0,
-      listingType,
-      name: "",
-      page,
-      propertyType: [],
       regionIds: [],
+      communityIds: [],
+      developerIds: [],
+      agentIds: [],
+
+      completionStatusList: [],
+
+      dateStart: "",
+      dateEnd: "",
+
+      name: "",
+
+      page,
       size,
+
+      propertyType: [],
+
+      startPrice: 0,
+      endPrice: 0,
+
+      ssize: 0,
+      esize: 0,
+
+      listingType,
+
       sort: "ID",
       sortType: "DESC",
-      startPrice: 0,
-      ssize: 0,
-      status: "ACTIVE",
     };
 
-    console.log(
-      "PIXxi properties request:",
-      {
-        endpoint,
-        listingType,
-        page,
-        size,
-      }
-    );
-
     const response = await fetch(
-      endpoint,
+      "https://dataapi.pixxicrm.ae/pixxiapi/v1/properties",
       {
         method: "POST",
-
         headers: {
           "Content-Type":
             "application/json",
-          "Accept":
+          Accept:
             "application/json",
           "X-PIXXI-TOKEN":
             token,
         },
-
         body:
           JSON.stringify(requestBody),
       }
@@ -316,40 +251,28 @@ export default async function handler(req, res) {
         .status(response.status)
         .json({
           success: false,
-          error:
-            "Pixxi properties request failed",
+          statusCode:
+            data?.statusCode ||
+            response.status,
+          message:
+            data?.message ||
+            "Pixxi request failed",
           pixxi: data,
         });
     }
 
     /*
-      Pixxi's documented response structure:
-      {
-        statusCode,
-        message,
-        data,
-        totalListings,
-        list,
-        sellListings,
-        rentListings,
-        newProjectListings
-      }
-
-      Some accounts/responses may wrap list
-      under data.
+      Pixxi current API response uses:
+      data.list
+      totalListings
+      etc.
     */
 
     const rawProperties =
-      Array.isArray(data?.list)
-        ? data.list
-        : Array.isArray(
-            data?.data?.list
-          )
+      Array.isArray(data?.data?.list)
         ? data.data.list
-        : Array.isArray(
-            data?.data
-          )
-        ? data.data
+        : Array.isArray(data?.list)
+        ? data.list
         : [];
 
     const properties =
@@ -358,20 +281,14 @@ export default async function handler(req, res) {
       );
 
     return res.status(200).json({
-      success:
-        String(
-          data?.message || ""
-        ).toLowerCase() ===
-          "success" ||
-        data?.statusCode === 200 ||
-        response.ok,
+      success: true,
 
       statusCode:
         data?.statusCode ||
         response.status,
 
       message:
-        data?.message || "",
+        data?.message || "success",
 
       purpose:
         requestedPurpose,
@@ -384,30 +301,14 @@ export default async function handler(req, res) {
 
       totalListings:
         data?.totalListings ??
-        data?.data?.totalListings ??
+        data?.data?.totalSize ??
         properties.length,
-
-      sellListings:
-        data?.sellListings ??
-        data?.data?.sellListings ??
-        0,
-
-      rentListings:
-        data?.rentListings ??
-        data?.data?.rentListings ??
-        0,
-
-      newProjectListings:
-        data?.newProjectListings ??
-        data?.data?.newProjectListings ??
-        0,
 
       count:
         properties.length,
 
       properties,
     });
-
   } catch (error) {
     console.error(
       "Pixxi properties error:",
