@@ -40,14 +40,19 @@ export default async function handler(req, res) {
         body.propertyReference || "",
     };
 
+    console.log("PIXXI LEAD REQUEST:", {
+      ...payload,
+      // Do not log token
+    });
+
     const response = await fetch(
       "https://dataapi.pixxicrm.ae/pixxiapi/v1/leads",
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "X-PIXXI-TOKEN": token,
           Accept: "application/json",
+          "X-PIXXI-TOKEN": token,
         },
         body: JSON.stringify(payload),
       }
@@ -57,7 +62,7 @@ export default async function handler(req, res) {
 
     let pixxiData = null;
 
-    if (rawText) {
+    if (rawText.trim()) {
       try {
         pixxiData = JSON.parse(rawText);
       } catch {
@@ -67,13 +72,13 @@ export default async function handler(req, res) {
       }
     }
 
-    if (!response.ok) {
-      console.error(
-        "Pixxi lead rejected:",
-        response.status,
-        pixxiData
-      );
+    console.log("PIXXI LEAD RESPONSE:", {
+      status: response.status,
+      data: pixxiData,
+    });
 
+    // Pixxi returned an HTTP error
+    if (!response.ok) {
       return res.status(response.status).json({
         success: false,
         status: response.status,
@@ -85,10 +90,17 @@ export default async function handler(req, res) {
       });
     }
 
+    /*
+      IMPORTANT:
+      Do not blindly assume any 200 response means the
+      lead was created. Return the raw Pixxi response
+      so we can verify the exact response structure.
+    */
     return res.status(200).json({
       success: true,
       status: response.status,
       pixxi: pixxiData,
+      rawResponse: rawText || null,
     });
   } catch (error) {
     console.error(
