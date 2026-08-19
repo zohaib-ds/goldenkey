@@ -27,33 +27,37 @@ export default async function handler(req, res) {
     const body = req.body || {};
 
     const payload = {
+      formName: "GK Website",
       formId,
+
       name: body.name || "",
       email: body.email || "",
       phone: body.phone || "",
+
       nationality: body.nationality || "",
       budget: body.budget || "",
       preferredSize: body.preferredSize || "",
       propertyType: body.propertyType || "",
+
       message: body.message || "",
+
       propertyReference:
         body.propertyReference || "",
     };
 
-    console.log("PIXXI LEAD REQUEST:", {
-      ...payload,
-      // Do not log token
-    });
+    console.log("PIXXI FORM PAYLOAD:", payload);
 
     const response = await fetch(
-      "https://dataapi.pixxicrm.ae/pixxiapi/v1/leads",
+      "https://dataapi.pixxicrm.ae/pixxiapi/webhook/v1/form",
       {
         method: "POST",
+
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
           "X-PIXXI-TOKEN": token,
         },
+
         body: JSON.stringify(payload),
       }
     );
@@ -72,39 +76,42 @@ export default async function handler(req, res) {
       }
     }
 
-    console.log("PIXXI LEAD RESPONSE:", {
+    console.log("PIXXI FORM RESPONSE:", {
       status: response.status,
       data: pixxiData,
     });
 
-    // Pixxi returned an HTTP error
-    if (!response.ok) {
-      return res.status(response.status).json({
+    const pixxiFailed =
+      !response.ok ||
+      pixxiData?.code >= 400 ||
+      pixxiData?.statusCode >= 400;
+
+    if (pixxiFailed) {
+      return res.status(502).json({
         success: false,
+
         status: response.status,
+
         error:
           pixxiData?.message ||
+          pixxiData?.msg ||
           pixxiData?.error ||
-          "Pixxi rejected the lead.",
+          "Pixxi rejected the form.",
+
         pixxi: pixxiData,
       });
     }
 
-    /*
-      IMPORTANT:
-      Do not blindly assume any 200 response means the
-      lead was created. Return the raw Pixxi response
-      so we can verify the exact response structure.
-    */
     return res.status(200).json({
       success: true,
       status: response.status,
       pixxi: pixxiData,
       rawResponse: rawText || null,
     });
+
   } catch (error) {
     console.error(
-      "Pixxi lead endpoint error:",
+      "Pixxi form endpoint error:",
       error
     );
 
