@@ -796,55 +796,81 @@ function Page({title,kicker,text,children}){
 }
 
 function ListingPage({ rent = false }) {
-  const properties = useProperties();
-
   const targetPurpose = rent ? "rent" : "buy";
 
-  const params = new URLSearchParams(
-    window.location.search
-  );
-
-  const urlType = params.get("type") || "";
+  const [properties, setProperties] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   const [search, setSearch] = useState("");
-  const [type, setType] = useState(urlType);
+  const [type, setType] = useState("");
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadPixxiListings() {
+      try {
+        setLoading(true);
+        setError("");
+
+        const response = await fetch(
+          `/api/pixxi/properties?purpose=${targetPurpose}&page=1&size=100`
+        );
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+          throw new Error(
+            data.error ||
+              "Could not load CRM listings."
+          );
+        }
+
+        if (!cancelled) {
+          setProperties(
+            Array.isArray(data.properties)
+              ? data.properties
+              : []
+          );
+        }
+      } catch (err) {
+        console.error(err);
+
+        if (!cancelled) {
+          setError(
+            "We couldn't load the latest properties right now."
+          );
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      }
+    }
+
+    loadPixxiListings();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [targetPurpose]);
 
   const list = properties.filter((property) => {
-
-    const propertyPurpose =
-      String(property.purpose || "")
-        .trim()
+    const searchText =
+      `${property.title || ""} ${property.location || ""} ${property.city || ""}`
         .toLowerCase();
-
-    const propertyStatus =
-      String(property.status || "")
-        .trim()
-        .toLowerCase();
-
-    const propertyType =
-      String(property.propertyType || "")
-        .trim()
-        .toLowerCase();
-
-    const matchesPurpose =
-      propertyPurpose === targetPurpose;
-
-    const matchesStatus =
-      propertyStatus === "published";
 
     const matchesSearch =
       !search ||
-      `${property.title || ""} ${property.location || ""}`
-        .toLowerCase()
-        .includes(search.toLowerCase());
+      searchText.includes(
+        search.toLowerCase()
+      );
 
     const matchesType =
       !type ||
-      propertyType === type.toLowerCase();
+      property.propertyType === type;
 
     return (
-      matchesPurpose &&
-      matchesStatus &&
       matchesSearch &&
       matchesType
     );
@@ -853,15 +879,8 @@ function ListingPage({ rent = false }) {
   const availableTypes = [
     ...new Set(
       properties
-        .filter(
-          (property) =>
-            String(property.purpose || "")
-              .trim()
-              .toLowerCase() === targetPurpose
-        )
-        .map(
-          (property) =>
-            property.propertyType
+        .map((property) =>
+          property.propertyType
         )
         .filter(Boolean)
     ),
@@ -870,18 +889,17 @@ function ListingPage({ rent = false }) {
   return (
     <Page
       title={
-        type
-          ? `${type}s for ${rent ? "Rent" : "Sale"} in Dubai`
-          : rent
+        rent
           ? "Find a home to rent"
           : "Find a home to buy"
       }
-      kicker={rent ? "Rent" : "Buy"}
-      text="Browse properties currently published by our team."
+      kicker={
+        rent ? "Rent" : "Buy"
+      }
+      text="Browse the latest properties available through Golden Key."
     >
 
       <section className="section">
-
         <div className="wrap">
 
           <div className="listing-filters">
@@ -900,7 +918,6 @@ function ListingPage({ rent = false }) {
                 setType(e.target.value)
               }
             >
-
               <option value="">
                 Any property type
               </option>
@@ -915,21 +932,6 @@ function ListingPage({ rent = false }) {
                   </option>
                 )
               )}
-
-            </select>
-
-            <select defaultValue="">
-              <option value="">
-                Any price
-              </option>
-
-              <option value="low">
-                Lowest price
-              </option>
-
-              <option value="high">
-                Highest price
-              </option>
             </select>
 
             <button
@@ -941,53 +943,65 @@ function ListingPage({ rent = false }) {
 
           </div>
 
-          {list.length > 0 ? (
-
-            <div className="listing-grid">
-
-              {list.map((property) => (
-                <PropertyCard
-                  key={property.id}
-                  x={property}
-                />
-              ))}
-
-            </div>
-
-          ) : (
-
+          {loading && (
             <div className="empty-state">
-
               <h3 className="serif">
-                No published{" "}
-                {rent
-                  ? "rental"
-                  : "sale"}{" "}
-                listings
+                Loading properties...
               </h3>
-
               <p>
-                No properties match this
-                category yet.
+                Getting the latest listings
+                from Golden Key.
               </p>
-
-              <a
-                href={
-                  rent
-                    ? "/rent"
-                    : "/buy"
-                }
-                className="button-outline"
-              >
-                View all listings
-              </a>
-
             </div>
-
           )}
 
-        </div>
+          {!loading && error && (
+            <div className="empty-state">
+              <h3 className="serif">
+                Properties temporarily unavailable
+              </h3>
+              <p>
+                {error}
+              </p>
+            </div>
+          )}
 
+          {!loading &&
+            !error &&
+            list.length > 0 && (
+              <div className="listing-grid">
+
+                {list.map((property) => (
+                  <PropertyCard
+                    key={
+                      property.id ||
+                      property.reference
+                    }
+                    x={property}
+                  />
+                ))}
+
+              </div>
+            )}
+
+          {!loading &&
+            !error &&
+            list.length === 0 && (
+              <div className="empty-state">
+
+                <h3 className="serif">
+                  No properties found
+                </h3>
+
+                <p>
+                  Try another location or
+                  property type.
+                </p>
+
+              </div>
+            )}
+
+        </div>
       </section>
 
     </Page>
