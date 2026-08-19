@@ -13,142 +13,114 @@ function pick(obj, keys, fallback = "") {
   return fallback;
 }
 
-function findArray(data) {
-  if (Array.isArray(data)) return data;
-
-  const candidates = [
-    data?.properties,
-    data?.data,
-    data?.data?.properties,
-    data?.results,
-    data?.data?.results,
-    data?.items,
-    data?.data?.items,
-    data?.result,
-  ];
-
-  for (const candidate of candidates) {
-    if (Array.isArray(candidate)) {
-      return candidate;
-    }
-  }
-
-  return [];
-}
-
 function normalizeImages(property) {
   const rawImages =
-    property?.images ||
     property?.photos ||
+    property?.images ||
     property?.media ||
     property?.propertyImages ||
     [];
 
-  if (Array.isArray(rawImages)) {
-    return rawImages
-      .map((item) => {
-        if (typeof item === "string") {
-          return item;
-        }
-
-        return (
-          item?.url ||
-          item?.imageUrl ||
-          item?.src ||
-          item?.fileUrl ||
-          ""
-        );
-      })
-      .filter(Boolean);
+  if (!Array.isArray(rawImages)) {
+    return [];
   }
 
-  return [];
+  return rawImages
+    .map((item) => {
+      if (typeof item === "string") {
+        return item.startsWith("http")
+          ? item
+          : `https://dataapi.pixxicrm.ae${item}`;
+      }
+
+      return (
+        item?.url ||
+        item?.imageUrl ||
+        item?.src ||
+        item?.fileUrl ||
+        ""
+      );
+    })
+    .filter(Boolean);
 }
 
 function normalizeProperty(property) {
   const images = normalizeImages(property);
 
-  const purposeRaw = String(
+  const listingType = String(
     pick(property, [
       "listingType",
-      "purpose",
-      "type",
-      "listing_type",
+      "propertyType",
     ])
   ).toUpperCase();
 
   const purpose =
-    purposeRaw.includes("RENT")
+    listingType === "RENT"
       ? "rent"
-      : purposeRaw.includes("SELL")
+      : listingType === "SELL"
       ? "buy"
-      : purposeRaw.includes("SALE")
-      ? "buy"
+      : listingType === "NEW"
+      ? "new"
       : "buy";
+
+  const propertyType =
+    property?.houseType?.[0] ||
+    property?.propertyType ||
+    "Apartment";
 
   return {
     id: String(
       pick(property, [
-        "id",
         "propertyId",
-        "property_id",
-        "referenceNumber",
-        "reference",
+        "id",
       ])
     ),
 
     externalId: pick(property, [
-      "id",
       "propertyId",
-      "property_id",
+      "id",
     ]),
 
     reference: pick(property, [
+      "propertyId",
       "referenceNumber",
       "reference",
-      "propertyReference",
-      "property_reference",
     ]),
 
     title: pick(property, [
       "title",
-      "propertyTitle",
       "name",
-      "propertyName",
     ]),
 
     location: pick(property, [
-      "location",
+      "communityName",
+      "regionName",
+      "region",
       "community",
-      "area",
+      "location",
       "address",
-      "subCommunity",
     ]),
 
     city: pick(property, [
+      "cityName",
       "city",
       "emirate",
     ]),
 
     price: Number(
-      pick(property, [
-        "price",
-        "salePrice",
-        "rentPrice",
-        "amount",
-      ], 0)
+      pick(
+        property,
+        ["price"],
+        0
+      )
     ),
 
     purpose,
 
-    propertyType: pick(property, [
-      "propertyType",
-      "property_type",
-      "type",
-      "propertyCategory",
-    ], "Apartment"),
+    propertyType,
 
     bedrooms: pick(property, [
+      "bedRoomNum",
       "bedrooms",
       "bedroom",
       "beds",
@@ -158,31 +130,48 @@ function normalizeProperty(property) {
       "bathrooms",
       "bathroom",
       "baths",
+      "sellParameter.bathrooms",
     ]),
 
     area: pick(property, [
-      "area",
       "size",
+      "area",
       "builtUpArea",
       "propertySize",
-      "sizeSqft",
     ]),
 
     description: pick(property, [
       "description",
-      "propertyDescription",
       "remarks",
     ]),
 
-    status: "published",
+    status:
+      String(
+        property?.status || "ACTIVE"
+      ).toUpperCase() === "ACTIVE"
+        ? "published"
+        : "draft",
 
-    agent: property?.agent || property?.listingAgent || null,
+    agent:
+      property?.agent || {
+        name: property?.agentName || "",
+        phone: property?.agentPhone || "",
+        email: property?.agentEmail || "",
+        avatar: property?.agentAvatar || "",
+      },
 
-    developer: property?.developer || null,
+    developer: {
+      id: property?.developerId || null,
+      name:
+        property?.developerName ||
+        property?.developer ||
+        "",
+    },
 
     features:
-      property?.features ||
       property?.amenities ||
+      property?.sellParameter?.amenities ||
+      property?.features ||
       [],
 
     images,
@@ -193,13 +182,18 @@ function normalizeProperty(property) {
     image4: images[3] || "",
     image5: images[4] || "",
 
-    brochureUrl: pick(property, [
-      "brochureUrl",
-      "brochure",
-      "brochureURL",
-      "pdfUrl",
-      "pdf",
-    ]),
+    brochureUrl:
+      property?.brochureUrl ||
+      property?.brochure ||
+      property?.pdfUrl ||
+      property?.pdf ||
+      "",
+
+    videoLink:
+      property?.videoLink || "",
+
+    view360:
+      property?.View360 || "",
 
     raw: property,
   };
@@ -207,17 +201,20 @@ function normalizeProperty(property) {
 
 export default async function handler(req, res) {
   try {
-    const token = process.env.PIXXI_API_TOKEN;
+    const token =
+      process.env.PIXXI_API_TOKEN;
 
     if (!token) {
       return res.status(500).json({
         success: false,
-        error: "PIXXI_API_TOKEN is missing",
+        error:
+          "PIXXI_API_TOKEN is missing",
       });
     }
 
-    const requestedPurpose =
-      String(req.query?.purpose || "buy").toLowerCase();
+    const requestedPurpose = String(
+      req.query?.purpose || "buy"
+    ).toLowerCase();
 
     const listingType =
       requestedPurpose === "rent"
@@ -232,34 +229,82 @@ export default async function handler(req, res) {
     );
 
     const size = Math.min(
-      Math.max(Number(req.query?.size || 50), 1),
+      Math.max(
+        Number(req.query?.size || 10),
+        1
+      ),
       100
     );
 
+    const companyName =
+      "GOLDENKEY REAL ESTATE BUYING & SELLING BROKERAGE L.L.C";
+
+    const endpoint =
+      `https://dataapi.pixxicrm.ae/v1/properties/${encodeURIComponent(
+        companyName
+      )}`;
+
+    const requestBody = {
+      bedRoomNum: [],
+      cityIds: [],
+      communityIds: [],
+      completionStatus: "",
+      dateEnd: "",
+      dateStart: "",
+      developerIds: [],
+      endPrice: 0,
+      esize: 0,
+      listingType,
+      name: "",
+      page,
+      propertyType: [],
+      regionIds: [],
+      size,
+      sort: "ID",
+      sortType: "DESC",
+      startPrice: 0,
+      ssize: 0,
+      status: "ACTIVE",
+    };
+
+    console.log(
+      "PIXxi properties request:",
+      {
+        endpoint,
+        listingType,
+        page,
+        size,
+      }
+    );
+
     const response = await fetch(
-      "https://dataapi.pixxicrm.ae/pixxiapi/v1/properties",
+      endpoint,
       {
         method: "POST",
 
         headers: {
-          "Content-Type": "application/json",
-          "X-PIXXI-TOKEN": token,
+          "Content-Type":
+            "application/json",
+          "Accept":
+            "application/json",
+          "X-PIXXI-TOKEN":
+            token,
         },
 
-        body: JSON.stringify({
-          listingType,
-          page,
-          size,
-        }),
+        body:
+          JSON.stringify(requestBody),
       }
     );
 
-    const text = await response.text();
+    const text =
+      await response.text();
 
     let data;
 
     try {
-      data = JSON.parse(text);
+      data = text
+        ? JSON.parse(text)
+        : {};
     } catch {
       data = {
         raw: text,
@@ -267,29 +312,107 @@ export default async function handler(req, res) {
     }
 
     if (!response.ok) {
-      return res.status(response.status).json({
-        success: false,
-        error: "Pixxi properties request failed",
-        data,
-      });
+      return res
+        .status(response.status)
+        .json({
+          success: false,
+          error:
+            "Pixxi properties request failed",
+          pixxi: data,
+        });
     }
 
-    const rawProperties = findArray(data);
+    /*
+      Pixxi's documented response structure:
+      {
+        statusCode,
+        message,
+        data,
+        totalListings,
+        list,
+        sellListings,
+        rentListings,
+        newProjectListings
+      }
+
+      Some accounts/responses may wrap list
+      under data.
+    */
+
+    const rawProperties =
+      Array.isArray(data?.list)
+        ? data.list
+        : Array.isArray(
+            data?.data?.list
+          )
+        ? data.data.list
+        : Array.isArray(
+            data?.data
+          )
+        ? data.data
+        : [];
 
     const properties =
-      rawProperties.map(normalizeProperty);
+      rawProperties.map(
+        normalizeProperty
+      );
 
     return res.status(200).json({
-      success: true,
-      purpose: requestedPurpose,
+      success:
+        String(
+          data?.message || ""
+        ).toLowerCase() ===
+          "success" ||
+        data?.statusCode === 200 ||
+        response.ok,
+
+      statusCode:
+        data?.statusCode ||
+        response.status,
+
+      message:
+        data?.message || "",
+
+      purpose:
+        requestedPurpose,
+
       listingType,
+
       page,
+
       size,
-      count: properties.length,
+
+      totalListings:
+        data?.totalListings ??
+        data?.data?.totalListings ??
+        properties.length,
+
+      sellListings:
+        data?.sellListings ??
+        data?.data?.sellListings ??
+        0,
+
+      rentListings:
+        data?.rentListings ??
+        data?.data?.rentListings ??
+        0,
+
+      newProjectListings:
+        data?.newProjectListings ??
+        data?.data?.newProjectListings ??
+        0,
+
+      count:
+        properties.length,
+
       properties,
     });
+
   } catch (error) {
-    console.error("Pixxi properties error:", error);
+    console.error(
+      "Pixxi properties error:",
+      error
+    );
 
     return res.status(500).json({
       success: false,
