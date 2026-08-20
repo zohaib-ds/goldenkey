@@ -62,7 +62,7 @@ function normalizeProperty(property) {
     title:
       property?.title ||
       property?.name ||
-      "Property",
+      "New Project",
 
     location:
       property?.community ||
@@ -83,9 +83,10 @@ function normalizeProperty(property) {
 
     propertyType:
       Array.isArray(property?.propertyType)
-        ? property.propertyType[0]
-        : property?.propertyType ||
-          "Apartment",
+        ? property.propertyType
+        : property?.propertyType
+        ? [property.propertyType]
+        : [],
 
     bedrooms:
       property?.bedRooms ??
@@ -108,9 +109,7 @@ function normalizeProperty(property) {
     status:
       String(
         property?.status || "ACTIVE"
-      ).toUpperCase() === "ACTIVE"
-        ? "published"
-        : "draft",
+      ).toUpperCase(),
 
     agent:
       property?.agent ||
@@ -119,6 +118,7 @@ function normalizeProperty(property) {
 
     developer:
       property?.developer ||
+      property?.developerInfo ||
       null,
 
     features:
@@ -137,13 +137,69 @@ function normalizeProperty(property) {
     brochureUrl:
       property?.brochureUrl ||
       property?.brochure ||
+      property?.brochureURL ||
       property?.pdfUrl ||
+      property?.pdf ||
       "",
+
+    /* NEW PROJECT FIELDS */
+
+    newParam:
+      property?.newParam ||
+      property?.newparam ||
+      null,
+
+    handoverTime:
+      property?.newParam?.handoverTime ||
+      property?.handoverTime ||
+      "",
+
+    totalUnits:
+      property?.newParam?.totalUnits ??
+      property?.totalUnits ??
+      "",
+
+    minSize:
+      property?.newParam?.minSize ??
+      property?.minSize ??
+      "",
+
+    maxSize:
+      property?.newParam?.maxSize ??
+      property?.maxSize ??
+      "",
+
+    bedroomMin:
+      property?.newParam?.bedroomMin ??
+      "",
+
+    bedroomMax:
+      property?.newParam?.bedroomMax ??
+      "",
+
+    paymentPlan:
+      property?.newParam?.paymentPlan ||
+      property?.paymentPlan ||
+      "",
+
+    totalFloor:
+      property?.newParam?.totalFloor ??
+      property?.totalFloor ??
+      "",
+
+    serviceCharge:
+      property?.newParam?.serviceCharge ??
+      property?.serviceCharge ??
+      "",
+
+    floorPlan:
+      property?.newParam?.floorPlan ||
+      property?.floorPlan ||
+      [],
 
     raw: property,
   };
 }
-
 export default async function handler(req, res) {
   try {
     const token =
