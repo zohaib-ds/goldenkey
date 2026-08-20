@@ -135,12 +135,9 @@ function normalizeProperty(property) {
     image5: images[4] || "",
 
     brochureUrl:
-      property?.brochureUrl ||
-      property?.brochure ||
-      property?.brochureURL ||
-      property?.pdfUrl ||
-      property?.pdf ||
-      "",
+      property?.newParam?.developerBrochures?.length
+        ? `https://pixxicrm.ae/api${property.newParam.developerBrochures[0]}`
+        : "",
 
     /* NEW PROJECT FIELDS */
 
