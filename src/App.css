@@ -7427,3 +7427,603 @@
     text-align: center;
   }
 }
+
+/* =========================================================
+   GOLDEN KEY — PROJECTS / OFF-PLAN
+   ========================================================= */
+
+.projects-page {
+  background: #fbfaf7;
+  color: #203943;
+}
+
+.projects-hero {
+  position: relative;
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+  color: #fff;
+  overflow: hidden;
+}
+
+.projects-hero-bg {
+  position: absolute;
+  inset: 0;
+
+  background:
+    url("https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=2200&q=90")
+    center / cover;
+
+  animation:
+    projectsHeroZoom 12s ease-in-out infinite alternate;
+}
+
+.projects-hero-overlay {
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(11,31,39,.78),
+      rgba(11,31,39,.25)
+    );
+}
+
+.projects-hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 105px 0;
+}
+
+.projects-eyebrow {
+  color: #d3a447;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.projects-hero h1 {
+  font-family: var(--serif);
+  font-size: clamp(50px, 6vw, 78px);
+  font-weight: 400;
+  line-height: .96;
+  letter-spacing: -2px;
+  margin: 0 0 20px;
+}
+
+.projects-hero-content > p:not(.projects-eyebrow) {
+  max-width: 650px;
+  color: rgba(255,255,255,.84);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.projects-filter-section {
+  background: #173640;
+  padding: 20px 0;
+}
+
+.projects-search {
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+.projects-search input {
+  width: 100%;
+  min-height: 52px;
+
+  border: 0;
+  outline: none;
+
+  background: #fff;
+
+  padding: 0 18px;
+
+  font-size: 13px;
+}
+
+.projects-list-section {
+  padding-top: 65px;
+}
+
+.projects-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 24px;
+}
+
+.project-card {
+  display: block;
+
+  background: #fff;
+
+  border: 1px solid #e0e4e3;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 8px 28px rgba(28,49,57,.055);
+
+  transition:
+    transform .35s ease,
+    box-shadow .35s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-8px);
+
+  box-shadow:
+    0 20px 45px rgba(28,49,57,.13);
+}
+
+.project-card-image {
+  height: 280px;
+  position: relative;
+  overflow: hidden;
+}
+
+.project-card-image img {
+  transition:
+    transform .7s ease,
+    filter .4s ease;
+}
+
+.project-card:hover
+.project-card-image img {
+  transform: scale(1.07);
+  filter: brightness(.9);
+}
+
+.project-status {
+  position: absolute;
+
+  top: 14px;
+  left: 14px;
+
+  padding: 6px 11px;
+
+  background: #d4a746;
+  color: #fff;
+
+  font-size: 9px;
+
+  text-transform: uppercase;
+  letter-spacing: .12em;
+}
+
+.project-card-body {
+  padding: 23px;
+}
+
+.project-location {
+  color: #c59a3c;
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: .14em;
+
+  margin-bottom: 8px;
+}
+
+.project-card h2 {
+  margin: 0 0 9px;
+
+  color: #203943;
+
+  font-family: var(--serif);
+
+  font-size: 27px;
+
+  font-weight: 400;
+
+  line-height: 1.05;
+}
+
+.project-developer {
+  margin: 0 0 20px;
+
+  color: #748084;
+
+  font-size: 12px;
+}
+
+.project-meta {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 7px;
+
+  margin-bottom: 18px;
+}
+
+.project-meta span {
+  padding: 7px 9px;
+
+  background: #f2f0e9;
+
+  color: #58666b;
+
+  font-size: 9px;
+}
+
+.project-card-link {
+  color: #c29638;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: .06em;
+}
+
+/* DETAIL */
+
+.project-detail-page {
+  background: #fbfaf7;
+}
+
+.project-detail-hero {
+  height: 500px;
+
+  position: relative;
+
+  display: flex;
+  align-items: end;
+
+  overflow: hidden;
+
+  color: #fff;
+}
+
+.project-detail-hero > img {
+  position: absolute;
+  inset: 0;
+}
+
+.project-detail-overlay {
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      transparent 15%,
+      rgba(9,27,35,.83)
+    );
+}
+
+.project-detail-hero-content {
+  position: relative;
+  z-index: 2;
+
+  padding-bottom: 55px;
+}
+
+.project-detail-hero-content p {
+  color: #e1b65c;
+
+  font-size: 9px;
+
+  letter-spacing: .2em;
+
+  font-weight: 700;
+
+  margin-bottom: 9px;
+}
+
+.project-detail-hero-content h1 {
+  font-family: var(--serif);
+
+  font-size: clamp(44px, 5.5vw, 74px);
+
+  font-weight: 400;
+
+  line-height: .96;
+
+  letter-spacing: -1.5px;
+
+  margin: 0 0 12px;
+}
+
+.project-detail-hero-content span {
+  font-size: 13px;
+}
+
+.project-detail-grid {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    340px;
+
+  gap: 55px;
+
+  align-items: start;
+}
+
+.project-detail-main {
+  min-width: 0;
+}
+
+.project-description {
+  color: #637177;
+
+  font-size: 14px;
+
+  line-height: 1.85;
+
+  margin-bottom: 35px;
+}
+
+.project-stats {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, 1fr);
+
+  border: 1px solid #d9dfdf;
+
+  margin-bottom: 45px;
+}
+
+.project-stats div {
+  padding: 19px;
+
+  border-right: 1px solid #d9dfdf;
+  border-bottom: 1px solid #d9dfdf;
+}
+
+.project-stats div:nth-child(2n) {
+  border-right: 0;
+}
+
+.project-stats strong {
+  display: block;
+
+  color: #c59a3c;
+
+  font-size: 9px;
+
+  text-transform: uppercase;
+
+  letter-spacing: .12em;
+
+  margin-bottom: 6px;
+}
+
+.project-stats span {
+  color: #304950;
+
+  font-size: 13px;
+}
+
+.project-detail-sidebar {
+  position: sticky;
+  top: 100px;
+}
+
+.project-enquiry-card {
+  background: #fff;
+
+  border: 1px solid #d8dfdf;
+
+  padding: 25px;
+
+  box-shadow:
+    0 15px 35px rgba(25,47,56,.07);
+}
+
+.project-enquiry-card > p {
+  color: #c4993d;
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  letter-spacing: .16em;
+}
+
+.project-enquiry-card h3 {
+  margin: 8px 0 20px;
+
+  font-family: var(--serif);
+
+  font-size: 28px;
+
+  font-weight: 400;
+
+  line-height: 1.05;
+}
+
+.project-brochure-button {
+  width: 100%;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-height: 52px;
+
+  margin-top: 12px;
+
+  background: #d3a447;
+
+  color: #fff;
+
+  font-size: 12px;
+
+  font-weight: 700;
+}
+
+/* GALLERY */
+
+.project-gallery {
+  margin-top: 60px;
+}
+
+.project-gallery-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, 1fr);
+
+  gap: 12px;
+}
+
+.project-gallery-item {
+  height: 240px;
+
+  overflow: hidden;
+}
+
+.project-gallery-item.large {
+  grid-column: span 2;
+  height: 430px;
+}
+
+.project-gallery-item img {
+  transition:
+    transform .7s ease;
+}
+
+.project-gallery-item:hover img {
+  transform: scale(1.04);
+}
+
+/* PAYMENT */
+
+.project-payment {
+  margin-top: 60px;
+}
+
+.project-payment pre {
+  overflow-x: auto;
+
+  background: #173640;
+
+  color: #e5edf0;
+
+  padding: 25px;
+
+  font-size: 12px;
+
+  line-height: 1.7;
+}
+
+/* FLOOR PLANS */
+
+.project-floorplans {
+  margin-top: 60px;
+}
+
+.floorplan-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, 1fr);
+
+  gap: 16px;
+}
+
+.floorplan-card {
+  min-height: 240px;
+
+  background: #f0efea;
+
+  border: 1px solid #dde2df;
+
+  overflow: hidden;
+}
+
+.floorplan-card img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+}
+
+.floorplan-card pre {
+  padding: 15px;
+
+  white-space: pre-wrap;
+
+  font-size: 10px;
+}
+
+/* MOTION */
+
+@keyframes projectsHeroZoom {
+  from {
+    transform: scale(1.03);
+  }
+
+  to {
+    transform: scale(1.08);
+  }
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+
+  .projects-grid {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+  .project-detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .project-detail-sidebar {
+    position: static;
+    order: -1;
+  }
+
+}
+
+@media (max-width: 600px) {
+
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .projects-hero {
+    min-height: 480px;
+  }
+
+  .projects-hero h1 {
+    font-size: 47px;
+  }
+
+  .project-detail-hero {
+    height: 440px;
+  }
+
+  .project-detail-hero-content h1 {
+    font-size: 46px;
+  }
+
+  .project-stats,
+  .floorplan-grid,
+  .project-gallery-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .project-gallery-item.large {
+    grid-column: span 1;
+  }
+
+}

@@ -68,6 +68,7 @@ const servicesMenu = [
 const nav = [
   ["Insights", "/insights"],
   ["Guides", "/guides"],
+  ["Projects", "/projects"],
   ["About", "/about"],
 ];
 const IMG = [
@@ -8173,6 +8174,733 @@ function SellerGuide() {
   );
 }
 
+function Projects() {
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadProjects() {
+      try {
+        setLoading(true);
+        setError("");
+
+        const response = await fetch(
+          "/api/pixxi/properties?purpose=new&page=1&size=100"
+        );
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+          throw new Error(
+            data.error ||
+            "Could not load projects."
+          );
+        }
+
+        if (!cancelled) {
+          setProjects(
+            Array.isArray(data.properties)
+              ? data.properties
+              : []
+          );
+        }
+      } catch (err) {
+        console.error(err);
+
+        if (!cancelled) {
+          setError(
+            "We couldn't load the latest projects."
+          );
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      }
+    }
+
+    loadProjects();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const filteredProjects = projects.filter(
+    (project) => {
+      const text = `
+        ${project.title || ""}
+        ${project.location || ""}
+        ${project.city || ""}
+        ${project.developer?.name || ""}
+      `.toLowerCase();
+
+      return text.includes(
+        search.toLowerCase()
+      );
+    }
+  );
+
+  return (
+    <>
+      <Header />
+
+      <main className="projects-page">
+
+        {/* HERO */}
+
+        <section className="projects-hero">
+
+          <div className="projects-hero-bg" />
+
+          <div className="projects-hero-overlay" />
+
+          <div className="wrap projects-hero-content">
+
+            <p className="projects-eyebrow">
+              GOLDEN KEY PROJECTS
+            </p>
+
+            <h1>
+              Discover Dubai's
+              <br />
+              new developments
+            </h1>
+
+            <p>
+              Explore off-plan developments,
+              new communities and investment
+              opportunities sourced directly
+              from our CRM.
+            </p>
+
+          </div>
+
+        </section>
+
+        {/* FILTER */}
+
+        <section className="projects-filter-section">
+
+          <div className="wrap">
+
+            <div className="projects-search">
+
+              <input
+                value={search}
+                onChange={(e) =>
+                  setSearch(e.target.value)
+                }
+                placeholder="Search projects, developers or communities"
+              />
+
+            </div>
+
+          </div>
+
+        </section>
+
+        {/* PROJECTS */}
+
+        <section className="section projects-list-section">
+
+          <div className="wrap">
+
+            {loading && (
+              <div className="empty-state">
+                <h3 className="serif">
+                  Loading projects...
+                </h3>
+              </div>
+            )}
+
+            {!loading && error && (
+              <div className="empty-state">
+                <h3 className="serif">
+                  Projects temporarily unavailable
+                </h3>
+
+                <p>{error}</p>
+              </div>
+            )}
+
+            {!loading &&
+              !error &&
+              filteredProjects.length > 0 && (
+                <div className="projects-grid">
+
+                  {filteredProjects.map(
+                    (project) => (
+                      <a
+                        key={
+                          project.id ||
+                          project.reference
+                        }
+                        href={`/projects/${project.id}`}
+                        className="project-card"
+                      >
+
+                        <div className="project-card-image">
+
+                          <img
+                            src={
+                              project.image1 ||
+                              IMG[0]
+                            }
+                            alt={
+                              project.title
+                            }
+                          />
+
+                          <span className="project-status">
+                            New
+                          </span>
+
+                        </div>
+
+                        <div className="project-card-body">
+
+                          <p className="project-location">
+                            {project.location ||
+                              project.city}
+                          </p>
+
+                          <h2>
+                            {project.title}
+                          </h2>
+
+                          {project.developer?.name && (
+                            <p className="project-developer">
+                              By{" "}
+                              {
+                                project.developer
+                                  .name
+                              }
+                            </p>
+                          )}
+
+                          <div className="project-meta">
+
+                            {project.price > 0 && (
+                              <span>
+                                From{" "}
+                                {Number(
+                                  project.price
+                                ).toLocaleString(
+                                  "en-AE"
+                                )}{" "}
+                                AED
+                              </span>
+                            )}
+
+                            {project.handoverTime && (
+                              <span>
+                                Handover{" "}
+                                {
+                                  project.handoverTime
+                                }
+                              </span>
+                            )}
+
+                          </div>
+
+                          <span className="project-card-link">
+                            View project →
+                          </span>
+
+                        </div>
+
+                      </a>
+                    )
+                  )}
+
+                </div>
+              )}
+
+            {!loading &&
+              !error &&
+              filteredProjects.length === 0 && (
+                <div className="empty-state">
+
+                  <h3 className="serif">
+                    No projects found
+                  </h3>
+
+                  <p>
+                    Try another developer,
+                    community or project name.
+                  </p>
+
+                </div>
+              )}
+
+          </div>
+
+        </section>
+
+      </main>
+
+      <Footer />
+    </>
+  );
+}
+
+function ProjectDetail({ id }) {
+  const [project, setProject] =
+    useState(null);
+
+  const [loading, setLoading] =
+    useState(true);
+
+  const [error, setError] =
+    useState("");
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadProject() {
+      try {
+        setLoading(true);
+
+        const response = await fetch(
+          `/api/pixxi/project?id=${encodeURIComponent(
+            id
+          )}`
+        );
+
+        const data =
+          await response.json();
+
+        if (!response.ok || !data.success) {
+          throw new Error(
+            data.error ||
+            "Could not load project."
+          );
+        }
+
+        if (!cancelled) {
+          setProject(
+            data.project
+          );
+        }
+
+      } catch (err) {
+        console.error(err);
+
+        if (!cancelled) {
+          setError(
+            "Unable to load this project."
+          );
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      }
+    }
+
+    loadProject();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [id]);
+
+  if (loading) {
+    return (
+      <>
+        <Header />
+
+        <main className="page-placeholder">
+
+          <div className="wrap">
+
+            <h1 className="serif">
+              Loading project...
+            </h1>
+
+          </div>
+
+        </main>
+
+        <Footer />
+      </>
+    );
+  }
+
+  if (error || !project) {
+    return (
+      <>
+        <Header />
+
+        <main className="page-placeholder">
+
+          <div className="wrap">
+
+            <h1 className="serif">
+              Project unavailable
+            </h1>
+
+            <a
+              href="/projects"
+              className="button-outline"
+            >
+              ← Back to projects
+            </a>
+
+          </div>
+
+        </main>
+
+        <Footer />
+      </>
+    );
+  }
+
+  const images =
+    Array.isArray(project.photos)
+      ? project.photos
+      : Array.isArray(project.images)
+      ? project.images
+      : [];
+
+  const newParam =
+    project.newParam ||
+    {};
+
+  return (
+    <>
+      <Header />
+
+      <main className="project-detail-page">
+
+        {/* HERO */}
+
+        <section className="project-detail-hero">
+
+          <img
+            src={
+              images[0] ||
+              project.image ||
+              IMG[0]
+            }
+            alt={
+              project.title
+            }
+          />
+
+          <div className="project-detail-overlay" />
+
+          <div className="wrap project-detail-hero-content">
+
+            <p>
+              GOLDEN KEY PROJECT
+            </p>
+
+            <h1>
+              {
+                project.title ||
+                "New Project"
+              }
+            </h1>
+
+            <span>
+              {project.region ||
+                project.community ||
+                project.cityName ||
+                ""}
+            </span>
+
+          </div>
+
+        </section>
+
+        {/* OVERVIEW */}
+
+        <section className="section">
+
+          <div className="wrap project-detail-grid">
+
+            <article className="project-detail-main">
+
+              <p className="projects-eyebrow">
+                PROJECT OVERVIEW
+              </p>
+
+              <h2 className="serif">
+                {project.title}
+              </h2>
+
+              <div
+                className="project-description"
+                dangerouslySetInnerHTML={{
+                  __html:
+                    String(
+                      project.description ||
+                      ""
+                    ).replace(
+                      /\n/g,
+                      "<br />"
+                    ),
+                }}
+              />
+
+              {/* PROJECT STATS */}
+
+              <div className="project-stats">
+
+                {project.price > 0 && (
+                  <div>
+                    <strong>
+                      From
+                    </strong>
+
+                    <span>
+                      {Number(
+                        project.price
+                      ).toLocaleString(
+                        "en-AE"
+                      )}{" "}
+                      AED
+                    </span>
+                  </div>
+                )}
+
+                {newParam.totalUnits && (
+                  <div>
+                    <strong>
+                      Total units
+                    </strong>
+
+                    <span>
+                      {
+                        newParam.totalUnits
+                      }
+                    </span>
+                  </div>
+                )}
+
+                {newParam.handoverTime && (
+                  <div>
+                    <strong>
+                      Handover
+                    </strong>
+
+                    <span>
+                      {
+                        newParam.handoverTime
+                      }
+                    </span>
+                  </div>
+                )}
+
+                {(
+                  newParam.bedroomMin ||
+                  newParam.bedroomMax
+                ) && (
+                  <div>
+                    <strong>
+                      Bedrooms
+                    </strong>
+
+                    <span>
+                      {
+                        newParam.bedroomMin
+                      }
+                      {" – "}
+                      {
+                        newParam.bedroomMax
+                      }
+                    </span>
+                  </div>
+                )}
+
+              </div>
+
+              {/* GALLERY */}
+
+              {images.length > 0 && (
+                <section className="project-gallery">
+
+                  <h3 className="serif">
+                    Project gallery
+                  </h3>
+
+                  <div className="project-gallery-grid">
+
+                    {images.map(
+                      (image, index) => (
+
+                        <div
+                          key={`${image}-${index}`}
+                          className={
+                            index === 0
+                              ? "project-gallery-item large"
+                              : "project-gallery-item"
+                          }
+                        >
+
+                          <img
+                            src={image}
+                            alt={`${project.title} ${index + 1}`}
+                          />
+
+                        </div>
+
+                      )
+                    )}
+
+                  </div>
+
+                </section>
+              )}
+
+              {/* PAYMENT PLAN */}
+
+              {newParam.paymentPlan && (
+                <section className="project-payment">
+
+                  <h3 className="serif">
+                    Payment plan
+                  </h3>
+
+                  <pre>
+                    {typeof newParam.paymentPlan ===
+                    "string"
+                      ? newParam.paymentPlan
+                      : JSON.stringify(
+                          newParam.paymentPlan,
+                          null,
+                          2
+                        )}
+                  </pre>
+
+                </section>
+              )}
+
+              {/* FLOOR PLANS */}
+
+              {Array.isArray(
+                newParam.floorPlan
+              ) &&
+                newParam.floorPlan.length >
+                  0 && (
+
+                  <section className="project-floorplans">
+
+                    <h3 className="serif">
+                      Floor plans
+                    </h3>
+
+                    <div className="floorplan-grid">
+
+                      {newParam.floorPlan.map(
+                        (plan, index) => {
+
+                          const image =
+                            typeof plan ===
+                            "string"
+                              ? plan
+                              : plan?.url ||
+                                plan?.imageUrl ||
+                                plan?.fileUrl ||
+                                plan?.image ||
+                                "";
+
+                          return (
+                            <div
+                              key={index}
+                              className="floorplan-card"
+                            >
+
+                              {image ? (
+                                <img
+                                  src={image}
+                                  alt={`Floor plan ${
+                                    index + 1
+                                  }`}
+                                />
+                              ) : (
+                                <pre>
+                                  {JSON.stringify(
+                                    plan,
+                                    null,
+                                    2
+                                  )}
+                                </pre>
+                              )}
+
+                            </div>
+                          );
+                        }
+                      )}
+
+                    </div>
+
+                  </section>
+                )}
+
+            </article>
+
+            {/* SIDEBAR */}
+
+            <aside className="project-detail-sidebar">
+
+              <div className="project-enquiry-card">
+
+                <p>
+                  INTERESTED IN THIS PROJECT?
+                </p>
+
+                <h3>
+                  Speak with a Golden Key
+                  project consultant.
+                </h3>
+
+                <EnquiryForm
+                  property={{
+                    reference:
+                      project.propertyId ||
+                      project.id,
+                  }}
+                  compact
+                />
+
+              </div>
+
+              {(project.brochureUrl ||
+                project.brochure) && (
+
+                <a
+                  href={
+                    project.brochureUrl ||
+                    project.brochure
+                  }
+                  target="_blank"
+                  rel="noreferrer"
+                  className="project-brochure-button"
+                >
+                  ↓ Download brochure
+                </a>
+              )}
+
+            </aside>
+
+          </div>
+
+        </section>
+
+      </main>
+
+      <Footer />
+    </>
+  );
+}
+
 // ---------------------------------------------------------------------------------------------------------------
 function App() {
   const path =
@@ -8204,6 +8932,18 @@ function App() {
       </>
     );
   }
+
+  if (path === "/projects") {
+  return <Projects />;
+}
+
+if (path.startsWith("/projects/")) {
+  const id = path.split("/projects/")[1];
+
+  return (
+    <ProjectDetail id={id} />
+  );
+}
 
   // BUY
   if (path === "/buy") {
