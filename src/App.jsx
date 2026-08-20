@@ -2863,239 +2863,190 @@ function Admin() {
 }
 
 function PropertyDetail({ id }) {
-  const properties = useProperties();
-
-  const property = properties.find(
-    (item) => item.id === id
-  );
-
+  const [property, setProperty] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [activeImage, setActiveImage] = useState(0);
 
-  if (!property) {
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadProperty() {
+      try {
+        setLoading(true);
+        setError("");
+
+        const response = await fetch(
+          `/api/pixxi/project?id=${encodeURIComponent(id)}`
+        );
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+          throw new Error(data.error || "Could not load property.");
+        }
+
+        if (!cancelled) {
+          const p = data.project;
+
+          const purpose =
+            p.listingType === "RENT"
+              ? "rent"
+              : p.listingType === "NEW"
+              ? "new"
+              : "buy";
+
+          setProperty({
+            ...p,
+            purpose,
+            location: p.community || p.region || "",
+            propertyType: p.propertyType?.[0] || "Property",
+            bedrooms: p.bedrooms,
+            bathrooms: p.details?.bathrooms,
+            area: p.size,
+            images: p.photos,
+          });
+        }
+      } catch (err) {
+        console.error(err);
+        if (!cancelled) setError("Unable to load this property.");
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+
+    loadProperty();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [id]);
+
+  if (loading) {
     return (
       <>
         <Header />
-
         <main className="page-placeholder">
           <div className="wrap">
-            <h1 className="serif">
-              Property not found
-            </h1>
-
-            <a
-              href={
-                property?.purpose === "rent"
-                  ? "/rent"
-                  : "/buy"
-              }
-              className="underlink"
-            >
-              ← Back to listings
-            </a>
+            <h1 className="serif">Loading property...</h1>
           </div>
         </main>
-
         <Footer />
       </>
     );
   }
 
-  const images =
-    property.images?.length
-      ? property.images
-      : property.image
-      ? [property.image]
-      : [IMG[0]];
+  if (error || !property) {
+    return (
+      <>
+        <Header />
+        <main className="page-placeholder">
+          <div className="wrap">
+            <h1 className="serif">Property not found</h1>
+            <a href="/buy" className="underlink">← Back to listings</a>
+          </div>
+        </main>
+        <Footer />
+      </>
+    );
+  }
+
+  const images = property.images?.length ? property.images : [IMG[0]];
 
   return (
     <>
       <Header />
 
       <main className="property-detail">
-
         <div className="wrap">
 
           <div className="property-breadcrumb">
-            <a
-              href={
-                property.purpose === "rent"
-                  ? "/rent"
-                  : "/buy"
-              }
-            >
-              {property.purpose === "rent"
-                ? "Rent"
-                : "Buy"}
+            <a href={property.purpose === "rent" ? "/rent" : "/buy"}>
+              {property.purpose === "rent" ? "Rent" : "Buy"}
             </a>
-
             <span>/</span>
-
             <span>{property.location}</span>
           </div>
 
           <section className="detail-gallery">
-
             <div className="detail-main-image">
-              <img
-                src={images[activeImage]}
-                alt={property.title}
-              />
+              <img src={images[activeImage]} alt={property.title} />
             </div>
 
             <div className="detail-thumbnails">
-
               {images.map((image, index) => (
                 <button
                   key={`${image}-${index}`}
-                  className={
-                    activeImage === index
-                      ? "thumbnail active"
-                      : "thumbnail"
-                  }
-                  onClick={() =>
-                    setActiveImage(index)
-                  }
+                  className={activeImage === index ? "thumbnail active" : "thumbnail"}
+                  onClick={() => setActiveImage(index)}
                 >
-                  <img
-                    src={image}
-                    alt={`${property.title} ${index + 1}`}
-                  />
+                  <img src={image} alt={`${property.title} ${index + 1}`} />
                 </button>
               ))}
-
             </div>
-
           </section>
 
           <section className="detail-content">
 
             <div className="detail-main">
 
-              <p className="kicker">
-                {property.propertyType}
-              </p>
+              <p className="kicker">{property.propertyType}</p>
 
-              <h1 className="serif">
-                {property.title}
-              </h1>
+              <h1 className="serif">{property.title}</h1>
 
-              <p className="detail-location">
-                {property.location}
-              </p>
+              <p className="detail-location">{property.location}</p>
 
               <div className="detail-price">
-                {money(
-                  property.price,
-                  property.purpose
-                )}
+                {money(property.price, property.purpose)}
               </div>
 
               <div className="property-specs">
-
                 <div>
-                  <strong>
-                    {property.bedrooms || 0}
-                  </strong>
-
+                  <strong>{property.bedrooms || 0}</strong>
                   <span>Bedrooms</span>
                 </div>
 
                 <div>
-                  <strong>
-                    {property.bathrooms || 0}
-                  </strong>
-
+                  <strong>{property.bathrooms || 0}</strong>
                   <span>Bathrooms</span>
                 </div>
 
                 <div>
-                  <strong>
-                    {(property.area || 0).toLocaleString()}
-                  </strong>
-
+                  <strong>{(property.area || 0).toLocaleString()}</strong>
                   <span>Sq Ft</span>
                 </div>
-
               </div>
 
               <div className="detail-description">
-
-                <h2 className="serif">
-                  Property Description
-                </h2>
-
+                <h2 className="serif">Property Description</h2>
                 <p>
                   {property.description ||
                     "Contact our team for further information about this property."}
                 </p>
-
               </div>
 
             </div>
 
             <aside className="detail-contact">
-
               <div className="contact-card">
+                <h3>Interested in this property?</h3>
+                <p>Send an enquiry and our team will get back to you.</p>
 
-                <h3>
-                  Interested in this property?
-                </h3>
-
-                <p>
-                  Send an enquiry and our team will
-                  get back to you.
-                </p>
-
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-
-                    alert(
-                      "Your enquiry has been submitted."
-                    );
-                  }}
-                >
-                  <input
-                    required
-                    placeholder="Your name"
-                  />
-
-                  <input
-                    required
-                    type="email"
-                    placeholder="Email address"
-                  />
-
-                  <input
-                    required
-                    placeholder="Phone number"
-                  />
-
-                  <textarea
-                    rows="4"
-                    placeholder="Message"
-                    defaultValue={`I'm interested in ${property.title}`}
-                  />
-
-                  <button className="button-coral">
-                    Send enquiry
-                  </button>
-                </form>
-
+                <EnquiryForm
+                  property={{ reference: property.propertyId }}
+                  compact
+                />
               </div>
-
             </aside>
 
           </section>
 
         </div>
-
       </main>
 
       <Footer />
     </>
   );
-  
 }
 
 
