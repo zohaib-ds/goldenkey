@@ -707,7 +707,10 @@ function Header() {
         <div className="wrap header-inner">
 
           <a className="logo" href="/">
-            golden<span>key</span>
+            <img
+              src="/golden-key-logo.png"
+              alt="Golden Key Real Estate"
+            />
           </a>
 
           <nav className={open ? "nav nav-open" : "nav"}>
