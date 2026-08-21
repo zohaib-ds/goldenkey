@@ -78,7 +78,7 @@ const IMG = [
   "https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=1400&q=88",
 ];
 
-const STORAGE_KEY = "betterhomes.properties.v1";
+const STORAGE_KEY = "goldenkey.properties.v1";
 
 
 // Module-level cache so the seed fetch (properties.json) only ever
@@ -89,7 +89,7 @@ const STORAGE_KEY = "betterhomes.properties.v1";
 let seedLoadPromise = null;
 
 
-const AREA_GUIDES_STORAGE_KEY = "betterhomes.area-guides.v1";
+const AREA_GUIDES_STORAGE_KEY = "goldenkey.area-guides.v1";
 
 let areaGuideSeedPromise = null;
 
@@ -336,7 +336,7 @@ function Diamonds() {
   return (
     <section className="stats section">
       <div className="wrap">
-        <p className="kicker centered">betterhomes in numbers</p>
+        <p className="kicker centered">Golden Key in numbers</p>
         <h2 className="serif centered">Experience you can see in the numbers</h2>
 
         <div className="diamonds">
@@ -707,7 +707,7 @@ function Header() {
         <div className="wrap header-inner">
 
           <a className="logo" href="/">
-            better<span>homes</span>
+            golden<span>key</span>
           </a>
 
           <nav className={open ? "nav nav-open" : "nav"}>
@@ -973,7 +973,7 @@ function Articles(){const a=[["Dubai residential market update","Insights",IMG[1
 
 function Enquire(){const[sent,setSent]=useState(false);return <section className="section enquiry" id="enquire"><div className="wrap enquiry-grid"><div><p className="kicker light">Let's talk property</p><h2 className="serif light">Speak with us today</h2><p className="light-text">Tell us what you are looking for and our team can take it from there.</p></div>{sent?<div className="success">Thank you. Your enquiry has been received.</div>:<form onSubmit={e=>{e.preventDefault();setSent(true)}}><div className="form-row"><input required placeholder="First name"/><input required placeholder="Last name"/></div><input required type="email" placeholder="Email address"/><input required placeholder="Phone number"/><select><option>I'm interested in...</option><option>Buying</option><option>Renting</option><option>Selling</option></select><textarea placeholder="How can we help?" rows="4"/><button className="button-coral">Submit enquiry</button></form>}</div></section>;}
 
-function Footer(){return <footer className="footer"><div className="wrap footer-top"><div><a href="/" className="logo footer-logo">better<span>homes</span></a><p>Real estate, thoughtfully done.</p></div><div><h4>Explore</h4><a href="/buy">Buy</a><a href="/rent">Rent</a><a href="/services">Services</a></div><div><h4>Knowledge</h4><a href="/insights">Insights</a><a href="/guides">Guides</a><a href="/about">About</a></div><div><h4>Contact</h4><a href="/enquire">Enquire now</a><span>Dubai, UAE</span></div></div><div className="wrap footer-bottom"><span>© 2026 Betterhomes — Demo build</span><span>Privacy · Terms</span></div></footer>;}
+function Footer(){return <footer className="footer"><div className="wrap footer-top"><div><a href="/rent">Rent</a><a href="/services">Services</a></div><div><h4>Knowledge</h4><a href="/insights">Insights</a><a href="/guides">Guides</a><a href="/about">About</a></div><div><h4>Contact</h4><a href="/enquire">Enquire now</a><span>Dubai, UAE</span></div></div><div className="wrap footer-bottom"><span>© 2026 Golden Key — Demo build</span><span>Privacy · Terms</span></div></footer>;}
 
 function Page({title,kicker,text,children}){
   return <>
@@ -1220,7 +1220,7 @@ function downloadSampleCsv(purpose){
   const sample=[purpose==="rent"?["Example rental apartment","rent","Dubai Marina","12500","Apartment","2","1240","","published"]:["Example sale apartment","buy","Downtown Dubai","2100000","Apartment","1","842","","published"]];
   const csv=[headers,sample.map(csvEscape).join(",")].join("\n");
   const blob=new Blob([csv],{type:"text/csv;charset=utf-8"});
-  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`betterhomes-${purpose}-sample-layout.csv`;a.click();URL.revokeObjectURL(a.href);
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`goldenkey-${purpose}-sample-layout.csv`;a.click();URL.revokeObjectURL(a.href);
 }
 
 function parseCsv(text){
@@ -1414,7 +1414,7 @@ function Admin() {
      ========================================================= */
 
   const AREA_GUIDES_KEY =
-    "betterhomes.area-guides.v1";
+    "goldenkey.area-guides.v1";
 
   const [areaGuides, setAreaGuides] = useState([]);
   const [guidesLoaded, setGuidesLoaded] = useState(false);
@@ -1696,7 +1696,7 @@ function Admin() {
             href="/"
             className="logo"
           >
-            better<span>homes</span>
+            golden<span>key</span>
           </a>
 
           <p>
@@ -9034,7 +9034,7 @@ if (path === "/services/citizenship-program") {
   return (
     <Page
       title="Page"
-      kicker="Betterhomes"
+      kicker="Golden Key"
       text="This page is ready for the client's final content."
     />
   );

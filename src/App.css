@@ -8027,3 +8027,849 @@
   }
 
 }
+
+/* =========================================================
+   GOLDEN KEY — PREMIUM GOLD / BLACK / WHITE THEME
+   Appended theme layer: keeps existing layouts and responsive
+   behavior intact while standardising the visual system.
+   ========================================================= */
+
+:root {
+  --ink: #171717;
+  --muted: #6f6a5e;
+  --paper: #faf9f5;
+  --white: #ffffff;
+
+  --coral: #c9a227;      /* legacy coral variable -> premium gold */
+  --soft: #efe4c7;
+  --dark: #0d0d0d;
+
+  --line: #ddd7c8;
+
+  --gold: #c9a227;
+  --gold-light: #e2c55a;
+  --gold-deep: #8f6b12;
+  --gold-pale: #f6efd9;
+  --black: #0b0b0b;
+
+  --serif: Georgia, "Times New Roman", serif;
+  --sans: Inter, Arial, sans-serif;
+
+  --shadow-sm: 0 8px 24px rgba(0,0,0,.06);
+  --shadow-md: 0 16px 42px rgba(0,0,0,.10);
+  --shadow-lg: 0 24px 70px rgba(0,0,0,.14);
+}
+
+/* ---------- Global ---------- */
+
+html,
+body {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+body {
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+}
+
+::selection {
+  background: var(--gold);
+  color: #fff;
+}
+
+button,
+a,
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+a {
+  transition:
+    color .22s ease,
+    background-color .22s ease,
+    border-color .22s ease,
+    box-shadow .22s ease,
+    transform .22s ease,
+    opacity .22s ease;
+}
+
+/* ---------- Header / navbar ---------- */
+
+.header {
+  background: rgba(255,255,255,.96);
+  border-bottom: 1px solid rgba(201,162,39,.18);
+  box-shadow: 0 4px 18px rgba(0,0,0,.035);
+}
+
+.header-inner {
+  gap: 28px;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  min-height: 42px;
+  color: var(--black);
+  font-family: var(--serif);
+}
+
+.logo img {
+  width: auto;
+  max-width: 190px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.logo:hover {
+  opacity: .9;
+}
+
+.nav a,
+.nav-main-link {
+  color: #222;
+  font-weight: 500;
+}
+
+.nav a:hover,
+.nav-main-link:hover {
+  color: var(--gold-deep);
+}
+
+.enquire,
+.button-coral,
+.enquiry-submit,
+.about-submit,
+.insights-btn-yellow {
+  background: linear-gradient(135deg, var(--gold-light), var(--gold));
+  color: #fff;
+  border: 1px solid rgba(143,107,18,.2);
+  font-weight: 700;
+  box-shadow: 0 8px 22px rgba(201,162,39,.18);
+}
+
+.enquire:hover,
+.button-coral:hover,
+.enquiry-submit:hover,
+.about-submit:hover,
+.insights-btn-yellow:hover {
+  background: linear-gradient(135deg, #ead37a, var(--gold));
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(201,162,39,.26);
+}
+
+.hamburger i {
+  background: var(--black);
+}
+
+/* ---------- Hero ---------- */
+
+.hero-shade {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(0,0,0,.12),
+      rgba(0,0,0,.68)
+    );
+}
+
+.hero h1 {
+  text-shadow: 0 4px 26px rgba(0,0,0,.25);
+}
+
+.search {
+  border: 1px solid rgba(201,162,39,.18);
+  border-radius: 2px;
+  box-shadow: 0 20px 50px rgba(0,0,0,.22);
+}
+
+.search select {
+  color: var(--ink);
+}
+
+.search button {
+  background: var(--gold);
+}
+
+.search button:hover {
+  background: var(--gold-deep);
+}
+
+/* ---------- Typography ---------- */
+
+.kicker,
+.about-est,
+.projects-eyebrow,
+.pm-eyebrow,
+.pm-gold-label {
+  color: var(--gold-deep);
+}
+
+.serif {
+  color: #1a1a1a;
+}
+
+/* ---------- Buttons / links ---------- */
+
+.button-outline {
+  border-color: var(--gold);
+  color: var(--black);
+  background: transparent;
+}
+
+.button-outline:hover {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.underlink:hover,
+.about-gold-link:hover,
+.about-service-row a:hover {
+  color: var(--gold-deep);
+}
+
+/* ---------- Stats / diamonds ---------- */
+
+.stats {
+  background:
+    linear-gradient(
+      180deg,
+      #fbfaf7 0%,
+      #f8f5ec 100%
+    );
+}
+
+.diamond {
+  border-color: rgba(201,162,39,.28);
+  background: rgba(255,255,255,.84);
+  box-shadow:
+    0 12px 32px rgba(0,0,0,.05),
+    0 0 0 1px rgba(201,162,39,.04);
+}
+
+.diamond strong,
+.diamond strong span {
+  color: #111;
+}
+
+.diamond-inner > span {
+  color: #6e685d;
+}
+
+/* ---------- Cards ---------- */
+
+.property-card,
+.articles article,
+.testimonial-card,
+.admin-card {
+  background: #fff;
+  border-color: var(--line);
+  box-shadow: var(--shadow-sm);
+}
+
+.property-card-link:hover,
+.project-card:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+.property-image span,
+.project-status {
+  background: var(--gold);
+  color: #fff;
+}
+
+.property-copy p,
+.property-copy .meta,
+.service-grid p,
+.articles article small {
+  color: var(--muted);
+}
+
+.property-copy strong {
+  color: #171717;
+}
+
+/* ---------- Panels ---------- */
+
+.panel {
+  background: #fff;
+  border-color: var(--line);
+  box-shadow: var(--shadow-md);
+}
+
+.report {
+  background: linear-gradient(
+    145deg,
+    #d9d4c4,
+    #f8f2e6
+  );
+}
+
+.phone {
+  border-color: #111;
+}
+
+/* ---------- Off-plan / projects ---------- */
+
+.offplan {
+  background:
+    linear-gradient(
+      135deg,
+      #f1e5c9,
+      #ead9b8
+    );
+}
+
+.projects-page,
+.project-detail-page {
+  background: var(--paper);
+}
+
+.projects-filter-section {
+  background:
+    linear-gradient(
+      90deg,
+      #0b0b0b,
+      #171717,
+      #0b0b0b
+    );
+}
+
+.projects-search input {
+  border-color: rgba(201,162,39,.22);
+}
+
+.project-card {
+  border-color: rgba(201,162,39,.16);
+}
+
+.project-location,
+.project-status,
+.project-card-link,
+.projects-eyebrow {
+  color: var(--gold-deep);
+}
+
+.project-status {
+  background: var(--gold);
+  color: #fff;
+}
+
+.project-brochure-button {
+  background: linear-gradient(
+    135deg,
+    var(--gold-light),
+    var(--gold)
+  );
+}
+
+.project-brochure-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(201,162,39,.22);
+}
+
+.project-stats {
+  border-color: var(--line);
+}
+
+.project-stats div {
+  border-color: var(--line);
+}
+
+.project-stats strong {
+  color: var(--gold-deep);
+}
+
+.project-payment pre {
+  background: #111;
+}
+
+/* ---------- Forms ---------- */
+
+.enquiry,
+.contact-card,
+.project-enquiry-card {
+  background:
+    linear-gradient(
+      145deg,
+      #0c0c0c,
+      #191919
+    );
+  color: #fff;
+}
+
+.enquiry input,
+.enquiry select,
+.enquiry textarea,
+.contact-card input,
+.contact-card textarea,
+.about-contact-form input,
+.about-contact-form textarea {
+  border-color: #ded9cf;
+  background: #fff;
+  color: #171717;
+}
+
+.enquiry input:focus,
+.enquiry select:focus,
+.enquiry textarea:focus,
+.contact-card input:focus,
+.contact-card textarea:focus,
+.about-contact-form input:focus,
+.about-contact-form textarea:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(201,162,39,.12);
+}
+
+/* ---------- Global / service sections ---------- */
+
+.soft,
+.about-testimonials,
+.about-contact {
+  background: #f4efe4;
+}
+
+.global-box div {
+  border-color: rgba(201,162,39,.28);
+  background: rgba(255,255,255,.5);
+}
+
+.global-box b {
+  color: #111;
+}
+
+.global-box span {
+  color: var(--gold-deep);
+}
+
+/* ---------- Reviews ---------- */
+
+.review-section {
+  background: #f7f1e6;
+}
+
+.review {
+  border-color: var(--line);
+  box-shadow: var(--shadow-sm);
+}
+
+.stars,
+.rating span {
+  color: var(--gold);
+}
+
+/* ---------- Dark sections ---------- */
+
+.enquiry,
+.about-leadership,
+.footer,
+.pm-service-strip,
+.guides-cta-box,
+.insights-cta-box {
+  background:
+    linear-gradient(
+      135deg,
+      #0b0b0b,
+      #191919
+    );
+}
+
+.footer-top p,
+.footer-top a,
+.footer-top span,
+.footer-bottom {
+  color: #d8d2c5;
+}
+
+.footer-top a:hover {
+  color: var(--gold-light);
+}
+
+.footer-bottom {
+  border-top-color: rgba(201,162,39,.22);
+}
+
+/* ---------- About ---------- */
+
+.about-page {
+  background: #fff;
+}
+
+.about-hero-overlay {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0,0,0,.84),
+      rgba(0,0,0,.52) 44%,
+      rgba(0,0,0,.14) 100%
+    );
+}
+
+.about-label.gold,
+.about-gold-link,
+.about-gold-title span,
+.about-philosophy h2 span,
+.about-service-row h3,
+.about-service-row a,
+.about-leadership h2 span,
+.about-est {
+  color: var(--gold-deep);
+}
+
+.about-philosophy {
+  background: #f4efe4;
+}
+
+.right-icon {
+  background: var(--gold-pale);
+  color: var(--gold-deep);
+}
+
+.about-services {
+  background: #fff;
+}
+
+.about-service-row {
+  border-bottom-color: #e6dfd0;
+}
+
+.about-leadership {
+  color: #fff;
+}
+
+.team-photo {
+  background: #111;
+  border: 1px solid rgba(201,162,39,.18);
+}
+
+.about-testimonials {
+  background: #f4efe4;
+}
+
+.rating span {
+  color: var(--gold);
+}
+
+.whatsapp-button {
+  background: var(--gold);
+}
+
+.whatsapp-button:hover {
+  background: var(--gold-deep);
+  transform: translateY(-2px);
+}
+
+.about-contact-form {
+  box-shadow: var(--shadow-md);
+}
+
+/* ---------- Guides ---------- */
+
+.guides-page,
+.guides-header {
+  background: #fbfaf7;
+}
+
+.guides-list,
+.guides-cta {
+  background: #f3eee4;
+}
+
+.guides-highlight,
+.insights-highlight {
+  border-left-color: var(--gold);
+}
+
+.guide-card,
+.insights-card {
+  border-color: #ddd6c9;
+}
+
+.guide-card a,
+.insights-card a {
+  color: #222;
+}
+
+.guide-card a:hover,
+.insights-card a:hover {
+  color: var(--gold-deep);
+}
+
+.guide-card a span,
+.insights-card .yellow-dash {
+  color: var(--gold);
+}
+
+/* ---------- Insights ---------- */
+
+.insights-page {
+  background: #fff;
+}
+
+.insights-header,
+.insights-list,
+.insights-cta {
+  background: #f5f0e7;
+}
+
+.insights-cta-box {
+  background:
+    linear-gradient(
+      135deg,
+      #0b0b0b,
+      #181818
+    );
+}
+
+.insights-btn-yellow {
+  background: var(--gold);
+  color: #fff;
+}
+
+/* ---------- Property nav dropdown ---------- */
+
+.property-menu {
+  background:
+    linear-gradient(
+      180deg,
+      #111,
+      #1b1b1b
+    );
+  border: 1px solid rgba(201,162,39,.26);
+  box-shadow: 0 20px 45px rgba(0,0,0,.24);
+}
+
+.property-menu a {
+  color: #fff !important;
+  border-bottom-color: rgba(201,162,39,.18);
+}
+
+.property-menu a:hover {
+  background: rgba(201,162,39,.12);
+  color: var(--gold-light) !important;
+}
+
+/* ---------- Property detail ---------- */
+
+.property-breadcrumb {
+  color: #777064;
+}
+
+.property-breadcrumb a {
+  color: var(--gold-deep);
+}
+
+.thumbnail.active {
+  border-color: var(--gold);
+}
+
+.property-specs {
+  border-color: var(--line);
+}
+
+.property-specs div {
+  border-right-color: var(--line);
+}
+
+.property-specs strong {
+  color: #111;
+}
+
+.property-specs span {
+  color: var(--gold-deep);
+}
+
+.contact-card {
+  border: 1px solid rgba(201,162,39,.18);
+}
+
+/* ---------- Property management ---------- */
+
+.pm-page {
+  background: #faf9f5;
+}
+
+.pm-hero-overlay {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0,0,0,.82),
+      rgba(0,0,0,.46),
+      rgba(0,0,0,.12)
+    );
+}
+
+.pm-gold-button {
+  background: var(--gold);
+}
+
+.pm-gold-button:hover {
+  background: var(--gold-deep);
+}
+
+.pm-outline-button:hover {
+  color: #111;
+}
+
+.pm-service-strip {
+  box-shadow:
+    inset 0 1px rgba(255,255,255,.08),
+    inset 0 -1px rgba(201,162,39,.15);
+}
+
+/* ---------- Admin ---------- */
+
+.admin-page {
+  background: #f4f1e9;
+}
+
+.admin-top {
+  background: #fff;
+  border-bottom-color: rgba(201,162,39,.18);
+}
+
+.admin-card {
+  border-color: #ddd6c8;
+}
+
+.purpose-toggle {
+  border-color: #cfc6b4;
+}
+
+.purpose-toggle button.active {
+  background: #111;
+  color: #fff;
+}
+
+.admin-form input,
+.admin-form select {
+  border-color: #d8d0c1;
+}
+
+.admin-form input:focus,
+.admin-form select:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(201,162,39,.10);
+}
+
+.tool-button {
+  border-color: #d1c8b9;
+}
+
+.tool-button:hover {
+  background: #f7f0df;
+  border-color: var(--gold);
+}
+
+.admin-message {
+  background: #f2ecd9;
+  border-color: #ddc98c;
+  color: #614e16;
+}
+
+.status.live {
+  color: #806415;
+}
+
+.delete-button {
+  border-color: #d5b8a8;
+}
+
+/* ---------- Services / generic cards ---------- */
+
+.service-grid article {
+  background: #fff;
+}
+
+.service-grid article:hover,
+.articles article:hover,
+.property-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+/* ---------- Premium utility classes ---------- */
+
+.gold {
+  color: var(--gold) !important;
+}
+
+.bg-gold {
+  background: var(--gold) !important;
+  color: #fff !important;
+}
+
+.bg-black {
+  background: #111 !important;
+  color: #fff !important;
+}
+
+.gold-border {
+  border-color: var(--gold) !important;
+}
+
+.premium-card {
+  background: #fff;
+  border: 1px solid rgba(201,162,39,.18);
+  box-shadow: var(--shadow-sm);
+}
+
+.premium-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(201,162,39,.35);
+}
+
+/* ---------- Mobile ---------- */
+
+@media (max-width: 700px) {
+  .header {
+    overflow: visible;
+  }
+
+  .header-inner {
+    gap: 14px;
+  }
+
+  .logo img {
+    max-width: 165px;
+    height: 36px;
+  }
+
+  .nav {
+    background: #fff;
+    border-bottom: 1px solid rgba(201,162,39,.18);
+    box-shadow: 0 18px 30px rgba(0,0,0,.10);
+  }
+
+  .nav > a,
+  .nav-main-link {
+    color: #171717;
+  }
+
+  .property-menu {
+    background: #111;
+  }
+
+  .enquire,
+  .button-coral {
+    box-shadow: none;
+  }
+}
+
+/* Prevent horizontal overflow after theme/animation changes */
+html,
+body,
+#root {
+  max-width: 100%;
+  overflow-x: clip;
+}
