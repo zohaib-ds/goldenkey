@@ -16,10 +16,6 @@ const propertyMenu = {
       label: "Townhouses for sale in Dubai",
       type: "Townhouse",
     },
-    {
-      label: "Penthouses for sale in Dubai",
-      type: "Penthouse",
-    },
   ],
 
   rent: [
@@ -35,10 +31,6 @@ const propertyMenu = {
       label: "Townhouses for rent in Dubai",
       type: "Townhouse",
     },
-    {
-      label: "Penthouses for rent in Dubai",
-      type: "Penthouse",
-    },
   ],
 };
 
@@ -48,20 +40,12 @@ const servicesMenu = [
     path: "/services/property-management",
   },
   {
-    label: "Development Sales & Consultancy",
-    path: "/services/development-sales-and-consultancy",
-  },
-  {
     label: "Property Valuation",
     path: "/services/property-valuation",
   },
   {
     label: "Holiday Home Services",
     path: "/services/holiday-home-services",
-  },
-  {
-    label: "Citizenship Program",
-    path: "/services/citizenship-program",
   },
 ];
 
@@ -852,9 +836,43 @@ function useProperties() {
   return properties;
 }
 function ListingStrip() {
-  const properties = useProperties().filter(p=>p.status==="published").slice(0,4);
+  const [properties, setProperties] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadFeatured() {
+      try {
+        setLoading(true);
+
+        const response = await fetch(
+          `/api/pixxi/properties?purpose=buy&page=1&size=4`
+        );
+
+        const data = await response.json();
+
+        if (!cancelled && data.success) {
+          setProperties(
+            Array.isArray(data.properties) ? data.properties : []
+          );
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+
+    loadFeatured();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   return <section className="section offplan"><div className="wrap"><div className="row-head"><div><p className="kicker">Featured properties</p><h2 className="serif">Find your next move</h2></div><a href="/buy" className="underlink">View all →</a></div>
-    {properties.length===0?<p className="empty-copy">No published listings yet.</p>:<div className="cards">{properties.map(x=><PropertyCard key={x.id} x={x}/>)}</div>}
+    {!loading && properties.length===0?<p className="empty-copy">No published listings yet.</p>:<div className="cards">{properties.map(x=><PropertyCard key={x.id} x={x}/>)}</div>}
   </div></section>;
 }
 
@@ -1075,7 +1093,9 @@ function ListingPage({ rent = false }) {
 
     const matchesType =
       !type ||
-      property.propertyType === type;
+      (Array.isArray(property.propertyType)
+        ? property.propertyType.includes(type)
+        : property.propertyType === type);
 
     return (
       matchesSearch &&
@@ -1083,15 +1103,7 @@ function ListingPage({ rent = false }) {
     );
   });
 
-  const availableTypes = [
-    ...new Set(
-      properties
-        .map((property) =>
-          property.propertyType
-        )
-        .filter(Boolean)
-    ),
-  ];
+  const availableTypes = ["Apartment", "Townhouse", "Villa"];
 
   return (
     <Page
@@ -3995,13 +4007,6 @@ function ServicesPage() {
         "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1400&q=88",
     },
     {
-      title: "Development Sales & Consultancy",
-      path: "/services/development-sales-and-consultancy",
-      text: "From project strategy and positioning to sales and launch, we help developers bring the right project to market.",
-      image:
-        "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1400&q=88",
-    },
-    {
       title: "Property Valuation",
       path: "/services/property-valuation",
       text: "Understand the market value of your property with a professional assessment built around location, demand and comparable evidence.",
@@ -4014,13 +4019,6 @@ function ServicesPage() {
       text: "Make short-term property ownership easier with guest, marketing and operational support.",
       image:
         "https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=1400&q=88",
-    },
-    {
-      title: "Citizenship Program",
-      path: "/services/citizenship-program",
-      text: "Explore residency and investment pathways with a property-led advisory approach.",
-      image:
-        "https://images.unsplash.com/photo-1524813686514-a57563d77965?auto=format&fit=crop&w=1400&q=88",
     },
   ];
 
