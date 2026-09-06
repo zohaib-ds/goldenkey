@@ -44,6 +44,10 @@ const servicesMenu = [
     path: "/services/property-valuation",
   },
   {
+    label: "Mortgage Services",
+    path: "/services/mortgage-services",
+  },
+  {
     label: "Holiday Home Services",
     path: "/services/holiday-home-services",
   },
@@ -3070,62 +3074,52 @@ function About() {
     {
       name: "Zaid Zakariya",
       role: "General Manager",
-      image:
-        "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=700&q=85",
+      image: "/team/zaid-zakariya.jpg",
     },
     {
       name: "Arsalan Altaf",
       role: "Marketing Manager",
-      image:
-        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=700&q=85",
+      image: "/team/arsalan-altaf.jpg",
     },
     {
       name: "Toufik Mirouch",
       role: "Property Consultant",
-      image:
-        "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=700&q=85",
+      image: "/team/toufik-mirouch.jpg",
     },
     {
       name: "Vaishali Thakor",
       role: "Property Consultant",
-      image:
-        "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=700&q=85",
+      image: "/team/vaishali-thakor.jpg",
     },
     {
       name: "Arooj Fatima",
       role: "Property Consultant",
-      image:
-        "https://images.unsplash.com/photo-1598550874175-4d0ef436c909?auto=format&fit=crop&w=700&q=85",
+      image: "/team/arooj-fatima.jpg",
     },
     {
       name: "Niaz Amjad",
       role: "Property Consultant",
-      image:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=700&q=85",
+      image: "/team/niaz-amjad.jpg",
     },
     {
       name: "Mahmoud Essam",
       role: "Property Consultant",
-      image:
-        "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=700&q=85",
+      image: "/team/mahmoud-essam.jpg",
     },
     {
       name: "Takwa Doral",
       role: "Property Consultant",
-      image:
-        "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=700&q=85",
+      image: "/team/takwa-doral.jpg",
     },
     {
       name: "Maria Alcaz",
       role: "Administrator",
-      image:
-        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=700&q=85",
+      image: "/team/maria-alcaz.jpg",
     },
     {
       name: "Sharouk Mousa",
       role: "Property Consultant",
-      image:
-        "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=700&q=85",
+      image: "/team/sharouk-mousa.jpg",
     },
   ];
 
@@ -3692,7 +3686,6 @@ function About() {
     </>
   );
 }
-
 function Guides() {
   const guides = [
     {
@@ -3708,7 +3701,7 @@ function Guides() {
     {
       title: "TENANT'S GUIDE",
       text: "Everything you need to know when searching for, renting and moving into your next home.",
-      path: "/guides/landlord-guide",
+      path: "/guides/tenant-guide",
     },
     {
       title: "LANDLORD'S GUIDE",
@@ -3824,10 +3817,10 @@ function Guides() {
                   professional guidance tailored to your goals.
                 </p>
 
-                
+                <a
                   href="#contact"
                   className="button-coral"
-                <a>
+                >
                   Contact us
                 </a>
 
@@ -3854,29 +3847,479 @@ function Guides() {
 }
 
 
+const INSIGHT_ARTICLES = [
+  {
+    slug: "al-maktoum-airport-dubai-south-impact",
+    category: "Market Report",
+    date: "August 2026",
+    title: "Impact of Al Maktoum International Airport on Dubai South Real Estate",
+    excerpt: "How the world's largest planned aviation hub could reshape housing demand, investment activity and long-term property values in Dubai South.",
+    heroImage: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1800&q=90",
+    sections: [
+      { heading: "Executive Summary", paragraphs: [
+        "Dubai South is entering a more advanced stage of its development cycle. The expansion of Al Maktoum International Airport (DWC) is increasingly shifting the area from a long-term infrastructure story into an active delivery story, with major construction packages progressing during 2026.",
+        "The airport is planned to become the world's largest aviation hub by capacity, with more than 260 million passengers and 12 million tonnes of annual cargo at full build-out. The first major phase is designed for around 150 million passengers annually, while Dubai's long-term strategy anticipates a substantial city, employment base and residential ecosystem around the airport.",
+        "For real estate, the key impact is not passenger volume alone. The stronger investment case is the combination of airport-led employment, logistics and aviation expansion, supporting infrastructure, future transport connectivity and a larger population living closer to jobs in Dubai South.",
+        "Current market indicators show that this repricing has already started, although performance is not uniform. Bayut's Dubai South sale index recorded an average of AED 1,489 per sq.ft. in July 2026, up 2.91% year-on-year. Its H1 2026 market report placed Dubai South affordable apartments at an average AED 1,190 per sq.ft. with an indicative ROI of 7.24%. Rental index data also showed rents at AED 77 per sq.ft. in May 2026, 4.37% higher than a year earlier.",
+        "Goldenkey's view is that Al Maktoum International Airport strengthens Dubai South's medium- to long-term fundamentals, but project selection will remain critical. Investors should avoid assuming that every property in Dubai South will benefit equally from the airport expansion. Entry price, developer quality, construction progress, location, unit type, supply pipeline and actual rental demand will determine outcomes.",
+      ]},
+      { heading: "Why Al Maktoum International Airport Matters", paragraphs: [
+        "In April 2024, Dubai approved the design and construction of the new passenger terminal at Al Maktoum International Airport at a reported cost of AED 128 billion. At full development, the airport is planned to handle more than 260 million passengers per year and 12 million tonnes of cargo annually across an approximately 70-square-kilometre airport footprint.",
+        "The airport master plan includes five parallel runways, large-scale passenger processing infrastructure, hundreds of aircraft stands, automated passenger movement and an integrated landside transport hub. The first major development phase is planned for approximately 150 million passengers annually in the early 2030s.",
+        "For Dubai South real estate, the most important official statement is the expectation that the airport and surrounding economic ecosystem could generate residential requirements for more than one million people living and working in the wider aerotropolis over the long term. This provides a direct link between aviation investment and future housing demand.",
+      ]},
+      { heading: "2026: From Announcement to Physical Delivery", paragraphs: [
+        "The 2026 market narrative is different from 2024. Investors are no longer evaluating only an approved master plan. In June 2026, Dubai's Media Office reported significant milestones across major delivery streams, including substructure and superstructure works for the Western Passenger Terminal, aircraft concourses, the Automated People Mover, baggage handling, southern airfield infrastructure, power generation and district cooling.",
+        "This matters because infrastructure-led real estate markets often behave differently once construction becomes visible and capital deployment is underway. The project remains long term, but continued package awards and physical works can reduce uncertainty around execution and improve confidence in surrounding districts.",
+      ]},
+      { heading: "Employment Creation Could Be the Strongest Property Driver", paragraphs: [
+        "Airports function as economic ecosystems. They create direct employment in airlines, airport operations and aviation services, but also generate indirect demand across logistics, cargo, engineering, hospitality, retail, transportation, warehousing, professional services and technology.",
+        "A 2024 economic impact assessment cited by Dubai's Media Office estimated that construction of the DWC expansion could contribute AED 6.1 billion to Dubai GDP in 2030 and support 132,000 jobs. While that figure relates to the airport project rather than residential demand alone, it illustrates the scale of economic activity associated with the expansion.",
+        "In May 2026, Emirates broke ground on a US$5.1 billion engineering complex in Dubai South. The facility is planned as a major maintenance, repair and overhaul centre capable of handling 28 wide-body aircraft simultaneously. Projects of this scale deepen the employment base around DWC and can support more sustainable rental demand than a market driven only by future expectations.",
+      ]},
+      { heading: "Dubai South Residential Market: Current Snapshot", paragraphs: [
+        "Dubai South has already recorded measurable price and rental movement. Bayut's sale index showed an average property price of AED 1,489 per sq.ft. in July 2026, compared with AED 1,446 per sq.ft. twelve months earlier and AED 1,375 per sq.ft. twenty-four months earlier.",
+        "The H1 2026 Bayut sales report classified Dubai South among affordable apartment communities and recorded an average asking price of AED 1,190 per sq.ft., an average transaction value of approximately AED 842,220 and an indicative apartment ROI of 7.24%. In the villa segment, Dubai South recorded an average of AED 1,368 per sq.ft. and an indicative ROI of 4.92%.",
+        "Rental index data showed an average of AED 77 per sq.ft. in May 2026, up 4.37% year-on-year. These figures should be treated as area-level indicators rather than guaranteed returns for individual units.",
+      ]},
+      { heading: "Five Ways the Airport Could Reshape Dubai South Real Estate", paragraphs: [
+        "1) Larger tenant and end-user pool — as employment grows around DWC, more workers and families may prefer to live closer to their workplace, improving occupancy and reducing dependence on tenants commuting from established central districts.",
+        "2) Stronger investor attention — the airport gives Dubai South a clearer economic identity, positioning it as a future aviation, logistics and business hub rather than just an emerging residential area.",
+        "3) More commercial and lifestyle infrastructure — population and employment growth can support additional retail, hospitality, schools, healthcare, leisure and business services, improving liveability and, over time, supporting property values.",
+        "4) Connectivity improvements — the airport master plan incorporates integrated road, rail and public transport connectivity, expanding the potential buyer and tenant base beyond people directly employed in the aviation district.",
+        "5) Long-term capital appreciation potential — large infrastructure projects can create conditions for appreciation when they translate into jobs, population growth, improved connectivity and services, although the impact is likely to be uneven between projects and submarkets.",
+      ]},
+      { heading: "Where the Investment Opportunity May Be Strongest", paragraphs: [
+        "Properties near genuine employment nodes with convenient access to aviation, logistics and commercial zones may be better positioned for employee-led rental demand. Projects with sensible entry pricing matter too — buying into the airport story at an inflated price can reduce future upside, so investors should compare price per sq.ft. against competing Dubai South projects, ready inventory and other emerging Dubai communities.",
+        "Efficient unit types also matter: studios and one-bedroom apartments may benefit from demand among individual professionals and couples, while townhouses and villas may appeal to families as schools and community infrastructure mature. Projects with credible delivery — construction progress, escrow compliance, developer track record and realistic handover schedules — remain important because a long-term area thesis does not remove project-specific execution risk. Assets suited to a longer holding period are best placed to benefit, since the full airport transformation will unfold over years.",
+      ]},
+      { heading: "Risks Investors Should Not Ignore", paragraphs: [
+        "Future supply: Dubai South has a substantial development pipeline, and high supply can limit rent growth or create competition between landlords, particularly around clustered handovers.",
+        "Timeline risk: the airport is a multi-phase project, so investors should distinguish between near-term milestones and ultimate master-plan outcomes.",
+        "Project selection risk: a strong community-level story does not automatically make every building a strong investment — layout, views, maintenance quality, service charges and resale liquidity remain important.",
+        "Pricing in expectations: as awareness of DWC increases, some future benefits may already be reflected in launch prices, so investors should focus on value rather than buying solely because a project is marketed as being close to the airport.",
+        "Rental assumptions: area-level yields are not guaranteed — net returns depend on actual rent, vacancy, service charges, furnishing, maintenance, financing costs and acquisition price.",
+      ]},
+      { heading: "Goldenkey Investor Lens", paragraphs: [
+        "The long-term case for Dubai South has strengthened because the area now combines major public infrastructure with private-sector aviation investment and an expanding residential market. The airport is likely to be a structural demand driver rather than a one-time event.",
+        "The more useful question is not whether Dubai South prices will rise because the airport is being built, but which properties are priced attractively today relative to the jobs, transport links, community infrastructure and tenant demand likely to exist by the time those properties are completed or resold.",
+        "For investors with a medium- to long-term horizon, Dubai South can offer a compelling combination of comparatively accessible entry prices, rental yield potential and infrastructure-led growth. For shorter-term buyers, greater attention should be paid to current transaction liquidity, handover schedules and the volume of competing supply coming to market.",
+      ]},
+    ],
+    disclaimer: "Market data in this report is based on publicly available asking-price indices, transaction references and third-party market reports available as of August 2026. Figures may change and should not be treated as guaranteed returns, valuation advice or a promise of future capital appreciation. Buyers should conduct project-specific due diligence before making an investment decision.",
+  },
+
+  {
+    slug: "rent-to-own-dubai",
+    category: "Blog",
+    date: "August 2026",
+    title: "From Tenant to Homeowner: How Rent-to-Own Property Works in Dubai",
+    excerpt: "A practical guide to lease-to-own structures, buyer considerations, costs, risks, and when this route may make sense.",
+    heroImage: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1800&q=90",
+    sections: [
+      { heading: "What Does Rent-to-Own Mean in Dubai?", paragraphs: [
+        "Dubai offers several routes into property ownership: cash purchases, mortgages, off-plan payment plans, developer financing, and lease-to-own arrangements. For buyers who want to live in a property now while working toward ownership, rent-to-own can be an attractive alternative — particularly when a traditional mortgage or large upfront payment is not the preferred route.",
+        "However, rent-to-own is not simply \"rent that automatically becomes a home purchase.\" It is a contractual structure with specific purchase terms, timelines, payment allocations, registration requirements, and possible financing conditions. A rent-to-own or lease-to-own arrangement allows an occupier to use a property under an agreed lease structure while following a defined route toward acquiring ownership. Depending on the contract, some payments may be credited toward the eventual purchase price, while other amounts may remain purely rental, financing, service, or administrative costs.",
+        "Dubai Land Department (DLD) maintains formal services for registering Lease-to-Own contracts, covering arrangements involving the property seller, purchaser and, where applicable, a financing party — meaning a properly structured lease-to-own transaction can be part of the formal real estate registration system rather than only a private rental understanding.",
+      ]},
+      { heading: "How the Structure Can Work", paragraphs: [
+        "There is no single payment plan that applies to every rent-to-own property, but a typical arrangement includes: the buyer selecting an eligible property offered under a lease-to-own structure; the parties agreeing the property price, lease period, payment schedule, purchase conditions, fees, and treatment of payments; the buyer occupying the property and making the agreed periodic payments; at the agreed milestone or end of term, the buyer completing the purchase according to the contract — potentially using cash, financing, or another approved settlement method; and, once contractual, financial and registration requirements are completed, ownership being transferred or documented in accordance with the applicable process.",
+        "The important point is that monthly payments should never be assumed to equal equity. The agreement must clearly state what portion, if any, contributes toward the purchase and what happens if the buyer does not complete the transaction.",
+      ]},
+      { heading: "Why Buyers Consider Rent-to-Own", paragraphs: [
+        "Lower immediate pressure for a large purchase payment compared with some traditional buying structures. Ability to live in the property while progressing toward a potential purchase. More time to organise savings, liquidity, or future financing, depending on the agreement. A possible alternative for buyers who prefer a structured payment route rather than purchasing in one step. Potential price visibility if the future purchase price is fixed in the contract, although this can also become a disadvantage if market conditions change.",
+      ]},
+      { heading: "The Main Questions to Ask Before Signing", paragraphs: [
+        "What is the final purchase price? Confirm whether it is fixed from day one, calculated later, or linked to a future valuation or formula.",
+        "How much of each payment goes toward the purchase? Ask for a clear payment breakdown — do not assume the full monthly amount reduces the property balance.",
+        "Is there an upfront option, booking, security, or commitment payment? Understand whether it is refundable, non-refundable, credited toward the purchase, or treated separately.",
+        "What happens if you decide not to buy? The agreement should explain cancellation consequences, deductions, forfeited amounts, notice periods, and settlement obligations.",
+        "What happens if financing is not approved later? If a mortgage or financing facility will be required to complete the purchase, understand the consequences of failing to secure approval.",
+        "Who pays service charges, maintenance, insurance, and registration-related costs? These can materially affect the true monthly and total cost of the arrangement.",
+        "When and how is the Lease-to-Own contract registered? Registration mechanics should be confirmed with the relevant parties and qualified professionals before funds are committed.",
+      ]},
+      { heading: "Rent-to-Own vs. Traditional Renting vs. Mortgage Purchase", paragraphs: [
+        "Traditional rent has no automatic ownership path and is a pure rent expense, with usually higher flexibility and the main risk being rent paid without ownership.",
+        "Rent-to-own is built around a potential ownership path, with payments that may combine rent, purchase credits and/or financing components — flexibility depends heavily on the cancellation terms, and the main risk is complex terms or failure to complete the purchase.",
+        "A mortgage purchase gives immediate ownership with bank financing, a down payment and purchase costs upfront, and lower flexibility after purchase due to financing and transaction costs — the main risk being financing obligations and property-market exposure.",
+      ]},
+      { heading: "Costs Buyers Should Look Beyond", paragraphs: [
+        "A lower initial payment does not automatically make a rent-to-own property cheaper. Buyers should calculate the entire expected cost over the agreed term, including upfront booking or commitment amounts, monthly or periodic lease payments, any purchase-price credits included in those payments, Dubai Land Department and registration-related fees, service charges and building/community costs, maintenance and insurance responsibilities, financing costs if a bank or other financing party is involved, and any final settlement or balloon payment.",
+        "DLD's current Lease-to-Own registration service publishes transaction-specific fees and documentation requirements. Because fees and procedures can change and different structures may be treated differently, buyers should verify the latest official requirements for the specific transaction before signing.",
+      ]},
+      { heading: "Potential Advantages and Risks", paragraphs: [
+        "Potential advantages: a defined route toward homeownership while living in the property; spreading the journey toward purchase across a longer period; suiting buyers expecting stronger future liquidity or financing eligibility; and the chance to experience the property and community before final ownership, depending on contract terms.",
+        "Potential risks: the total cost can be higher than expected once all fees and payment components are included; some upfront amounts or payment credits may be lost if the purchase is not completed; a fixed future purchase price may become less competitive if market values fall; the buyer may still need mortgage approval or a large final payment later; contract wording can be more complex than a normal tenancy, so independent legal review is important; and availability is limited compared with the wider Dubai sale and rental market.",
+      ]},
+      { heading: "Who Might Consider a Rent-to-Own Property?", paragraphs: [
+        "A lease-to-own arrangement may be worth exploring for buyers who have stable income, want to remain in Dubai for the medium to long term, prefer a gradual route to ownership, and have a realistic plan for completing the purchase when required. It may be less suitable for someone who expects to relocate soon, needs maximum rental flexibility, is uncertain about future financing, or has not compared the deal against conventional mortgage and off-plan alternatives.",
+      ]},
+      { heading: "How to Evaluate a Rent-to-Own Opportunity", paragraphs: [
+        "Compare the agreed purchase price with similar properties in the same community. Calculate the full cash outflow until ownership — not only the first-year cost. Confirm exactly which payments reduce the purchase balance. Review exit, default, cancellation, and financing-failure clauses. Verify ownership, project/property status, and applicable registration process. Compare the same property objective against a mortgage, ready property, and off-plan alternative. Obtain appropriate legal and financial advice before signing a binding agreement.",
+      ]},
+    ],
+    faqs: [],
+    disclaimer: "This article is for general informational purposes only and does not constitute legal, financial, mortgage, tax, or investment advice. Lease-to-own terms, fees, registration requirements, and financing conditions vary by transaction and may change. Buyers should verify current requirements with Dubai Land Department and obtain professional advice before entering into any binding agreement. Official reference: Dubai Land Department — Lease To Own Registration Application, dubailand.gov.ae (accessed August 2026).",
+  },
+
+  {
+    slug: "short-term-vs-long-term-rental-dubai",
+    category: "Blog",
+    date: "August 2026",
+    title: "Short-Term vs Long-Term Rental in Dubai: Which Actually Earns You More in 2026?",
+    excerpt: "The real answer depends on numbers most owners never run — the occupancy rate you'd need to break even, the permit and compliance costs, and how much of your gross income actually survives the journey to your account.",
+    heroImage: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1800&q=90",
+    sections: [
+      { heading: "The Honest Headline", paragraphs: [
+        "One thing worth saying upfront: Golden Key operates both models. Long-term management sits with Golden Key Real Estate, and short-term holiday homes with our sister company, Vibrant Vacation Homes Rental. We have no reason to steer you toward one, because we run both.",
+        "Short-term letting typically produces higher gross income than an annual lease on a well-located, well-presented property. It also produces meaningfully higher costs, more variable income, and a genuine operational burden. Published figures generally put short-term gross yields in prime Dubai areas somewhere between 8% and 12%, against roughly 5% to 8% for long-term leases — treat the top of any such range with caution, since it usually describes a well-run property in a strong location during a good year, not an average outcome.",
+        "The more useful framing: most Dubai properties need to run at roughly 55% to 65% occupancy to beat what the same unit would earn on an annual lease. Below that, long-term wins. Comfortably above it, short-term wins. That single threshold decides more cases than any yield comparison.",
+      ]},
+      { heading: "Long-Term Leasing: What It Actually Looks Like", paragraphs: [
+        "Annual leasing in Dubai is a well-understood, well-regulated business, and its appeal is precisely that it is boring. As of August 2026, median annual apartment rents ran approximately AED 190,000 on Palm Jumeirah, AED 115,000 in Dubai Creek Harbour, AED 113,000 in Dubai Marina, AED 105,000 in Dubai Hills Estate, AED 85,000 in Business Bay, AED 70,000 in Dubai South and AED 64,000 in JVC — district medians across all unit sizes, so treat them as a frame rather than a quote.",
+        "Long-term is efficient. Costs are management fees, service charges, occasional maintenance, and the letting commission when you re-let — no cleaning, no linen, no consumables, no guest support, no platform commission.",
+        "Tenancies are registered through Ejari. Rent increases at renewal are capped under Decree No. 43 of 2013, with the permitted increase running from zero — where the rent sits within 10% of the market rate — up to 20% where it sits more than 40% below. Any change to the contract requires 90 days' written notice before expiry. That rent cap is the main structural weakness of long-term leasing from an owner's perspective, since a sitting tenant's rent can only rise so fast — but it is also the reason your tenant stays, which is worth something.",
+        "Your exposure is vacancy and tenant quality, and both are manageable — an empty month is expensive, a bad tenant is more expensive, but neither is unpredictable in the way short-term seasonality is. Payment structures have also loosened: the Dubai Land Department launched Flexi Rent in June 2026, allowing tenants renting through participating companies to pay monthly or quarterly rather than in a small number of large cheques, with the total rent unchanged — widening the tenant pool without reducing income.",
+      ]},
+      { heading: "Short-Term Letting: What It Actually Looks Like", paragraphs: [
+        "Short-term rental in Dubai is a licensed hospitality business, not a lease with extra steps. Any residential property let for stays under one year requires a holiday home permit from the Department of Economy and Tourism (formerly DTCM) — there is no exemption and no grace period, each unit needs its own permit, and the permit number must be displayed on the listing.",
+        "Reported costs put initial registration at approximately AED 1,520 per property, with annual permit fees running from around AED 370 for a one-bedroom up to roughly AED 1,270 for larger units, and higher figures quoted for villas — fee schedules change, so confirm current rates with DET. Operating without a permit carries fines starting at AED 5,000 and escalating substantially for repeat offences.",
+        "Ongoing compliance includes collecting Tourism Dirham from guests at AED 10 per occupied bedroom per night for a Standard classification, or AED 15 for Deluxe, applying to the first 30 consecutive nights of any stay and reported/remitted to DET by the 15th of each month. A Dubai Municipality fee applies to booking revenue, and VAT registration becomes mandatory once taxable turnover exceeds AED 375,000 in any twelve-month period (voluntary from AED 187,500). Guest registration with DET is the most actively enforced requirement, and enforcement has tightened through 2026.",
+        "Not every Dubai building permits short-term letting, and owners' association rules can override your intentions entirely — establish this before you spend anything on furniture. Furnishing to a lettable standard typically runs somewhere between AED 30,000 and AED 80,000 depending on unit size and presentation. Dubai's strong season runs roughly October to April; summer is genuinely quiet, so any annual projection built on peak-season rates is fiction.",
+      ]},
+      { heading: "The Numbers That Decide It", paragraphs: [
+        "A worked illustration: take a Dubai Marina one-bedroom. On an annual lease it might achieve somewhere around AED 110,000 to AED 130,000 gross, with running costs low and income certain. On short-term, published operating costs for a comparable unit run roughly AED 45,000 to AED 70,000 a year before the mortgage — cleaning, linen, consumables, utilities, platform commission, permit and management. To beat the lease meaningfully, that unit needs to gross well above AED 180,000, which requires both strong nightly rates and occupancy holding through the summer. Some Marina units do that comfortably; many do not. The difference is location within the community, building facilities, floor, view and — more than owners expect — the quality of the photography and the review score.",
+      ]},
+      { heading: "Which Suits Your Property?", paragraphs: [
+        "Short-term is likely the better fit if your property sits in an area with genuine tourist, leisure or business-travel demand (Marina, Downtown, Palm Jumeirah, JBR, Business Bay), is a studio, one-bedroom or two-bedroom in a building with a pool and gym, is furnished or you're prepared to furnish it properly, is somewhere you'd like to use yourself part of the year, and sits in a building that permits short-term letting.",
+        "Long-term is likely the better fit if your property is in a residential community with limited visitor demand, is a three-bedroom or larger or a family villa, is in a building where short-term letting isn't permitted, is unfurnished and you'd rather not spend to change that, is owned purely as an investment you never intend to use, or needs the income to be predictable because a mortgage depends on it.",
+        "The overlooked middle option: you don't have to choose permanently. Owners switch between the two as circumstances change. One mechanical note — licensed holiday homes are exempt from Ejari, but if you move a property to a long-term arrangement of six months or more, the tenancy must be registered in Ejari within 30 days. Running a long-term let under a holiday home permit is a violation.",
+      ]},
+      { heading: "The Question Most Owners Get Wrong", paragraphs: [
+        "Owners tend to compare gross short-term income against gross long-term income, and short-term wins every time on that basis. It is the wrong comparison. Compare net income against effort and risk instead: a property earning AED 175,000 gross on short-term with AED 60,000 in costs nets AED 115,000, with income that varies month to month and requires either your time or a management fee. The same property at AED 120,000 on an annual lease nets close to AED 110,000, arrives predictably, and asks nothing of you.",
+        "At that point the decision is not really about money. It is about whether you want flexibility and upside, or certainty and quiet. Both are legitimate answers, and the right one depends on you rather than on the property.",
+      ]},
+    ],
+    faqs: [
+      { question: "Do I need a licence for short-term letting in Dubai?", answer: "Yes. Any residential property let for stays under one year requires a holiday home permit from the Department of Economy and Tourism. Each unit needs its own permit, and the number must appear on the listing." },
+      { question: "What is the Tourism Dirham?", answer: "A per-night charge collected from guests — AED 10 per occupied bedroom for Standard classification, AED 15 for Deluxe — applying to the first 30 consecutive nights and remitted to DET monthly." },
+      { question: "Will short-term earn me more?", answer: "Over a strong year, a well-located and well-presented property usually does. It also costs more to run and the income is variable. The practical test is whether the property can sustain roughly 55% to 65% occupancy across the year, including summer." },
+      { question: "Can my building stop me letting short-term?", answer: "Yes. Not all buildings permit it, and owners' association rules can override your plans. Confirm this before spending on furnishing." },
+      { question: "Can I switch between the two?", answer: "Yes. If you move to a long-term arrangement of six months or more, register the tenancy in Ejari within 30 days." },
+      { question: "What's the busiest season?", answer: "Roughly October to April. Summer is materially quieter, and any projection built only on peak-season rates will overstate your annual income." },
+    ],
+  },
+
+  {
+    slug: "rera-registered-broker-dubai",
+    category: "Blog",
+    date: "August 2026",
+    title: "Why You Should Only Buy Dubai Property Through a RERA-Registered Broker — And How to Check in Three Minutes",
+    excerpt: "Anyone can call themselves a property consultant in Dubai. Only a registered broker can legally act as one — here's what registration actually means, and how to verify someone before you send a single dirham.",
+    heroImage: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1800&q=90",
+    sections: [
+      { heading: "What RERA Registration Actually Is", paragraphs: [
+        "The Real Estate Regulatory Agency is the regulatory arm of the Dubai Land Department. It licenses brokerages, registers individual brokers, maintains the transaction records that underpin property valuations, and operates the rules that govern how sales and tenancies are conducted in the emirate.",
+        "For a broker to operate legally in Dubai, two things must be in place: the company needs a valid trade licence from the Department of Economy and Tourism and an Office Registration Number issued by RERA, and the individual needs a Broker Registration Number (BRN), issued personally after completing certified training through the Dubai Real Estate Institute and passing the associated examination. The registration is renewed annually and carries a physical broker card showing the agent's name, photograph and BRN.",
+        "An agent without a BRN is not a junior colleague working towards one. They are operating outside the regulatory framework entirely, and any transaction they handle sits outside it with them.",
+      ]},
+      { heading: "How to Verify a Broker in Three Minutes", paragraphs: [
+        "Check the permit number on the listing — every legitimate property advertisement in Dubai must display a Trakheesi permit number, and a listing with none is not authorised.",
+        "Verify the BRN — ask the agent directly for their Broker Registration Number, then check it against the Dubai Land Department's public records through the Dubai REST app or the DLD website. The record confirms the name attached to the number and the brokerage they are registered under.",
+        "Confirm the agent matches the brokerage — a valid BRN registered to a different company than the one the agent claims to represent is a red flag worth stopping over.",
+        "Ask to see the broker card — registered agents carry one and will produce it without hesitation. Reluctance here tells you something. Any professional will answer these questions in a minute without taking offence.",
+      ]},
+      { heading: "What Registration Gives You", paragraphs: [
+        "A documented, enforceable transaction — Dubai's property transactions run on standardised forms, and a registered broker uses them as a matter of course. Form A records the agreement between a seller and the listing broker, Form B records the agreement between a buyer and their broker, Form F is the Memorandum of Understanding (the sale contract between buyer and seller, setting out the price, deposit, timeline and consequences of non-completion), and Form I governs the arrangement when two brokerages co-operate on a deal.",
+        "Accountability that has teeth — registered brokers can be complained about, investigated, fined, suspended and struck off. An unregistered agent has no registration to lose, so your recourse is limited to general legal channels rather than a regulator with direct authority.",
+        "Access to actual transaction data — a registered brokerage works from the Dubai Land Department's recorded transaction data — what properties in a specific building actually sold and let for — rather than from portal asking prices. The gap between the two is significant and consistently in one direction.",
+        "Correct handling of your money — payments should never go to an agent's personal account. For an off-plan purchase, payments go into the project's escrow account; for a secondary purchase, funds move through the trustee office at transfer, typically by manager's cheque. An agent directing you to transfer a deposit to a personal or unrelated company account is the single clearest warning sign in this market.",
+        "Knowledge of the parts that catch buyers out — the developer's No Objection Certificate before a resale can proceed, Oqood registration for off-plan units, the DLD transfer fee (generally 4% of the purchase price plus administrative charges) and who pays it, service charge liabilities that transfer with the property, and the difference between freehold and leasehold zones.",
+        "Fee transparency — registered brokers operate under a code of conduct requiring disclosure of commissions, fees and contract terms. Sales commission commonly sits around 2% of the purchase price plus VAT, and leasing commission around 5% of annual rent plus VAT, though these are market conventions rather than fixed rates and are negotiable — the figure should be stated in writing before you commit.",
+      ]},
+      { heading: "Warning Signs Worth Acting On", paragraphs: [
+        "No Trakheesi permit number on the listing. Reluctance or delay when asked for a BRN. A request to transfer a deposit to a personal account. Pressure to decide immediately because a unit is \"about to go\". Refusal to put the commission figure in writing. A property advertised well below comparable transactions with a vague explanation. No Form F, or a suggestion that the paperwork can follow the payment — paperwork follows payment in exactly one type of transaction, and it is not a legitimate one.",
+      ]},
+      { heading: "The Case for Registration in Plain Terms", paragraphs: [
+        "Dubai's property market is one of the most active in the world, and it attracts a corresponding volume of people looking to work its edges. The regulatory framework here is genuinely good — escrow protection, standardised contracts, a public transaction record, a dedicated dispute centre — but it only protects the transactions conducted inside it. A deal arranged by an unregistered agent, documented informally, with money moving through the wrong account, is a deal that has stepped outside the framework.",
+        "Verifying a broker takes three minutes. A property purchase is likely the largest transaction you will make this decade. The arithmetic is not close.",
+      ]},
+    ],
+    faqs: [
+      { question: "What is a BRN?", answer: "A Broker Registration Number, issued by RERA to an individual broker after certified training and examination. It is personal to the agent, renewed annually, and verifiable through the Dubai REST app or the DLD website." },
+      { question: "How do I check whether an agent is registered?", answer: "Ask for their BRN and check it against Dubai Land Department records via the Dubai REST app. You can also ask to see their broker card, which registered agents carry." },
+      { question: "What is a Trakheesi permit number?", answer: "The advertising permit that must appear on every legitimate property listing in Dubai. A listing without one is not authorised." },
+      { question: "What is Form F?", answer: "The Memorandum of Understanding between buyer and seller, setting out price, deposit, timeline and the consequences of non-completion. It is the core contract in a Dubai property sale." },
+      { question: "Where should my deposit go?", answer: "Into the project escrow account for an off-plan purchase, or through the trustee office at transfer for a secondary purchase. Never into an agent's personal account." },
+      { question: "How much is the DLD transfer fee?", answer: "Generally 4% of the purchase price plus administrative fees. Who pays it is a matter of agreement between buyer and seller, so establish it before you sign." },
+      { question: "Can a non-UAE national buy property in Dubai?", answer: "Yes, on a freehold basis in designated freehold areas, with full ownership rights and no requirement for a local partner. Outside those areas, ownership structures differ." },
+      { question: "What if something goes wrong with a registered broker?", answer: "Complaints can be raised with RERA and the Dubai Land Department, and rental matters go to the Rental Dispute Centre. Registered brokers face real consequences, which is the point of registration." },
+    ],
+  },
+
+  {
+    slug: "renewing-dubai-tenancy-2026",
+    category: "Blog",
+    date: "August 2026",
+    title: "Renewing Your Dubai Tenancy in 2026: Rent Caps, Cheques and What to Check Before You Sign",
+    excerpt: "There is a formula that decides how much your landlord can legally raise your rent, a notice period they have to respect, and new ways to pay that did not exist a couple of renewal cycles ago. It only works if you know it exists before the renewal notice lands.",
+    heroImage: "https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=1800&q=90",
+    sections: [
+      { heading: "Where the Dubai Rental Market Stands Right Now", paragraphs: [
+        "Dubai's leasing market is running at record volume, and the composition of that volume is the interesting part. In July 2026, roughly 38,200 rental contracts were registered across the emirate — around 18,400 new agreements and around 19,800 renewals, taking the total for the first seven months of the year past 214,000 contracts, up slightly on the same stretch last year.",
+        "The first quarter told the same story more emphatically: about 118,400 new contracts against 135,600 renewals, with total contract value near AED 32.2 billion. A market where renewals lead is a market where people are settling — Dubai's resident population passed 4.7 million by the end of July, having added more than 160,000 people since January, and most of them are staying where they land. One-bedroom apartments continue to anchor everything, accounting for roughly 41% of all tenancy contracts registered this year.",
+      ]},
+      { heading: "Why Staying Put Usually Costs Less Than Moving", paragraphs: [
+        "When you renew, your increase is limited by law. When somebody new signs a lease on an identical unit down the corridor, there is no cap at all — they pay whatever the market will bear on the day. Over two or three years, those two prices drift apart. DLD figures from mid-2026 make the gap concrete: in Dubai Marina, the median new contract was AED 128,000 against a median renewal of AED 115,000; on Palm Jumeirah, AED 225,000 against AED 195,000. Across the wider market in July 2026, new contracts were priced at roughly AED 91 per square foot per year against roughly AED 75 per square foot on renewals — a gap of around 20%.",
+        "That gap is your leverage, and it is also your warning. If you move, you give up an accumulated discount and reset to today's price. Sometimes that still makes sense, but it should be a calculation, not an impulse.",
+      ]},
+      { heading: "How Much Can Your Landlord Actually Increase the Rent?", paragraphs: [
+        "Rent increases at renewal are governed by Decree No. 43 of 2013. The permitted increase depends entirely on how far below the average market rate your current rent sits: less than 10% below market means no increase is permitted at all; 11-20% below allows up to 5%; 21-30% below allows up to 10%; 31-40% below allows up to 15%; and more than 40% below allows up to 20%.",
+        "The market rate comes from the RERA Smart Rental Index, built from registered transaction data for your building, community and unit type. The rental increase calculator is available on the Dubai REST app and the DLD website and takes about two minutes to run. If your current rent is within 10% of the index figure for your unit, your landlord is not entitled to any increase — regardless of what similar units are listed at. If a proposed increase exceeds the band you fall into, the excess is not enforceable.",
+      ]},
+      { heading: "The 90-Day Rule", paragraphs: [
+        "If either party wants to change anything about the tenancy at renewal — the rent, the duration, the payment structure, any term at all — they must give the other party written notice at least 90 days before the contract expires. If that notice is not served in time, the tenancy renews on exactly the same terms it ran on before.",
+        "This cuts both ways, and tenants forget it more often than landlords do. If you want to negotiate the rent down, change from four cheques to twelve payments, or shorten the term, you also need to raise it inside that window. Diarise the date — ninety days before your contract ends is the moment the renewal actually begins.",
+      ]},
+      { heading: "Cheques, Instalments and the End of the Four-Cheque Default", paragraphs: [
+        "For years, the practical cost of renting in Dubai was the shape of the payment as much as the rent itself. That is changing fast in 2026. Splitting rent across four, six or twelve cheques is now common practice, particularly in communities with plenty of comparable stock — landlords understand that a month of vacancy costs far more than the inconvenience of extra payments.",
+        "In June 2026 the Dubai Land Department launched Flexi Rent, a framework allowing tenants renting through participating companies to pay monthly, quarterly or semi-annually instead of in a small number of large cheques. It launched with twelve real estate companies signed on and applies to both new and renewed contracts — the total annual rent does not change, only the shape of payment. It is not automatic and not universal; it depends on whether the company managing your property participates.",
+        "DLD has also been preparing a further scheme, reported for launch around September 2026, under which a participating bank would pay the landlord the full annual rent upfront while the tenant repays the bank in up to twelve interest-free instalments — eligibility criteria, participating banks and the application process were still being finalised at the time of writing.",
+      ]},
+      { heading: "What to Check Before You Renew", paragraphs: [
+        "Run the RERA calculator to find out exactly where your current rent sits against the index for your specific unit type, size and community. Confirm the notice was valid — was it in writing, and did it arrive at least 90 days before expiry? Compare against live listings carefully, since advertised asking prices are not the same as achieved rents. Check what has been delivered nearby, since a wave of new handovers shifts the balance of negotiating room. Price the alternative properly — moving is not just the rent difference, but the security deposit, agency commission, Ejari registration, a DEWA deposit, movers, and any period of double-paying. Finally, decide what you actually want: a lower rent, more instalments, a resolved maintenance issue, or a longer fixed term — landlords respond better to one clear ask than to general dissatisfaction.",
+      ]},
+      { heading: "If Your Landlord Asks for More Than the Cap Allows", paragraphs: [
+        "Start with the calculator result rather than an argument — in many cases the landlord has estimated the increase from asking prices in the building and simply has not run the index. If it does not resolve, the Rental Dispute Centre exists precisely for this; filing costs a percentage of your annual rent, and your position rests on documentation — your registered Ejari, your written tenancy contract, the notice you received and its date, and the index result.",
+        "Notice for eviction is a separate matter with a different rule: a landlord seeking to end a tenancy for reasons such as sale, personal use, or major renovation must serve twelve months' notice through a notary public. That is not the same as a renewal notice, and the two should not be confused.",
+      ]},
+      { heading: "Keep Your Ejari Current", paragraphs: [
+        "Ejari is the registration that makes your tenancy official with RERA and the Dubai Land Department, and it is what makes your rights enforceable. Without a valid Ejari you cannot activate or maintain a DEWA account, sponsor family residency using your tenancy, or bring a case to the Rental Dispute Centre. As of August 2026, DLD listed the cost at AED 177.75 through the Dubai REST app or approximately AED 220 at a Real Estate Services Trustee centre.",
+      ]},
+    ],
+    faqs: [
+      { question: "How much can my landlord raise my rent in Dubai?", answer: "It depends on how far your current rent sits below the market rate for your unit. The permitted increase runs from zero, where your rent is less than 10% below market, up to 20% where it is more than 40% below. Check the exact figure using the RERA rental increase calculator on the Dubai REST app." },
+      { question: "What is the RERA Smart Rental Index?", answer: "It is the official benchmark that determines the market rate for your property, built from registered transaction data for your building, area and unit type. It is what the rent increase cap is measured against." },
+      { question: "Can my landlord refuse to renew my tenancy?", answer: "Only for specific reasons permitted under Dubai's tenancy law — including sale of the property, the owner's personal use, or major renovation — and only with twelve months' written notice served through a notary public." },
+      { question: "How many cheques can I ask for?", answer: "There is no legal limit. Four, six and twelve cheque arrangements are all common. In areas with high availability, additional cheques are often one of the more achievable concessions." },
+      { question: "What is Flexi Rent?", answer: "A Dubai Land Department framework launched in June 2026 that allows tenants renting through participating companies to pay monthly, quarterly or semi-annually rather than in a small number of large cheques. The total annual rent stays the same. Availability depends on whether the company managing the property takes part." },
+      { question: "What happens if my landlord misses the 90-day notice?", answer: "The tenancy renews automatically on the same terms as the existing contract, including the same rent." },
+      { question: "How much is the security deposit in Dubai?", answer: "Typically 5% of the annual rent for an unfurnished property and 10% for a furnished one. It is refundable at the end of the tenancy, subject to the condition of the property." },
+      { question: "Do I need to renew my Ejari every year?", answer: "Yes. Ejari should be renewed against each new contract. Without a current registration you may face problems with DEWA, visa processes and any dispute you need to bring." },
+    ],
+  },
+
+  {
+    slug: "business-bay-community-update-august-2026",
+    category: "Community Update",
+    date: "August 2026",
+    title: "Business Bay Community Update: August 2026",
+    excerpt: "The road network around Business Bay kept improving in stages, and the rental market held completely flat — a more interesting result than it sounds, given how much new stock is heading this way.",
+    heroImage: "https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=1800&q=90",
+    sections: [
+      { heading: "Construction, Infrastructure & Connectivity", paragraphs: [
+        "Two separate RTA programmes are reshaping how you get in and out of Business Bay. The Oud Metha and Al Asayel Streets project — part of the wider Sheikh Rashid Corridor development — reached around 90% completion. A three-lane bridge opened in late July carrying traffic from Al Khail Road towards Al Asayel Street, with capacity for 3,600 vehicles per hour, joining two earlier bridges for a combined 9,000 vehicles per hour across separate movements. Two tunnels were scheduled to follow by the end of August. The full scheme covers four major intersections, 4.3 kilometres of bridges and tunnels, and 14 kilometres of new and widened roads, and RTA expects it to serve more than 420,000 residents by 2030.",
+        "The Al Mustaqbal Street project connects the district to DWTC, DIFC and Downtown. The AED 633 million scheme opened a 500-metre bridge from DWTC and One Central, cutting the run to Al Mustaqbal Street from around ten minutes to two during major events. The corridor is being widened from three lanes to four in each direction, lifting capacity from 6,600 to 8,800 vehicles per hour and cutting journey times from 13 minutes to six — construction has passed the halfway mark, ahead of programme. For residents, the eastern and northern approaches to Business Bay are getting materially better in stages through to early 2027.",
+      ]},
+      { heading: "The Business Bay Property Market", paragraphs: [
+        "Business Bay was flat in August, and flat is worth explaining. Apartment contracts registered with an August start date put the district's median annual rent unchanged at approximately AED 85,000, across a deep sample of more than 1,000 contracts. Rent per square foot rose slightly, by around 1.9% to roughly AED 107.",
+        "Holding flat is a reasonable outcome given Business Bay carries more supply pressure than almost anywhere else in Dubai — it is one of five districts that between them hold close to 45% of the emirate's under-construction stock, with roughly 10,000 new residential units projected to enter the district by 2027, around two-thirds of it studios and one-bedrooms. The counterweight is demand: in July, Business Bay generated more aggregate annual rental contract value than any other Dubai district, at approximately AED 384 million, ahead of Downtown Dubai at around AED 315 million.",
+        "Current rent ranges: studios generally run from around AED 55,000 (older Executive Towers stock at the lower end, branded residences above AED 85,000); one-bedrooms span roughly AED 75,000 to AED 140,000 depending on canal view, floor and building age; two-bedrooms sit around AED 110,000 to AED 200,000. District cooling typically adds AED 5,000 to AED 12,000 a year on top of the headline rent. On the sales side, Business Bay averages somewhere in the region of AED 1,450 to AED 2,360 per square foot depending on building and view, with the typical apartment transaction landing around AED 1.5 million. Business Bay spans roughly 240 towers across two clearly different generations — older office-conversion stock and newer branded residential — and they do not price alike or let alike.",
+      ]},
+      { heading: "Handovers & Off-Plan Activity", paragraphs: [
+        "The Q4 handover schedule is the thing to watch. Binghatti Skyrise is the largest single event — three towers carrying in the region of 3,300 residential units plus retail, targeted for Q4 2026, which will be felt particularly in the studio and one-bedroom segment. Peninsula by Select Group continues its phased delivery, a waterfront masterplan of around one million square feet across five sub-developments running in stages from 2026 through 2028, and is the most coherent piece of placemaking in Business Bay.",
+        "Also in the 2026 handover window: Volta and Cavalli Tower from DAMAC, Bayz 101 from Danube, and the first phase of Binghatti's Mercedes-Benz project. Looking to 2027, the ultra-prime pipeline includes Omniyat's Dorchester Collection and Vela Viento, alongside Peninsula 6. If you own a studio or one-bedroom here and your tenancy expires around the turn of the year, start the renewal conversation early — you will be competing against brand-new units at the exact moment the Q4 handovers complete.",
+      ]},
+      { heading: "Community, Retail & Lifestyle", paragraphs: [
+        "Dubai Summer Surprises ran through to the end of August, keeping Bay Avenue and the district's malls and restaurants busier than the season would normally allow. Business Bay's transformation from an office district to a live-work neighbourhood continues to show in its food and beverage mix — the stretch along the Dubai Water Canal and around Bay Avenue now supports genuine weekend footfall rather than emptying out after the working day.",
+      ]},
+      { heading: "What Residents Are Talking About", paragraphs: [
+        "Traffic and parking remain the standing complaints, particularly around the internal roads and the exits onto Al Khail Road at peak. Maintenance and building management come up repeatedly in tenant feedback, and the variance between towers is wide — in a district with this much choice, it directly affects what a landlord can achieve. Among owners, the Q4 handover wave is the dominant conversation, and reasonably so.",
+      ]},
+      { heading: "Looking Ahead", paragraphs: [
+        "Watch three things through the rest of the year: the October bridge on the Al Mustaqbal corridor, the Q4 handover completions and what they do to studio and one-bedroom availability, and whether the district's flat rental read holds once that stock is actually on the market. The leasing season also strengthens from September as corporate relocations resume after summer.",
+      ]},
+    ],
+  },
+
+  {
+    slug: "damac-hills-community-update-august-2026",
+    category: "Community Update",
+    date: "August 2026",
+    title: "DAMAC Hills Community Update: August 2026",
+    excerpt: "August delivered the thing DAMAC Hills residents have been waiting on for two years: the Al Qudra Road intersection finally works.",
+    heroImage: "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?auto=format&fit=crop&w=1800&q=90",
+    sections: [
+      { heading: "Construction, Infrastructure & Connectivity", paragraphs: [
+        "On 9 August the RTA opened a four-lane, 700-metre bridge on the southern side of the junction between Al Qudra Road and Sheikh Zayed bin Hamdan Al Nahyan Street, carrying up to 6,000 vehicles per hour. It completes the pair with a matching bridge that opened back in February, meaning the main traffic configuration at that intersection is finished.",
+        "The numbers are worth reading properly: capacity at the junction rises from 7,800 vehicles per hour to 19,400, and waiting time falls by around 85%, from close to seven minutes down to roughly one. Across the wider Al Qudra Road Development Project, RTA puts the journey time reduction at 9.4 minutes to 2.8 minutes, across a corridor serving more than 400,000 residents and visitors, including Arabian Ranches 1 and 2, Motor City, Studio City, Mudon, The Sustainable City and DAMAC Hills 2.",
+        "There is more coming — RTA has said the side ramp bridges at the same intersection are due in Q4 2026, including a 500-metre bridge towards Jebel Ali and a 900-metre bridge towards Downtown Dubai and Dubai International Airport, plus three kilometres of service roads. So the improvement felt in August is not the finished article; the directional movements that decide whether your morning run to the city is smooth arrive with the ramps later this year.",
+      ]},
+      { heading: "The Property Market in DAMAC Hills", paragraphs: [
+        "DAMAC Hills read softer than the Dubai average in August, placing it in the same group as JVC and Dubai Hills Estate, while Dubai Marina, Palm Jumeirah and Dubai South read firmer and Business Bay and Dubai Creek Harbour were broadly flat. That split is the defining feature of Dubai's 2026 rental market — there is no single citywide direction any more.",
+        "For owners, pricing to let matters more than it did a year ago, because a tenant comparing your unit against several similar ones will move on quickly from an ambitious asking price — a month of vacancy costs considerably more than a modest reduction. For tenants, it means a renewal is genuinely worth checking against the RERA Smart Rental Index, since in a softer-reading community there is a reasonable chance no increase is permitted at all.",
+        "On yields, DAMAC Hills continues to hold up as an income play rather than an appreciation one — apartments have generally been producing gross yields in the region of 6% to 7%, with three and four-bedroom villas typically lower but considerably more stable. On the sales side, asking-price data puts apartments averaging roughly AED 629,000 for a studio, AED 1.13 million for a one-bedroom and AED 2.08 million for a two-bedroom; villa averages run from around AED 4.36 million for a three-bedroom to AED 5.28 million for a four-bedroom, with Trump Estates and premium golf-facing plots pulling up the top of the range.",
+      ]},
+      { heading: "Retail, Amenities & Resident Sentiment", paragraphs: [
+        "No new cafés, restaurants, gyms or amenities opened within DAMAC Hills in August. DAMAC Mall remains the community's day-to-day retail anchor, with around 40 retail units and ten food and beverage outlets alongside its Spinneys and Fitness First — adequate rather than generous for a community of this size. Trump International Golf Club Dubai remains the community's defining amenity, with a meaningful share of villas facing fairway or water rather than the course being a members-only edge to the masterplan.",
+        "Paid parking is still the sore point — Parkin's metered zone across DAMAC Hills (code 676H) came in during May and has not been reconsidered, running from AED 2 for thirty minutes up to AED 16 for four hours, Monday to Saturday, 8am to 10pm, with subscriptions from AED 300 a month. Residents' objection has never really been the amount; it is that a gated, master-planned community that markets itself on space is now metered like a city-centre district. The bridge, by contrast, is the clearest, most concrete improvement the community has received in some time, and reaction has been correspondingly positive.",
+      ]},
+      { heading: "Looking Ahead", paragraphs: [
+        "Two things to watch through the rest of the year: the Q4 ramp openings at the Al Qudra intersection, which complete the works that began in February, and the leasing season picking up from September through the end of the year as families settle after the school intake and corporate relocations resume — a window that matters more than usual for owners with a vacant unit in a community reading softer.",
+      ]},
+    ],
+  },
+
+  {
+    slug: "downtown-dubai-community-update-august-2026",
+    category: "Community Update",
+    date: "August 2026",
+    title: "Downtown Dubai Community Update: August 2026",
+    excerpt: "Downtown is the one Dubai district where the summer slowdown barely registers. The property picture is the more interesting story this month, and it needs reading carefully rather than at face value.",
+    heroImage: "https://images.unsplash.com/photo-1512632578888-169bbbc64f33?auto=format&fit=crop&w=1800&q=90",
+    sections: [
+      { heading: "The Downtown Property Market", paragraphs: [
+        "Downtown's rental data in August came with a caveat worth understanding: the mid-month read of Ejari and Dubai Land Department records carried a shorter registration cutoff for Downtown than for other districts, producing an apparent decline that should not be compared directly against areas measured over a longer window.",
+        "What is more reliable is the direction over a longer period. Asking-price indices have Downtown's rent per square foot at roughly AED 167 as of mid-year, down from around AED 193 six months earlier and AED 187 twelve months earlier. Forecast models covering 2026 put Downtown at approximately -1.4% across the period, alongside Al Barsha at around -1.1% — the clearest examples of softening in the current dataset. The honest read: Downtown is easing gently, a normalisation rather than a correction after four years of hard appreciation.",
+        "Two things support that view. Downtown remains the second-largest leasing market in Dubai by contract value, generating approximately AED 315 million in aggregate annual rental contract value in July, behind only Business Bay at around AED 384 million. And unlike Business Bay, JVC or Dubai South, Downtown has very little new supply coming — it is essentially built out, so whatever softening happens here is demand-side and cyclical.",
+        "Current rent ranges: studios generally run around AED 75,000 to AED 100,000; one-bedrooms roughly AED 90,000 to AED 130,000; two-bedrooms around AED 150,000 to AED 220,000; three-bedrooms span AED 250,000 to AED 400,000 depending heavily on view and building. District cooling can run AED 800 to AED 1,500 a month through summer. On the sales side, Downtown continues to price at the top of Dubai's apartment market — Burj Vista sits in the region of AED 2,500 to AED 3,400 per square foot, Address Residences stock roughly AED 3,000 to AED 4,800, and Burj Khalifa's standard residential floors approximately AED 3,500 to AED 5,500, with direct Burj-facing units commanding a 10-20% premium over interior-facing stock. Gross yields here typically fall in the 5% to 7% range — Downtown is bought for capital preservation and appreciation, not cash flow.",
+      ]},
+      { heading: "Retail, Dining & Construction Progress", paragraphs: [
+        "The Dubai Mall continues its expansion programme — an AED 1.5 billion scheme will add around 240 luxury retail and dining concepts along with expanded exhibition space. Mandarin Oriental Downtown continues to build out its food and beverage offer, with Billionaire now operating there as a late-night dining and entertainment concept, and Fashion Avenue added L'Avenue, the Paris brasserie, earlier in the year.",
+        "Downtown itself is largely finished, so the infrastructure story is about the approaches. The Al Mustaqbal Street Development Project (AED 633 million) is improving connectivity between DWTC, DIFC, Downtown and Business Bay — a 500-metre bridge from DWTC and One Central has opened, and the corridor is being widened from three lanes to four in each direction, lifting capacity from 6,600 to 8,800 vehicles per hour. The World Trade Centre Roundabout project is replacing the roundabout with a signal-controlled intersection, and the Sheikh Rashid Corridor works along Oud Metha and Al Asayel Streets have reached roughly 90% completion. Taken together, the approaches into Downtown from the north and east are measurably better than a year ago.",
+      ]},
+      { heading: "What Residents Are Talking About", paragraphs: [
+        "Traffic is the standing complaint and always has been — Sheikh Zayed Road around the Burj Khalifa interchange remains congested through peak periods, and the internal Boulevard loop backs up badly at weekends and during Fountain show times. Parking follows closely behind, particularly in the older Boulevard towers. Among owners, the conversation is about pricing correctly — Downtown tenants have more choice than they did two years ago, and the gap between a well-presented, correctly priced unit and an ambitiously priced one shows up quickly in days-on-market. Service charges remain high here relative to most of Dubai, the trade-off for the amenity standard and the address.",
+      ]},
+      { heading: "Looking Ahead", paragraphs: [
+        "Three things to watch through the rest of the year: the October bridge completion on the Al Mustaqbal corridor, whether Downtown's softer read firms up as the peak leasing season arrives from September through to March, and the continued build-out of the Dubai Mall expansion, which will keep reshaping the district's retail centre of gravity.",
+      ]},
+    ],
+  },
+];
+
+function InsightArticleDetail({ slug }) {
+  const article = INSIGHT_ARTICLES.find((item) => item.slug === slug);
+
+  if (!article) {
+    return (
+      <>
+        <Header />
+        <main className="page-placeholder">
+          <div className="wrap">
+            <h1 className="serif">Article not found</h1>
+            <a href="/insights" className="button-outline">
+              ← Back to Insights
+            </a>
+          </div>
+        </main>
+        <Footer />
+      </>
+    );
+  }
+
+  return (
+    <>
+      <Header />
+
+      <main className="area-guide-detail">
+
+        <section className="area-detail-hero">
+          <img src={article.heroImage} alt={article.title} />
+          <div className="area-detail-hero-overlay" />
+
+          <div className="wrap">
+            <p>GOLDEN KEY {article.category.toUpperCase()}</p>
+            <h1>{article.title}</h1>
+            <span>{article.date}</span>
+          </div>
+        </section>
+
+        <section className="area-detail-section">
+          <div className="wrap area-detail-layout">
+
+            <article className="area-detail-content">
+              <p className="area-detail-breadcrumb">
+                Insights / {article.category} / {article.title}
+              </p>
+
+              <p style={{ fontSize: 17, color: "#42555c" }}>
+                {article.excerpt}
+              </p>
+
+              {article.sections.map((section) => (
+                <div key={section.heading}>
+                  <h3>{section.heading}</h3>
+                  {section.paragraphs.map((paragraph, index) => (
+                    <p key={index}>{paragraph}</p>
+                  ))}
+                </div>
+              ))}
+
+              {article.faqs && article.faqs.length > 0 && (
+                <>
+                  <h3>Frequently asked questions</h3>
+                  <div className="valuation-faq">
+                    {article.faqs.map((faq, index) => (
+                      <details key={faq.question} open={index === 0}>
+                        <summary>
+                          {faq.question}
+                          <span>⌃</span>
+                        </summary>
+                        <div>
+                          <p>{faq.answer}</p>
+                        </div>
+                      </details>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {article.disclaimer && (
+                <p style={{ fontSize: 12, color: "#8b9296", marginTop: 30 }}>
+                  {article.disclaimer}
+                </p>
+              )}
+            </article>
+
+            <aside className="area-detail-sidebar">
+              <div className="area-detail-form">
+                <p>TALK TO OUR TEAM</p>
+                <h3>Have a question about this?</h3>
+                <EnquiryForm compact />
+              </div>
+
+              <div className="area-guide-side-card">
+                <strong>Looking to move?</strong>
+                <span>Browse properties available in Dubai.</span>
+                <a href="/buy">View properties →</a>
+              </div>
+            </aside>
+
+          </div>
+        </section>
+
+      </main>
+
+      <Footer />
+    </>
+  );
+}
+
 function Insights() {
-  const insightsList = [
-    {
-      title: "MARKET REPORT",
-      text: "Download Golden Key Market Reports for valuable insights into the latest market trends and UAE real estate market analysis.",
-    },
-    {
-      title: "SOCIAL MEDIA",
-      text: "Check our social media updates and get the latest news about our team, deals, partnerships, awards and more.",
-    },
-    {
-      title: "MEDIA LIBRARY",
-      text: "Explore all the latest photos, videos, graphs, event updates and other multimedia resources about Golden Key.",
-    },
-    {
-      title: "PRESS COVERAGE",
-      text: "Find the latest press coverage and media mentions showcasing our work in various industries and publications.",
-    },
-    {
-      title: "BLOG",
-      text: "Get insights, tips, and strategies on various topics from our team through informative and engaging blogs.",
-    },
+  const [activeCategory, setActiveCategory] = useState("All");
+
+  const categories = [
+    "All",
+    "Market Report",
+    "Community Update",
+    "Blog",
   ];
+
+  const visibleArticles = INSIGHT_ARTICLES.filter(
+    (article) =>
+      activeCategory === "All" || article.category === activeCategory
+  );
 
   return (
     <>
@@ -3918,27 +4361,44 @@ function Insights() {
           </div>
         </section>
 
-        {/* INSIGHT CARDS GRID */}
+        {/* CATEGORY FILTER */}
         <section className="insights-list">
           <div className="wrap">
+            <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginBottom: 30 }}>
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  type="button"
+                  onClick={() => setActiveCategory(cat)}
+                  className={cat === activeCategory ? "button-coral" : "button-outline"}
+                  style={{ padding: "8px 18px", fontSize: 13 }}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
 
             <div className="insights-grid">
 
-              {insightsList.map((item) => (
+              {visibleArticles.map((item) => (
                 <article
                   className="insights-card"
-                  key={item.title}
+                  key={item.slug}
                 >
+
+                  <p style={{ fontSize: 11, letterSpacing: ".08em", color: "#a58a4f", marginBottom: 8 }}>
+                    {item.category.toUpperCase()} · {item.date}
+                  </p>
 
                   <h2>
                     {item.title}
                   </h2>
 
                   <p>
-                    {item.text}
+                    {item.excerpt}
                   </p>
 
-                  <a href="#contact">
+                  <a href={`/insights/${item.slug}`}>
                     <span className="yellow-dash">—</span>
                     Continue Reading
                   </a>
@@ -4012,6 +4472,13 @@ function ServicesPage() {
       text: "Understand the market value of your property with a professional assessment built around location, demand and comparable evidence.",
       image:
         "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1400&q=88",
+    },
+    {
+      title: "Mortgage Services",
+      path: "/services/mortgage-services",
+      text: "Guidance through pre-approval, first-time purchases, non-resident mortgages, refinancing and equity release.",
+      image:
+        "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1400&q=88",
     },
     {
       title: "Holiday Home Services",
@@ -4379,18 +4846,152 @@ function ServicesTeaser() {
 }
 
 function PropertyManagement() {
-  const testimonials = [
+  const serviceItems = [
     {
-      text: "Golden Key gives us the confidence that our property is being looked after properly, with clear communication throughout.",
-      name: "Private Property Owner",
+      title: "Rental valuation and pricing strategy",
+      text: "Setting a rent that fills the property quickly without leaving money on the table. Priced against what is actually letting nearby, not against optimistic asking prices.",
     },
     {
-      text: "The team handles the day-to-day details professionally and keeps us informed without unnecessary back and forth.",
-      name: "Dubai Investor",
+      title: "Marketing and tenant sourcing",
+      text: "Professional photography, listings across the major UAE portals, and viewings handled by our agents rather than by you.",
     },
     {
-      text: "A much easier ownership experience. We know our property is monitored and managed with care.",
-      name: "International Client",
+      title: "Tenant screening",
+      text: "Employment, identity, and reference checks before anyone signs. The wrong tenant costs far more than an empty month.",
+    },
+    {
+      title: "Tenancy contracts and Ejari registration",
+      text: "Drafted correctly, registered properly, and filed where you can actually find them.",
+    },
+    {
+      title: "Rent collection and cheque handling",
+      text: "Rent chased, collected, and transferred to you. Late payment is followed up by us, not by you.",
+    },
+    {
+      title: "Maintenance coordination",
+      text: "Vetted contractors, an agreed approval threshold, and jobs seen through to completion rather than just logged.",
+    },
+    {
+      title: "Move-in and move-out inspections",
+      text: "Documented with photographs at both ends, so deposit conversations rest on evidence rather than memory.",
+    },
+    {
+      title: "Renewals and re-letting",
+      text: "Renewal conversations started early, and marketing restarted before a vacancy rather than after it.",
+    },
+    {
+      title: "Regulatory compliance",
+      text: "RERA and Dubai Land Department requirements handled as part of the service, not as an extra you have to remember.",
+    },
+    {
+      title: "Dispute and delinquency support",
+      text: "If a tenancy goes wrong, we manage the process and advise you on your options rather than leaving you to work it out alone.",
+    },
+    {
+      title: "Owner reporting",
+      text: "A clear record of income, expenses, and what is happening at your property — sent to you rather than waiting to be requested.",
+    },
+  ];
+
+  const whyCards = [
+    {
+      number: "01",
+      title: "We manage the asset, not just the tenancy",
+      description:
+        "A managed property should be worth more at the end of a tenancy than a neglected one. Small repairs handled early, condition documented, maintenance recorded — it protects your rent now and your resale value later.",
+    },
+    {
+      number: "02",
+      title: "Vacancy is the real cost",
+      description:
+        "An empty month is far more expensive than a slightly lower rent. We price to let, market before the lease ends, and open renewal conversations early instead of reacting to a notice.",
+    },
+    {
+      number: "03",
+      title: "You hear from us before you have to ask",
+      description:
+        "Owners should not have to chase their own property manager for an update. You will know what is happening at your property — including when something has gone wrong.",
+    },
+    {
+      number: "04",
+      title: "Contractors we stand behind",
+      description:
+        "We use a vetted panel rather than whoever answers the phone first, and we check the work is finished properly before it is signed off and paid.",
+    },
+    {
+      number: "05",
+      title: "Overseas owners fully covered",
+      description:
+        "Many of our landlords do not live in the UAE. Viewings, inspections, maintenance, and handovers all run without you being in the country.",
+    },
+    {
+      number: "06",
+      title: "Straight answers about your property",
+      description:
+        "If your rent expectation is unrealistic, or the property needs work before it will let well, we will tell you. That is more useful than agreement.",
+    },
+  ];
+
+  const faqs = [
+    {
+      question: "What does property management actually include?",
+      answer:
+        "Everything between finding a tenant and the tenancy ending — marketing, screening, contracts and Ejari, rent collection, maintenance, inspections, renewals, and compliance.",
+    },
+    {
+      question: "How much do you charge?",
+      answer:
+        "Fees depend on the property, the service level, and the size of the portfolio. We set them out in writing in your proposal, with nothing introduced later.",
+    },
+    {
+      question: "What if I already have a tenant in place?",
+      answer:
+        "That is fine, and common. We can take over an existing tenancy mid-term without disrupting the tenant or the contract.",
+    },
+    {
+      question: "Who pays for repairs?",
+      answer:
+        "Repair costs are the owner's, as they normally are. We agree a spending threshold with you in advance so routine minor issues get fixed immediately, and we come to you for approval on anything above it.",
+    },
+    {
+      question: "What if I live outside the UAE?",
+      answer:
+        "Many of our landlords do. Viewings, inspections, maintenance, tenant handovers, and renewals all run without you needing to be in the country.",
+    },
+    {
+      question: "How do you choose tenants?",
+      answer:
+        "Employment, identity, and reference checks before anyone signs. We would rather leave a property empty for a few extra weeks than place a tenant who will cause problems for a year.",
+    },
+    {
+      question: "How quickly will you find a tenant?",
+      answer:
+        "It depends on the property, the price, and the season. What we can commit to is pricing it honestly and starting the marketing before the current lease ends rather than after it.",
+    },
+    {
+      question: "What happens if a tenant stops paying?",
+      answer:
+        "We follow up immediately, keep you informed, and advise you on your options. You are not left to work out the process alone.",
+    },
+    {
+      question: "Do you handle Ejari and renewals?",
+      answer:
+        "Yes. Registration, renewals, and the associated paperwork are part of the service.",
+    },
+    {
+      question: "Can I still sell the property while it is managed?",
+      answer:
+        "Yes. Golden Key handles sales as well, so a managed property can be brought to market by the same team, with the tenancy taken into account.",
+    },
+    {
+      question: "Do you manage commercial property?",
+      answer:
+        "Yes, alongside residential. Tell us what you own and we will confirm what we can take on.",
+    },
+    {
+      question: "What if I want short-term letting instead?",
+      answer:
+        "Holiday homes and short-term stays are handled by our sister company, Vibrant Vacation Homes Rental. Same ownership and same standards, run as a separate operation because it is a genuinely different business.",
     },
   ];
 
@@ -4411,15 +5012,16 @@ function PropertyManagement() {
             </p>
 
             <h1>
-              Your property cared for,
-              like it’s our own
+              Your property, managed
+              <br />
+              like we own it
             </h1>
 
             <p>
-              Professional property management designed to
-              protect your investment, simplify ownership and
-              give you confidence that every important detail
-              is being handled.
+              Owning a property in Dubai should feel like an asset, not
+              a second job. Golden Key handles the tenants, the rent,
+              the maintenance, and the paperwork — so the only thing
+              you deal with is the income.
             </p>
 
             <div className="pm-hero-actions">
@@ -4427,16 +5029,20 @@ function PropertyManagement() {
                 href="#pm-contact"
                 className="pm-gold-button"
               >
-                Enquire
+                Get a Management Proposal
               </a>
 
               <a
                 href="#pm-overview"
                 className="pm-outline-button"
               >
-                Discover our service
+                Talk to Our Team
               </a>
             </div>
+
+            <p className="trust-line">
+              Free proposal · No obligation · Overseas owners fully covered
+            </p>
           </div>
         </section>
 
@@ -4461,46 +5067,31 @@ function PropertyManagement() {
             <div className="pm-copy reveal">
 
               <p className="pm-gold-label">
-                PROPERTY MANAGEMENT
+                THE PROBLEM WE SOLVE
               </p>
 
               <h2 className="pm-serif">
-                We make your
+                Owning is easy.
                 <br />
-                ownership journey simpler
+                Managing is the hard part.
               </h2>
 
               <p>
-                Managing a property requires more than
-                collecting rent and responding to requests.
-                It requires attention, organisation and a clear
-                understanding of what keeps an investment
-                performing.
+                Chasing rent. Fielding maintenance calls at inconvenient
+                hours. Renewing Ejari before it lapses. Finding a
+                replacement tenant the moment one gives notice. Arguing
+                about a deposit over damage nobody photographed.
               </p>
 
               <p>
-                Golden Key provides a structured property
-                management service designed around the
-                individual needs of owners and investors.
-              </p>
-
-              <p>
-                From tenant communication and maintenance
-                coordination to inspections, reporting and
-                ongoing property care, our team handles the
-                details so you can focus on the bigger picture.
+                None of it is complicated on its own — it is simply
+                relentless, and it quietly eats the time you bought the
+                property to free up.
               </p>
 
               <h3>
-                A professional team behind your property
+                That is the entire job we take off your hands.
               </h3>
-
-              <p>
-                We believe good management should feel
-                proactive rather than reactive. Our approach
-                is built around communication, accountability
-                and consistency.
-              </p>
 
             </div>
 
@@ -4511,41 +5102,35 @@ function PropertyManagement() {
               </p>
 
               <h3>
-                Speak with our property
-                management team
+                Tell us about your property
               </h3>
 
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
                   alert(
-                    "Thank you. Your enquiry has been received."
+                    "Thank you — we have received your details. A member of our team will be in touch shortly with a proposal for your property."
                   );
                 }}
               >
 
                 <input
                   required
-                  placeholder="First Name"
-                />
-
-                <input
-                  required
-                  placeholder="Last Name"
+                  placeholder="Full name"
                 />
 
                 <input
                   required
                   type="email"
-                  placeholder="Email Address"
+                  placeholder="Email address"
                 />
 
                 <input
                   required
-                  placeholder="Phone Number"
+                  placeholder="Mobile number (+971)"
                 />
 
-                <select defaultValue="">
+                <select required defaultValue="">
                   <option value="" disabled>
                     Property type
                   </option>
@@ -4553,19 +5138,73 @@ function PropertyManagement() {
                   <option>Villa</option>
                   <option>Townhouse</option>
                   <option>Penthouse</option>
+                  <option>Commercial</option>
+                  <option>Whole building</option>
+                </select>
+
+                <input
+                  required
+                  placeholder="Community or building"
+                />
+
+                <select required defaultValue="">
+                  <option value="" disabled>
+                    Bedrooms
+                  </option>
+                  <option>Studio</option>
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5+</option>
+                  <option>Not applicable</option>
+                </select>
+
+                <select required defaultValue="">
+                  <option value="" disabled>
+                    Number of properties
+                  </option>
+                  <option>1</option>
+                  <option>2–4</option>
+                  <option>5+</option>
+                </select>
+
+                <select required defaultValue="">
+                  <option value="" disabled>
+                    Current status
+                  </option>
+                  <option>Vacant</option>
+                  <option>Tenanted</option>
+                  <option>Handover soon</option>
+                  <option>Currently self-managed</option>
+                  <option>Managed elsewhere</option>
+                </select>
+
+                <select defaultValue="">
+                  <option value="" disabled>
+                    Are you based in the UAE?
+                  </option>
+                  <option>Yes</option>
+                  <option>No</option>
                 </select>
 
                 <textarea
-                  rows="5"
-                  placeholder="Tell us about your property"
+                  rows="4"
+                  placeholder="Anything we should know?"
                 />
 
                 <button
                   type="submit"
                   className="pm-gold-button"
                 >
-                  Send enquiry
+                  Send My Details
                 </button>
+
+                <p className="form-consent-note">
+                  By submitting this form you agree to be contacted by
+                  Golden Key Real Estate regarding your property. We
+                  never share your details with third parties.
+                </p>
 
               </form>
 
@@ -4574,75 +5213,71 @@ function PropertyManagement() {
           </div>
         </section>
 
-        {/* STATISTICS CARD */}
+        {/* WHAT FULL MANAGEMENT COVERS */}
+        <section className="section" id="pm-services">
+          <div className="wrap">
+
+            <p className="pm-gold-label centered">
+              WHAT FULL MANAGEMENT COVERS
+            </p>
+
+            <h2 className="pm-serif centered">
+              Fully managed, genuinely hands-off
+            </h2>
+
+            <p className="section-intro-text centered">
+              From the moment your property is ready to lease until the
+              day a tenant hands the keys back, we handle the entire
+              cycle. You approve the decisions that matter. We take
+              care of everything else.
+            </p>
+
+            <div className="content-checklist">
+              {serviceItems.map((item) => (
+                <div className="content-checklist-item" key={item.title}>
+                  <h4>{item.title}</h4>
+                  <p>{item.text}</p>
+                </div>
+              ))}
+            </div>
+
+            <div style={{ textAlign: "center", marginTop: 36 }}>
+              <a href="#pm-contact" className="pm-gold-button">
+                Get a Management Proposal
+              </a>
+            </div>
+
+          </div>
+        </section>
+
+        {/* WHY OWNERS CHOOSE GOLDEN KEY */}
         <section className="section pm-report-section">
 
           <div className="wrap">
 
-            <div className="pm-report-card reveal">
+            <p className="pm-gold-label centered">
+              WHY OWNERS CHOOSE GOLDEN KEY
+            </p>
 
-              <div className="pm-report-content">
+            <h2 className="pm-serif centered">
+              Management that behaves like ownership
+            </h2>
 
-                <p className="pm-gold-label">
-                  AT A GLANCE
-                </p>
-
-                <h2 className="pm-serif">
-                  Professional management
-                  <br />
-                  built around your asset
-                </h2>
-
-                <div className="pm-stats">
-
-                  <div>
-                    <strong>24/7</strong>
-                    <span>support availability</span>
-                  </div>
-
-                  <div>
-                    <strong>360°</strong>
-                    <span>property oversight</span>
-                  </div>
-
-                  <div>
-                    <strong>100%</strong>
-                    <span>owner visibility</span>
-                  </div>
-
+            <div className="content-cards-grid">
+              {whyCards.map((card) => (
+                <div className="content-card" key={card.number}>
+                  <span className="circle-mark">{card.number}</span>
+                  <h3>{card.title}</h3>
+                  <p>{card.description}</p>
                 </div>
-
-                <p>
-                  A structured service that combines
-                  proactive communication, tenant support,
-                  maintenance coordination and regular
-                  property oversight.
-                </p>
-
-                <a
-                  href="#pm-contact"
-                  className="pm-gold-button"
-                >
-                  Discover our approach
-                </a>
-
-              </div>
-
-              <div className="pm-report-visual">
-                <div className="pm-report-paper">
-                  PROPERTY
-                  <br />
-                  MANAGEMENT
-                </div>
-              </div>
-
+              ))}
             </div>
 
           </div>
 
         </section>
 
-        {/* TEXT + CENTER MARKER */}
+        {/* MULTIPLE PROPERTIES & BUILDING MANAGEMENT */}
         <section className="section pm-explanation">
 
           <div className="wrap pm-explanation-grid">
@@ -4650,26 +5285,52 @@ function PropertyManagement() {
             <div className="reveal">
 
               <p className="pm-gold-label">
-                WHY MANAGEMENT MATTERS
+                MULTIPLE PROPERTIES & BUILDING MANAGEMENT
               </p>
 
               <h2 className="pm-serif">
-                Your investment deserves
+                One property or
                 <br />
-                consistent attention
+                an entire building
               </h2>
 
               <p>
-                Property ownership can become time-consuming
-                when every maintenance issue, tenant request,
-                inspection and operational detail comes back
-                to you.
+                Landlords with several units, and owners of whole
+                buildings, need more than the same service repeated.
+                They need it coordinated.
               </p>
 
               <p>
-                A strong management structure creates space
-                for owners to step back while still knowing
-                exactly what is happening with their asset.
+                <strong>Portfolio management —</strong> multiple units
+                handled under one arrangement with consolidated
+                reporting, so you are not tracking each property
+                separately or repeating the same conversation.
+              </p>
+
+              <p>
+                <strong>Leasing and vacancy management —</strong>{" "}
+                occupancy managed across the portfolio, with lease end
+                dates staggered where possible so vacancies do not all
+                land in the same month.
+              </p>
+
+              <p>
+                <strong>Facilities and maintenance supervision —</strong>{" "}
+                contractors, common areas, and routine servicing
+                overseen on your behalf, with a single point of
+                contact.
+              </p>
+
+              <p>
+                <strong>Fit-out and handover coordination —</strong> new
+                units prepared, snagged, and made ready to let without
+                you managing the trades yourself.
+              </p>
+
+              <p>
+                <strong>Financial reporting —</strong> income, expenses,
+                and arrears reported across the whole portfolio in one
+                place.
               </p>
 
               <a href="#pm-contact" className="pm-text-link">
@@ -4749,27 +5410,23 @@ function PropertyManagement() {
 
               <div>
                 <p className="pm-gold-label">
-                  TENANT EXPERIENCE
+                  IS LONG-TERM MANAGEMENT RIGHT FOR YOU?
                 </p>
 
                 <h2 className="pm-serif">
-                  The right support,
+                  This is likely the
                   <br />
-                  when it matters
+                  right service if you
                 </h2>
 
-                <p>
-                  Fast communication and clear processes
-                  can make a major difference to tenant
-                  satisfaction and long-term property
-                  performance.
-                </p>
-
-                <p>
-                  Our team coordinates communication,
-                  requests and practical property needs
-                  with a focus on professionalism.
-                </p>
+                <ul>
+                  <li>Want predictable annual income without day-to-day involvement</li>
+                  <li>Own the property purely as an investment and do not use it yourself</li>
+                  <li>Live outside the UAE, or travel frequently</li>
+                  <li>Own several units and want them handled consistently</li>
+                  <li>Have had a difficult tenancy before and would rather not repeat it</li>
+                  <li>Are self-managing now and have run out of patience for it</li>
+                </ul>
               </div>
 
 <div className="pm-real-image pm-image-reveal">
@@ -4779,7 +5436,7 @@ function PropertyManagement() {
   />
 
   <div className="pm-image-overlay">
-    <span>Tenant experience</span>
+    <span>Long-term management</span>
   </div>
 </div>
 
@@ -4789,33 +5446,36 @@ function PropertyManagement() {
 
               <div>
                 <p className="pm-gold-label">
-                  PROPERTY CARE
+                  A DIFFERENT LETTING MODEL
                 </p>
 
                 <h2 className="pm-serif">
-                  Your asset maintained
+                  Short-term letting may
                   <br />
-                  with purpose
+                  suit you better if you
                 </h2>
 
-                <p>
-                  Regular attention helps identify issues
-                  early and protects the condition and
-                  long-term value of your property.
-                </p>
-
                 <ul>
-                  <li>Routine property inspections</li>
-                  <li>Maintenance coordination</li>
-                  <li>Issue tracking</li>
-                  <li>Owner communication</li>
+                  <li>Own a well-located furnished property in an area with visitor demand</li>
+                  <li>Want to use the property yourself during parts of the year</li>
+                  <li>Prefer higher potential returns and accept more variable income</li>
                 </ul>
 
+                <p>
+                  If that list sounds more like you, our sister
+                  company, Vibrant Vacation Homes Rental, handles
+                  holiday homes and short-term stays. Same ownership,
+                  same standards, built for a different letting model.
+                  Tell us about the property and we will recommend the
+                  right one — including when the honest answer is the
+                  service we do not provide.
+                </p>
+
                 <a
-                  href="#pm-contact"
+                  href="/services/holiday-home-services"
                   className="pm-outline-small"
                 >
-                  Learn more
+                  Get a Free Recommendation
                 </a>
 
               </div>
@@ -4827,7 +5487,7 @@ function PropertyManagement() {
   />
 
   <div className="pm-image-overlay">
-    <span>Property care</span>
+    <span>Short-term letting</span>
   </div>
 </div>
 
@@ -4837,46 +5497,49 @@ function PropertyManagement() {
 
         </section>
 
-        {/* TESTIMONIALS */}
+        {/* HOW IT WORKS */}
         <section className="section pm-testimonials">
 
           <div className="wrap">
 
             <p className="pm-gold-label centered">
-              OWNER FEEDBACK
+              HOW IT WORKS
             </p>
 
             <h2 className="pm-serif centered">
-              Hear from owners who have lived
-              <br />
-              the difference
+              Getting started takes three steps
             </h2>
-
-            <p className="pm-testimonial-intro">
-              Good management should make ownership
-              feel easier, clearer and more predictable.
-            </p>
 
             <div className="pm-testimonial-grid">
 
-              {testimonials.map((item) => (
+              <article className="pm-testimonial">
+                <strong>Step 01 — Property review</strong>
+                <p>
+                  Tell us about your property. We look at the unit,
+                  its location, its condition, and what comparable
+                  properties nearby are actually achieving in rent.
+                </p>
+              </article>
 
-                <article
-                  className="pm-testimonial"
-                  key={item.name}
-                >
+              <article className="pm-testimonial">
+                <strong>Step 02 — Your proposal</strong>
+                <p>
+                  We come back with a realistic rental figure,
+                  anything we would recommend doing before listing,
+                  and a clear breakdown of our fees. No obligation to
+                  proceed.
+                </p>
+              </article>
 
-                  <p>
-                    “{item.text}”
-                  </p>
-
-                  <strong>
-                    {item.name}
-                  </strong>
-
-                </article>
-
-              ))}
+              <article className="pm-testimonial">
+                <strong>Step 03 — Onboarding and go live</strong>
+                <p>
+                  Paperwork, photography, listing, and marketing
+                  handled by us. From there your property is managed,
+                  and you receive regular updates without having to
+                  ask.
+                </p>
+              </article>
 
             </div>
 
@@ -4884,56 +5547,32 @@ function PropertyManagement() {
 
         </section>
 
-        {/* DASHBOARD */}
+        {/* FAQ */}
         <section className="section pm-dashboard-section">
 
-          <div className="wrap pm-dashboard-grid">
+          <div className="wrap">
 
-            <div className="pm-dashboard-image reveal">
+            <p className="pm-gold-label centered">
+              FREQUENTLY ASKED QUESTIONS
+            </p>
 
-              <div className="pm-monitor">
+            <h2 className="pm-serif centered">
+              Your questions, answered
+            </h2>
 
-                <div className="pm-monitor-top">
-                  Golden Key
-                </div>
+            <div className="valuation-faq" style={{ maxWidth: 820, margin: "30px auto 0" }}>
+              {faqs.map((faq, index) => (
+                <details key={faq.question} open={index === 0}>
+                  <summary>
+                    {faq.question}
+                    <span>⌃</span>
+                  </summary>
 
-                <div className="pm-monitor-body">
-                  <div />
-                  <div />
-                  <div />
-                  <div />
-                </div>
-
-              </div>
-
-            </div>
-
-            <div className="reveal">
-
-              <p className="pm-gold-label">
-                MANAGEMENT VISIBILITY
-              </p>
-
-              <h2 className="pm-serif">
-                Keeping you informed
-                <br />
-                throughout the journey
-              </h2>
-
-              <p>
-                Owners should never feel disconnected from
-                their investment. Our reporting and
-                communication approach is designed to keep
-                the important information visible.
-              </p>
-
-              <a
-                href="#pm-contact"
-                className="pm-outline-small"
-              >
-                Discover our approach
-              </a>
-
+                  <div>
+                    <p>{faq.answer}</p>
+                  </div>
+                </details>
+              ))}
             </div>
 
           </div>
@@ -4953,23 +5592,22 @@ function PropertyManagement() {
             </p>
 
             <h2>
-              Managing your property
+              Let the property earn
               <br />
-              should be simple,
-              <br />
-              we make sure it is.
+              without it running your week
             </h2>
 
             <p>
-              Speak with Golden Key about a management
-              approach tailored to your property.
+              Tell us about your property and we will come back with a
+              realistic rental figure and a clear proposal. No cost,
+              and no obligation to sign.
             </p>
 
             <a
-              href="#pm-top"
+              href="#pm-overview"
               className="pm-gold-button"
             >
-              Speak with us
+              Get My Management Proposal
             </a>
 
           </div>
@@ -5579,111 +6217,112 @@ function PropertyValuation() {
   // --- STATE FOR PROCESS STEPS SLIDER ---
   const [activeStep, setActiveStep] = useState(0);
 
-  // --- STATE FOR "WHAT SETS US APART" CAROUSEL ---
-  const [activeApartIndex, setActiveApartIndex] = useState(3); // Default to item 04 (100,000+ qualified clients)
-
-  // --- PROCESS STEPS DATA ---
+  // --- PROCESS STEPS DATA (Section 02 of the copy deck) ---
   const processSteps = [
     {
       number: "01",
-      title: "Your details",
-      description: "Enter your property location and key details",
-      ctaText: "How much is my property worth?",
+      title: "Share your property details",
+      description:
+        "Tell us where your property is, its size, layout, and condition. It takes less than two minutes, and there's nothing to pay.",
+      ctaText: "Start My Valuation",
     },
     {
       number: "02",
-      title: "An expert consultation",
+      title: "Talk to a community specialist",
       description:
-        "Get your personalised review with a Golden Key property specialist.",
-      ctaText: "How much is my property worth?",
+        "A Golden Key agent who works your specific community reviews your property, compares it against what's actually selling nearby, and asks the questions a spreadsheet can't.",
+      ctaText: "Start My Valuation",
     },
     {
       number: "03",
-      title: "Valuation report",
-      description: "Receive your detailed valuation report",
-      ctaText: "How much is my property worth?",
+      title: "Receive your valuation report",
+      description:
+        "You get a clear valuation with the reasoning behind it — recent comparable sales, current demand, and what's realistically achievable if you decide to sell or rent.",
+      ctaText: "Start My Valuation",
     },
   ];
 
-  // --- WHAT SETS US APART DATA ---
-  const apartItems = [
+  // --- WHY GOLDEN KEY DATA (Section 03 of the copy deck) ---
+  const whyCards = [
     {
       number: "01",
-      stat: "40 years",
-      label: "of market intelligence",
+      title: "Community-level expertise",
       description:
-        "Trusted experience delivering clarity and strategic direction across the property market since 1986.",
-      footerNote:
-        "Together, this allows us to deliver valuations that reflect real demand, real buyers and real outcomes.",
+        "Dubai isn't one market, it's dozens. Values in Downtown behave nothing like values in JVC or Dubai Hills. Your valuation comes from an agent who works your community specifically, not a generalist reading a citywide average.",
     },
     {
       number: "02",
-      stat: "250,000+",
-      label: "homes sold",
+      title: "Built on live market activity",
       description:
-        "The most comprehensive record of market transactions and real sales insight.",
-      footerNote:
-        "Together, this allows us to deliver valuations that reflect real demand, real buyers and real outcomes.",
+        "We value your property against what is actually transacting right now — recent sales, current listings, and what buyers are genuinely willing to pay — rather than outdated portal asking prices.",
     },
     {
       number: "03",
-      stat: "Every 12 mins",
-      label: "a transaction is completed",
+      title: "An honest number, not a flattering one",
       description:
-        "Our high transaction frequency gives us a live, real-time view of pricing, buyer behaviour, and current demand.",
-      footerNote:
-        "Together, this allows us to deliver valuations that reflect real demand, real buyers and real outcomes.",
+        "Overpricing a property is the fastest way to leave it sitting on the market for months. We'll tell you what your property is worth, even when that's not the number you were hoping for. That honesty is what protects your sale.",
     },
     {
       number: "04",
-      stat: "100,000+",
-      label: "qualified clients",
+      title: "Every detail counts",
       description:
-        "An active database of pre-qualified buyers, investors, tenants, and corporate decision-makers actively searching.",
-      footerNote:
-        "Together, this helps us provide valuations that reflect current demand, real buyer behaviour and the conditions shaping the market today.",
+        "Floor level, view, upgrades, layout, service charges, handover condition. Two identical-looking units in the same tower can differ meaningfully in value, and we account for the difference.",
     },
     {
       number: "05",
-      stat: "300+",
-      label: "specialists guiding you",
+      title: "Sell, rent, refinance, or simply know",
       description:
-        "Local Golden Key experts who deeply understand neighbourhood-level pricing, trends, and buyer intent.",
-      footerNote:
-        "Together, this allows us to deliver valuations that reflect real demand, real buyers and real outcomes.",
+        "A valuation isn't a commitment to list. Many owners come to us purely to understand their position before making a decision. That's a perfectly good reason to ask.",
     },
     {
       number: "06",
-      stat: "2,500+",
-      label: "five-star reviews",
+      title: "Fully RERA-compliant",
       description:
-        "Independent feedback from homeowners and property investors who trust Golden Key for their guidance.",
-      footerNote:
-        "Together, this allows us to deliver valuations that reflect real demand, real buyers and real outcomes.",
+        "Golden Key is a licensed Dubai brokerage, and every valuation and transaction we handle follows RERA and Dubai Land Department requirements.",
     },
   ];
 
-  // --- FAQS DATA ---
+  // --- FAQS DATA (Section 05 of the copy deck) ---
   const faqs = [
+    {
+      question: "Is the valuation really free?",
+      answer:
+        "Yes. There is no fee and no obligation to list your property with us. We provide the valuation because owners who understand their position tend to come back to us when they're ready to act.",
+    },
     {
       question: "Why do I need a property valuation?",
       answer:
-        "A professional valuation gives you a clearer understanding of where your property sits in the current market. It can support decisions around selling, refinancing, investment planning and long-term ownership.",
+        "Most owners come to us for one of four reasons: to price a property correctly before selling, to understand borrowing power before approaching a bank, to decide whether now is the right moment to sell or hold, or simply to know where their investment stands. All four are valid.",
     },
     {
-      question: "Why choose Golden Key?",
+      question: "How is my property actually valued?",
       answer:
-        "Our approach combines local market knowledge, comparable evidence and a practical understanding of current buyer and investor demand.",
+        "We start with recent comparable transactions in your building or community, then adjust for the factors that make your specific property different — floor, view, layout, upgrades, condition, and service charges. Finally, we weigh current buyer demand, because a property is ultimately worth what a buyer will pay for it today.",
     },
     {
-      question: "How accurate is the valuation?",
+      question: "How long does it take?",
       answer:
-        "A valuation is based on the available market evidence, the specific characteristics of the property and current market conditions.",
+        "A specialist will contact you shortly after you submit your details. If a site visit is needed, we'll arrange it at a time that suits you, and your report follows soon after the visit.",
     },
     {
-      question: "What happens after I submit my details?",
+      question: "Do you need to visit my property?",
       answer:
-        "A member of the Golden Key team will review your information and contact you to arrange the next step.",
+        "Not always. For standard units in buildings we know well, we can often value remotely. For villas, upgraded units, and anything unusual, a short visit gives you a considerably more accurate number.",
+    },
+    {
+      question: "Will I be pressured to sell?",
+      answer:
+        "No. If you tell us you're only exploring, we'll treat it that way. Our job at this stage is to give you accurate information, not to talk you into a decision.",
+    },
+    {
+      question: "Is this the same as a bank valuation?",
+      answer:
+        "No. A bank valuation is a formal assessment carried out by a bank-approved valuer for mortgage purposes. Ours is a market valuation — what your property can realistically achieve with a buyer today. The two often land close together, but they serve different purposes.",
+    },
+    {
+      question: "Which areas do you cover?",
+      answer:
+        "We cover residential and commercial property across Dubai. If your property falls outside our usual coverage, we'll tell you honestly rather than guess at a number.",
     },
   ];
 
@@ -5697,7 +6336,6 @@ function PropertyValuation() {
   };
 
   const currentStep = processSteps[activeStep];
-  const currentApart = apartItems[activeApartIndex];
 
   return (
     <>
@@ -5711,27 +6349,33 @@ function PropertyValuation() {
 
           <div className="wrap valuation-hero-content">
             <p className="valuation-eyebrow">
-              GOLDEN KEY PROPERTY VALUATION
+              FREE PROPERTY VALUATION
             </p>
 
             <h1>
-              Know what your
+              Know exactly what your
               <br />
-              property is truly worth
+              property is worth today
             </h1>
 
             <p>
-              We combine local market knowledge, buyer behaviour,
-              comparable evidence and current demand to give you
-              a clearer understanding of your property's value.
+              Dubai's market moves fast, and last year's price tells you
+              very little about this year's value. Golden Key gives you a
+              clear, honest valuation built on current market activity and
+              real buyer demand in your community — so you can decide your
+              next move with confidence.
             </p>
 
             <a
               href="#valuation-form"
               className="valuation-coral-button"
             >
-              Get your free valuation
+              Get My Free Valuation
             </a>
+
+            <p className="trust-line dark">
+              Free · No obligation · Your details stay private
+            </p>
           </div>
         </section>
 
@@ -5739,8 +6383,13 @@ function PropertyValuation() {
         <section className="valuation-process section">
           <div className="wrap">
             <h2 className="valuation-serif centered">
-              How your free property valuation works
+              Your valuation in three simple steps
             </h2>
+
+            <p className="section-intro-text centered">
+              No lengthy paperwork, no pressure to sell. Just a clear
+              answer to a simple question.
+            </p>
 
             <div className="valuation-timeline">
               <button
@@ -5794,168 +6443,51 @@ function PropertyValuation() {
           </div>
         </section>
 
-        {/* WHAT SETS US APART (DYNAMIC CAROUSEL) */}
+        {/* WHY GOLDEN KEY */}
         <section className="valuation-apart">
           <div className="wrap">
             <h2 className="valuation-serif centered">
-              What sets us apart
+              Why owners come to Golden Key for a valuation
             </h2>
 
-            <div className="valuation-circle" key={activeApartIndex}>
-              <span className="circle-mark">
-                {currentApart.number}
-              </span>
-
-              <div className="circle-content">
-                <strong>{currentApart.stat}</strong>
-                <span>{currentApart.label}</span>
-
-                <p>{currentApart.description}</p>
-
-                {/* CLICKABLE DIAMONDS NAVIGATION */}
-                <div className="circle-stars" style={{ userSelect: "none" }}>
-                  {apartItems.map((_, index) => (
-                    <span
-                      key={index}
-                      onClick={() => setActiveApartIndex(index)}
-                      style={{
-                        cursor: "pointer",
-                        padding: "0 6px",
-                        fontSize: "18px",
-                        transition: "transform 0.2s ease",
-                      }}
-                      title={`View stat ${index + 1}`}
-                    >
-                      {index === activeApartIndex ? "◆" : "◇"}
-                    </span>
-                  ))}
-                </div>
-
-                <p>{currentApart.footerNote}</p>
-
-                <a
-                  href="#valuation-form"
-                  className="valuation-coral-button"
-                >
-                  How much is my property worth?
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* TIMING */}
-        <section className="valuation-timing">
-          <div className="valuation-timing-bg" />
-          <div className="valuation-timing-overlay" />
-
-          <div className="wrap valuation-timing-content">
-            <h2 className="valuation-serif light">
-              Timing matters because markets move
-            </h2>
-
-            <p>
-              Property decisions are rarely just about price.
-              They are about timing, market value and knowing
-              what your property can achieve today.
+            <p className="section-intro-text centered">
+              An accurate valuation isn't a number pulled from a
+              calculator. It's a judgement, and judgement comes from
+              people who work these communities every day.
             </p>
 
-            <div className="timing-diamonds">
-              <div className="timing-diamond">
-                <strong>01</strong>
-                <h3>Better decisions</h3>
-                <p>
-                  Understand your property's current market
-                  position and decide whether to sell,
-                  refinance or hold.
-                </p>
-              </div>
-
-              <div className="timing-diamond">
-                <strong>02</strong>
-                <h3>Buyer demand</h3>
-                <p>
-                  Buyer activity, rental demand and
-                  community momentum can significantly
-                  influence how your property performs.
-                </p>
-              </div>
-
-              <div className="timing-diamond">
-                <strong>03</strong>
-                <h3>Market conditions</h3>
-                <p>
-                  Supply, mortgage conditions and buyer
-                  behaviour all influence value and the
-                  opportunities available to owners.
-                </p>
-              </div>
+            <div className="content-cards-grid">
+              {whyCards.map((card) => (
+                <div className="content-card" key={card.number}>
+                  <span className="circle-mark">{card.number}</span>
+                  <h3>{card.title}</h3>
+                  <p>{card.description}</p>
+                </div>
+              ))}
             </div>
-
-            <a
-              href="#valuation-form"
-              className="valuation-coral-button"
-            >
-              How much is my property worth?
-            </a>
           </div>
         </section>
 
-        {/* REVIEWS + FAQ */}
+        {/* FAQ */}
         <section className="valuation-faq-section section">
-          <div className="wrap valuation-faq-grid">
-            <div>
-              <h2 className="valuation-serif">Customer reviews</h2>
+          <div className="wrap">
+            <h2 className="valuation-serif centered">
+              Frequently asked questions
+            </h2>
 
-              <div className="valuation-reviews">
-                <article>
-                  <div className="review-stars">★★★★★</div>
-                  <p>
-                    “The team helped us understand where our property sat in the
-                    market and gave us a clear plan for the next step.”
-                  </p>
-                  <strong>Private client</strong>
-                </article>
+            <div className="valuation-faq">
+              {faqs.map((faq, index) => (
+                <details key={faq.question} open={index === 0}>
+                  <summary>
+                    {faq.question}
+                    <span>⌃</span>
+                  </summary>
 
-                <article>
-                  <div className="review-stars">★★★★★</div>
-                  <p>
-                    “Professional, responsive and very clear about the factors
-                    influencing the valuation.”
-                  </p>
-                  <strong>Property owner</strong>
-                </article>
-
-                <article>
-                  <div className="review-stars">★★★★★</div>
-                  <p>
-                    “The process was straightforward and the market explanation
-                    was extremely useful.”
-                  </p>
-                  <strong>Investor</strong>
-                </article>
-              </div>
-            </div>
-
-            <div>
-              <h2 className="valuation-serif">
-                Your key questions answered
-              </h2>
-
-              <div className="valuation-faq">
-                {faqs.map((faq, index) => (
-                  <details key={faq.question} open={index === 0}>
-                    <summary>
-                      {faq.question}
-                      <span>⌃</span>
-                    </summary>
-
-                    <div>
-                      <p>{faq.answer}</p>
-                    </div>
-                  </details>
-                ))}
-              </div>
+                  <div>
+                    <p>{faq.answer}</p>
+                  </div>
+                </details>
+              ))}
             </div>
           </div>
         </section>
@@ -5964,40 +6496,1096 @@ function PropertyValuation() {
         <section className="valuation-final" id="valuation-form">
           <div className="wrap">
             <h2>
-              Ready to discover your
+              Curious what your
               <br />
-              property's true value?
+              property is worth?
             </h2>
 
-            <p>Request your free Golden Key property valuation.</p>
+            <p>
+              Find out in a couple of minutes. No cost, no obligation,
+              and no pressure to sell.
+            </p>
 
             <form
               className="valuation-final-form"
               onSubmit={(e) => {
                 e.preventDefault();
                 alert(
-                  "Thank you. Your valuation request has been received."
+                  "Thank you — your request has been received. A Golden Key specialist will contact you shortly to arrange your valuation."
                 );
               }}
             >
               <div className="valuation-form-row">
-                <input required placeholder="First name" />
-                <input required placeholder="Last name" />
+                <input required placeholder="Full name" />
+                <input required type="email" placeholder="Email address" />
               </div>
 
               <div className="valuation-form-row">
-                <input required type="email" placeholder="Email address" />
-                <input required placeholder="Phone number" />
+                <input required placeholder="Mobile number (+971)" />
+
+                <select required defaultValue="">
+                  <option value="" disabled>
+                    Property type
+                  </option>
+                  <option>Apartment</option>
+                  <option>Villa</option>
+                  <option>Townhouse</option>
+                  <option>Penthouse</option>
+                  <option>Plot</option>
+                  <option>Commercial</option>
+                </select>
               </div>
 
-              <input placeholder="Property location" />
+              <div className="valuation-form-row">
+                <input required placeholder="Community or building" />
+
+                <select required defaultValue="">
+                  <option value="" disabled>
+                    Bedrooms
+                  </option>
+                  <option>Studio</option>
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5+</option>
+                </select>
+              </div>
+
+              <div className="valuation-form-row">
+                <input placeholder="Approximate size (sq ft)" />
+
+                <select required defaultValue="">
+                  <option value="" disabled>
+                    Are you looking to...
+                  </option>
+                  <option>Sell</option>
+                  <option>Rent out</option>
+                  <option>Refinance</option>
+                  <option>Just curious about value</option>
+                </select>
+              </div>
+
+              <textarea
+                rows="3"
+                placeholder="Anything we should know?"
+              />
 
               <button type="submit" className="valuation-coral-button">
-                Start your valuation
+                Request My Free Valuation
               </button>
+
+              <p className="form-consent-note">
+                By submitting this form you agree to be contacted by
+                Golden Key Real Estate regarding your valuation. We
+                never share your details with third parties.
+              </p>
             </form>
           </div>
         </section>
+      </main>
+
+      <Footer />
+    </>
+  );
+}
+
+function ServiceDetail({ eyebrow, title, description, image, sections = [] }) {
+  return (
+    <>
+      <Header />
+
+      <main className="service-detail-page">
+
+        <section className="services-hero">
+          <div
+            className="services-hero-bg"
+            style={image ? { backgroundImage: `url(${image})` } : undefined}
+          />
+          <div className="services-hero-overlay" />
+
+          <div className="wrap services-hero-content">
+            {eyebrow && <p className="pm-gold-label">{eyebrow.toUpperCase()}</p>}
+            <h1>{title}</h1>
+            {description && <p>{description}</p>}
+
+            <a href="#contact" className="pm-gold-button">
+              Talk to Our Team
+            </a>
+          </div>
+        </section>
+
+        {sections.map((section, index) => (
+          <section className="section pm-alternating" key={section.title || index}>
+            <div className="wrap">
+              <div
+                className={
+                  index % 2 === 1
+                    ? "pm-alternate-row reverse reveal"
+                    : "pm-alternate-row reveal"
+                }
+              >
+                <div>
+                  {section.eyebrow && (
+                    <p className="pm-gold-label">{section.eyebrow}</p>
+                  )}
+
+                  <h2 className="pm-serif">{section.title}</h2>
+
+                  <p>{section.text}</p>
+                </div>
+
+                {section.image && (
+                  <div className="pm-real-image pm-image-reveal">
+                    <img src={section.image} alt={section.title} />
+                  </div>
+                )}
+              </div>
+            </div>
+          </section>
+        ))}
+
+        <section className="pm-final-cta" id="contact">
+          <div className="wrap">
+            <p className="pm-gold-label">{eyebrow ? eyebrow.toUpperCase() : "GET IN TOUCH"}</p>
+            <h2>Ready to talk it through?</h2>
+            <p>Tell us what you're looking for and our team will help you find the right next step.</p>
+            <a href="/enquire" className="pm-gold-button">
+              Talk to Our Team
+            </a>
+          </div>
+        </section>
+
+      </main>
+
+      <Footer />
+    </>
+  );
+}
+
+function VibrantHolidayHomes() {
+  const whatWeHandle = [
+    {
+      title: "Listing creation and photography",
+      text: "Professional imagery and written listings built to convert browsers into bookings, not just to describe the property.",
+    },
+    {
+      title: "Multi-platform distribution",
+      text: "Your property listed and synchronised across the major short-stay booking platforms, on one shared calendar, so double bookings can't happen.",
+    },
+    {
+      title: "Dynamic pricing",
+      text: "Rates adjusted for season, weekday and weekend demand, city events, and what comparable properties nearby are achieving — rather than one flat nightly figure all year.",
+    },
+    {
+      title: "Guest communication",
+      text: "Enquiries, questions, and problems answered promptly, including outside office hours. Slow replies lose bookings.",
+    },
+    {
+      title: "Guest screening",
+      text: "Sensible vetting before a booking is confirmed, so the wrong guest doesn't become your problem.",
+    },
+    {
+      title: "Check-in and check-out",
+      text: "Arrivals and departures handled by our team, at the hours guests actually travel.",
+    },
+    {
+      title: "Professional cleaning and hotel-standard linen",
+      text: "A full turnover clean between every single stay, with fresh linen and towels each time.",
+    },
+    {
+      title: "Restocking and consumables",
+      text: "Toiletries, kitchen basics, and welcome essentials kept topped up so nothing runs out mid-stay.",
+    },
+    {
+      title: "Maintenance and routine inspections",
+      text: "The property checked regularly and issues fixed before a guest has to report them.",
+    },
+    {
+      title: "DTCM permits and compliance",
+      text: "Holiday home licensing, registration, and tourism dirham obligations handled as part of the service.",
+    },
+    {
+      title: "Owner reporting",
+      text: "A clear picture of your bookings, occupancy, and earnings, without you having to ask for it.",
+    },
+  ];
+
+  const whyCards = [
+    {
+      number: "01",
+      title: "Reviews are the entire business",
+      description:
+        "In short-term rental, your rating decides your visibility, and your visibility decides your rate. Cleaning standards, response times, and the state of the property on arrival all exist to protect that rating. Everything else follows from it.",
+    },
+    {
+      number: "02",
+      title: "Priced for the calendar, not for the year",
+      description:
+        "Dubai demand shifts sharply between peak season, summer, and major city events. Rates that move with it perform considerably better than a fixed nightly price that ignores all three.",
+    },
+    {
+      number: "03",
+      title: "It's still your home",
+      description:
+        "Block out any dates you want, for yourself, family, or friends. That flexibility is usually the whole reason owners choose short-term over an annual lease, and we build the calendar around it.",
+    },
+    {
+      number: "04",
+      title: "Compliant from day one",
+      description:
+        "Short-term letting in Dubai is regulated. Permits, registration, and tourism fees are handled properly, so your income isn't put at risk by a paperwork gap.",
+    },
+    {
+      number: "05",
+      title: "Set up right before the first guest",
+      description:
+        "Furnishing, styling, amenities, and the small details guests actually mention in reviews. We'll tell you honestly what your property needs before it goes live, and what isn't worth spending on.",
+    },
+    {
+      number: "06",
+      title: "A deliberately focused portfolio",
+      description:
+        "Vibrant is a new company and we're taking on properties selectively rather than filling a portfolio as fast as possible. Your property is looked after by a team that knows it individually.",
+    },
+  ];
+
+  const faqs = [
+    {
+      question: "What's the difference between a holiday home and a short-term rental?",
+      answer:
+        "Nothing — they're the same thing. \"Holiday home\" is the term used in Dubai's licensing framework, and \"short-term rental\" is how most owners describe it. Both mean letting your property by the night or week rather than on an annual lease.",
+    },
+    {
+      question: "Who is Vibrant Vacation Homes Rental?",
+      answer:
+        "Vibrant is the holiday homes company within the Golden Key group — same ownership and same standards as Golden Key Real Estate, set up as its own company because short-term rental is a genuinely different operation to long-term leasing.",
+    },
+    {
+      question: "Can I still use my own property?",
+      answer:
+        "Yes. Block out any dates you like for yourself, family, or friends. It stays your home, and we plan the calendar around the dates you want.",
+    },
+    {
+      question: "Will I earn more than on a long-term lease?",
+      answer:
+        "Over a strong year, a well-located and well-presented property usually does. But short-term income is variable, running costs are higher, and results depend heavily on location and presentation. We'll give you a realistic view for your specific property rather than a best-case number.",
+    },
+    {
+      question: "Do you handle the DTCM holiday home permit?",
+      answer:
+        "Yes. Licensing, registration, and tourism dirham obligations are handled by us as part of the service.",
+    },
+    {
+      question: "Does my property need to be furnished?",
+      answer:
+        "Yes, fully — furniture, appliances, kitchenware, linen, and the amenities guests expect. If yours isn't there yet, we'll tell you what's genuinely needed and what isn't worth the spend.",
+    },
+    {
+      question: "Who pays for cleaning, linen, and consumables?",
+      answer:
+        "These are running costs of a holiday home and sit with the owner, as utilities and service charges do. We set them out clearly in your proposal so there are no surprises.",
+    },
+    {
+      question: "What if a guest damages something?",
+      answer:
+        "Bookings are covered by the deposit and protection schemes the platforms provide, and we inspect between stays so damage is identified immediately rather than weeks later. We handle the claim and the repair.",
+    },
+    {
+      question: "What if I live outside the UAE?",
+      answer:
+        "Many of our owners do. Everything — setup, licensing, guest arrivals, cleaning, maintenance — runs without you being in the country.",
+    },
+    {
+      question: "Can I switch to a long-term lease later?",
+      answer:
+        "Yes. Circumstances and market conditions change. Golden Key Real Estate handles long-term management within the same group, so moving between the two is straightforward.",
+    },
+    {
+      question: "My property is currently listed and self-managed. Can you take over?",
+      answer:
+        "Yes. We can take over an existing listing without losing your reviews or disrupting confirmed bookings.",
+    },
+    {
+      question: "How do your fees work?",
+      answer:
+        "Fees are a percentage of booking revenue and depend on the property and the level of service. They're set out in writing in your proposal, with no charges introduced later.",
+    },
+  ];
+
+  return (
+    <>
+      <Header />
+
+      <main className="pm-page">
+
+        {/* HERO */}
+        <section className="pm-hero">
+          <div className="pm-hero-bg" />
+          <div className="pm-hero-overlay" />
+
+          <div className="wrap pm-hero-content reveal">
+            <p className="pm-eyebrow">PART OF THE GOLDEN KEY GROUP</p>
+
+            <h1>
+              Your Dubai property,
+              <br />
+              hosted properly
+            </h1>
+
+            <p>
+              Vibrant Vacation Homes Rental manages holiday homes and
+              short-term rentals across Dubai — listings, pricing,
+              guests, cleaning, and licensing. You keep the keys and
+              the flexibility. We handle everything else.
+            </p>
+
+            <div className="pm-hero-actions">
+              <a href="#vibrant-contact" className="pm-gold-button">
+                Get My Free Assessment
+              </a>
+
+              <a href="/enquire" className="pm-outline-button">
+                Talk to Our Team
+              </a>
+            </div>
+
+            <p className="trust-line">
+              Fully managed · DTCM compliant · Use your property whenever you like
+            </p>
+          </div>
+        </section>
+
+        {/* POSITIONING */}
+        <section className="section">
+          <div className="wrap" style={{ maxWidth: 760, textAlign: "center" }}>
+            <h2 className="pm-serif">
+              Short-term letting is a hospitality business, not a lease
+            </h2>
+
+            <p className="section-intro-text centered">
+              An annual tenancy is signed once and reviewed once a year. A
+              holiday home turns over constantly — new guests, new
+              expectations, new reviews, every week. Listings need
+              adjusting. Rates need moving with the season. Messages need
+              answering at ten at night, because the guest deciding
+              between your property and another one won't wait until
+              morning.
+            </p>
+
+            <p className="section-intro-text centered">
+              That's why Vibrant exists as its own company within the
+              Golden Key group. Short-term rental deserves a team that
+              does nothing else.
+            </p>
+          </div>
+        </section>
+
+        {/* WHAT WE HANDLE */}
+        <section className="section" style={{ background: "#f3f1ec" }}>
+          <div className="wrap">
+            <p className="pm-gold-label centered">WHAT WE HANDLE</p>
+
+            <h2 className="pm-serif centered">
+              Everything a guest sees, and everything they don't
+            </h2>
+
+            <p className="section-intro-text centered">
+              Your property runs as a fully managed holiday home. Here's
+              what that covers.
+            </p>
+
+            <div className="content-checklist">
+              {whatWeHandle.map((item) => (
+                <div className="content-checklist-item" key={item.title}>
+                  <h4>{item.title}</h4>
+                  <p>{item.text}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* WHY OWNERS CHOOSE VIBRANT */}
+        <section className="section">
+          <div className="wrap">
+            <p className="pm-gold-label centered">WHY OWNERS HAND US THE KEYS</p>
+
+            <h2 className="pm-serif centered">
+              Why owners choose Vibrant
+            </h2>
+
+            <div className="content-cards-grid">
+              {whyCards.map((card) => (
+                <div className="content-card" key={card.number}>
+                  <span className="circle-mark">{card.number}</span>
+                  <h3>{card.title}</h3>
+                  <p>{card.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* IS YOUR PROPERTY SUITABLE */}
+        <section className="section" style={{ background: "#f3f1ec" }}>
+          <div className="wrap">
+            <p className="pm-gold-label centered">IS YOUR PROPERTY SUITABLE?</p>
+
+            <h2 className="pm-serif centered">
+              Is your property right for holiday homes?
+            </h2>
+
+            <p className="section-intro-text centered">
+              Not every property performs well on short stays, and we'd
+              rather tell you that at the start than after you've
+              furnished it.
+            </p>
+
+            <div className="content-suitability-grid">
+              <div>
+                <h3 className="pm-serif" style={{ fontSize: 20 }}>
+                  Strong candidates
+                </h3>
+                <ul>
+                  <li>Well located for tourism, leisure, or business travel</li>
+                  <li>Furnished, or you're prepared to furnish it properly</li>
+                  <li>Studios, one-bedrooms and two-bedrooms in buildings with good facilities</li>
+                  <li>A pool, gym, or beach access in the building</li>
+                  <li>Properties you'd like to use yourself part of the year</li>
+                  <li>Units currently sitting empty between long-term tenants</li>
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="pm-serif" style={{ fontSize: 20 }}>
+                  Usually better on a long-term lease
+                </h3>
+                <ul>
+                  <li>Locations with little visitor demand</li>
+                  <li>Buildings where short-term letting isn't permitted</li>
+                  <li>Properties needing significant work before they'd photograph or review well</li>
+                  <li>Owners who want completely fixed, predictable monthly income</li>
+                </ul>
+              </div>
+            </div>
+
+            <p className="section-intro-text centered" style={{ marginTop: 34 }}>
+              Not sure where your property falls? Send us the details and
+              we'll give you a straight answer — including when the
+              honest answer is that a long-term lease suits it better.
+              Our sister company, Golden Key Real Estate, handles that
+              side.
+            </p>
+
+            <div style={{ textAlign: "center", marginTop: 20 }}>
+              <a href="#vibrant-contact" className="pm-gold-button">
+                Check My Property
+              </a>
+            </div>
+          </div>
+        </section>
+
+        {/* HOW IT WORKS */}
+        <section className="section pm-testimonials">
+          <div className="wrap">
+            <p className="pm-gold-label centered">HOW IT WORKS</p>
+
+            <h2 className="pm-serif centered">
+              From enquiry to first guest
+            </h2>
+
+            <div className="pm-testimonial-grid">
+              <article className="pm-testimonial">
+                <strong>Step 01 — Property assessment</strong>
+                <p>
+                  Tell us about your property. We look at the location,
+                  the unit, its condition and furnishing, and what
+                  comparable holiday homes nearby are achieving.
+                </p>
+              </article>
+
+              <article className="pm-testimonial">
+                <strong>Step 02 — Your proposal</strong>
+                <p>
+                  We come back with a realistic view of what your
+                  property can do on short stays, what it needs before
+                  going live, and a clear breakdown of our fees. No
+                  obligation to proceed.
+                </p>
+              </article>
+
+              <article className="pm-testimonial">
+                <strong>Step 03 — Setup and licensing</strong>
+                <p>
+                  Furnishing guidance, styling, photography, listing
+                  creation, and the DTCM holiday home permit — all
+                  handled by us.
+                </p>
+              </article>
+
+              <article className="pm-testimonial">
+                <strong>Step 04 — Live and hosted</strong>
+                <p>
+                  Your property goes live across the booking platforms.
+                  From there we run it day to day, and you receive
+                  regular updates on bookings and earnings.
+                </p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        {/* ENQUIRY FORM */}
+        <section className="pm-final-cta" id="vibrant-contact">
+          <div className="wrap">
+            <p className="pm-gold-label">TELL US ABOUT YOUR PROPERTY</p>
+
+            <h2>
+              Let your property earn
+              <br />
+              while you get your time back
+            </h2>
+
+            <p>
+              Tell us about your property and we'll give you an honest
+              assessment — including whether short-term is the right
+              route for it at all. No cost, no obligation.
+            </p>
+
+            <form
+              className="valuation-final-form"
+              style={{ textAlign: "left", maxWidth: 560, margin: "30px auto 0" }}
+              onSubmit={(e) => {
+                e.preventDefault();
+                alert(
+                  "Thank you — we've received your details. A member of the Vibrant team will be in touch shortly with an assessment of your property."
+                );
+              }}
+            >
+              <div className="valuation-form-row">
+                <input required placeholder="Full name" />
+                <input required type="email" placeholder="Email address" />
+              </div>
+
+              <div className="valuation-form-row">
+                <input required placeholder="Mobile number (+971)" />
+
+                <select required defaultValue="">
+                  <option value="" disabled>
+                    Property type
+                  </option>
+                  <option>Apartment</option>
+                  <option>Villa</option>
+                  <option>Townhouse</option>
+                  <option>Penthouse</option>
+                </select>
+              </div>
+
+              <div className="valuation-form-row">
+                <input required placeholder="Community or building" />
+
+                <select required defaultValue="">
+                  <option value="" disabled>
+                    Bedrooms
+                  </option>
+                  <option>Studio</option>
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4+</option>
+                </select>
+              </div>
+
+              <div className="valuation-form-row">
+                <select required defaultValue="">
+                  <option value="" disabled>
+                    Furnishing status
+                  </option>
+                  <option>Fully furnished</option>
+                  <option>Partly furnished</option>
+                  <option>Unfurnished</option>
+                </select>
+
+                <select required defaultValue="">
+                  <option value="" disabled>
+                    Current status
+                  </option>
+                  <option>Vacant</option>
+                  <option>Tenanted</option>
+                  <option>Handover soon</option>
+                  <option>Already listed short-term</option>
+                </select>
+              </div>
+
+              <select defaultValue="">
+                <option value="" disabled>
+                  Will you use the property yourself?
+                </option>
+                <option>Yes, occasionally</option>
+                <option>Yes, regularly</option>
+                <option>No</option>
+              </select>
+
+              <textarea rows="4" placeholder="Anything we should know?" />
+
+              <button type="submit" className="pm-gold-button">
+                Send My Details
+              </button>
+
+              <p className="form-consent-note">
+                By submitting this form you agree to be contacted by
+                Vibrant Vacation Homes Rental regarding your property.
+                We never share your details with third parties.
+              </p>
+            </form>
+          </div>
+        </section>
+
+        {/* FAQ */}
+        <section className="section pm-dashboard-section">
+          <div className="wrap">
+            <p className="pm-gold-label centered">FREQUENTLY ASKED QUESTIONS</p>
+
+            <h2 className="pm-serif centered">
+              Your questions, answered
+            </h2>
+
+            <div
+              className="valuation-faq"
+              style={{ maxWidth: 820, margin: "30px auto 0" }}
+            >
+              {faqs.map((faq, index) => (
+                <details key={faq.question} open={index === 0}>
+                  <summary>
+                    {faq.question}
+                    <span>⌃</span>
+                  </summary>
+
+                  <div>
+                    <p>{faq.answer}</p>
+                  </div>
+                </details>
+              ))}
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+      <Footer />
+    </>
+  );
+}
+
+function MortgageServices() {
+  const serviceCards = [
+    {
+      title: "First-time buyers",
+      text: "If this is your first purchase in the UAE, the paperwork alone can be daunting — pre-approval, valuation, the difference between what you are offered and what you can actually afford. We will walk you through the sequence and make sure nothing surprises you halfway through.",
+    },
+    {
+      title: "Overseas and non-resident buyers",
+      text: "Buying from outside the UAE is entirely possible, but the requirements, deposit expectations, and documentation differ from those for residents. We will set out what applies to you before you make an offer, not after.",
+    },
+    {
+      title: "Refinancing an existing mortgage",
+      text: "If you took your mortgage out some time ago, your current rate may no longer be competitive. Refinancing can reduce your monthly payment or shorten your term. We will help you work out whether the saving justifies the switching costs.",
+    },
+    {
+      title: "Equity release",
+      text: "If your property has risen in value, you may be able to release some of that equity for a renovation, another investment, or another purpose. We will explain what is realistically available and what it costs.",
+    },
+  ];
+
+  const whyCards = [
+    {
+      number: "01",
+      title: "We tell you your budget before you fall in love with a property",
+      description:
+        "The worst sequence in property buying is finding the right home and then discovering what you can borrow. Sorting the financing first means everything you view is actually within reach.",
+    },
+    {
+      number: "02",
+      title: "Pre-approval makes you a stronger buyer",
+      description:
+        "A seller choosing between two offers will take the buyer whose financing is already arranged. Pre-approval is not paperwork for its own sake — it is leverage.",
+    },
+    {
+      number: "03",
+      title: "We are not tied to one bank's product",
+      description:
+        "Our interest is in the purchase completing, not in placing you with a particular lender. That means the recommendation you get is based on your circumstances.",
+    },
+    {
+      number: "04",
+      title: "One team from offer to handover",
+      description:
+        "The property, the negotiation, the paperwork, and the financing all run through the same team. Nothing gets lost between two companies blaming each other for the delay.",
+    },
+    {
+      number: "05",
+      title: "Honest about affordability",
+      description:
+        "If the numbers do not work, we will say so. Talking someone into a mortgage they will struggle with helps nobody, and it is a poor way to build a business meant to last.",
+    },
+  ];
+
+  const glossary = [
+    { term: "Pre-approval", meaning: "A lender's conditional confirmation of how much it will lend you, before you have chosen a property. It makes you a credible buyer and tells you your real budget." },
+    { term: "Down payment", meaning: "The portion of the purchase price you pay yourself. The rest is the loan." },
+    { term: "Loan-to-value (LTV)", meaning: "The loan as a percentage of the property's value. A larger deposit means a lower LTV, which often means a better rate." },
+    { term: "Loan term", meaning: "How long you have to repay. Longer term, smaller monthly payment, more total interest." },
+    { term: "Interest rate", meaning: "The cost of borrowing, expressed as a yearly percentage of the outstanding balance." },
+    { term: "Fixed period", meaning: "The initial stretch during which your rate cannot change." },
+    { term: "EMI / monthly instalment", meaning: "The equal monthly amount you pay, covering both interest and repayment of the loan itself." },
+    { term: "Amortisation", meaning: "How the loan reduces over time. Early payments are mostly interest; later ones mostly repay the balance." },
+    { term: "Valuation", meaning: "The lender's own assessment of what the property is worth. If it comes in below the agreed price, the loan is based on the lower figure." },
+    { term: "Debt burden ratio (DBR)", meaning: "The share of your monthly income that goes to servicing debt. Lenders cap this, which is often what limits how much you can borrow." },
+    { term: "Early settlement fee", meaning: "A charge for repaying some or all of the loan ahead of schedule. Worth checking before you sign." },
+  ];
+
+  const faqs = [
+    { question: "How much can I borrow?", answer: "It depends on your income, your existing commitments, your residency status, and the property itself. Rather than guess from a general rule, send us your details and we will give you a realistic figure for your situation." },
+    { question: "How much deposit do I need?", answer: "Minimum deposits differ depending on whether you are a UAE national, a resident, or buying from overseas, and on whether the property is ready or off-plan. Additional properties usually require more than your first. We will confirm exactly what applies to your purchase." },
+    { question: "Can I get a mortgage if I do not live in the UAE?", answer: "Yes. Non-residents can obtain financing for Dubai property, though the deposit requirement is typically higher and the documentation more involved. We will tell you what is needed before you make an offer." },
+    { question: "Should I get pre-approved before I start viewing?", answer: "Yes, and it is one of the few pieces of advice we would give without qualification. Pre-approval tells you your actual budget and makes your offer considerably stronger when a seller is weighing up competing buyers." },
+    { question: "How long does the process take?", answer: "Pre-approval is usually the quick part. The full process — valuation, final offer, and completion — takes longer and depends on the lender, the property, and how promptly documents are provided. We will give you a realistic timeline for your case at the outset." },
+    { question: "What is the difference between a fixed and a variable rate?", answer: "A fixed rate stays the same for an agreed initial period, so your payments are predictable. A variable rate moves with the market, so payments can go down as well as up. Which suits you depends on your circumstances and your tolerance for change." },
+    { question: "Are Islamic mortgages available?", answer: "Yes. Sharia-compliant home finance is widely available in the UAE, structured so that the bank's return comes from the purchase and lease arrangement rather than from charging interest." },
+    { question: "Can I get a mortgage on an off-plan property?", answer: "Financing is available for off-plan purchases, though the terms differ from those for a completed property and deposit requirements are typically higher. Availability also depends on the developer and the project." },
+    { question: "Can I pay off my mortgage early?", answer: "Usually yes, but lenders often charge an early settlement fee. It is worth checking the terms before you sign rather than discovering them later." },
+    { question: "Can I refinance a mortgage I already have?", answer: "Yes. If your current rate is no longer competitive, refinancing may lower your payment or shorten your term. There are switching costs, so it is worth working out whether the saving justifies them — we can help you do that." },
+    { question: "Do you charge for mortgage guidance?", answer: "Talk to us and we will set out clearly what, if anything, is payable and at what stage. There is no charge for an initial conversation about your options." },
+  ];
+
+  return (
+    <>
+      <Header />
+
+      <main className="pm-page">
+
+        {/* HERO */}
+        <section className="pm-hero">
+          <div className="pm-hero-bg" />
+          <div className="pm-hero-overlay" />
+
+          <div className="wrap pm-hero-content reveal">
+            <p className="pm-eyebrow">MORTGAGE SERVICES</p>
+
+            <h1>
+              The right property is
+              <br />
+              only half the purchase
+            </h1>
+
+            <p>
+              Financing derails more Dubai property purchases than the
+              properties themselves do. Golden Key guides you through
+              the mortgage side — what you can realistically borrow,
+              what the process involves, and what it costs — so the
+              money side is settled before you make an offer rather
+              than after.
+            </p>
+
+            <div className="pm-hero-actions">
+              <a href="#mortgage-contact" className="pm-gold-button">
+                Talk to Us About Financing
+              </a>
+
+              <a href="/enquire" className="pm-outline-button">
+                Request a Call Back
+              </a>
+            </div>
+
+            <p className="trust-line">
+              Free initial conversation · No obligation · Guidance, not a sales pitch
+            </p>
+          </div>
+        </section>
+
+        {/* OUR MORTGAGE SERVICES */}
+        <section className="section">
+          <div className="wrap">
+            <p className="pm-gold-label centered">OUR MORTGAGE SERVICES</p>
+
+            <h2 className="pm-serif centered">
+              Help with the financing, not just the property
+            </h2>
+
+            <p className="section-intro-text centered">
+              Buying a property and financing it are two separate
+              processes, and the second one derails more purchases than
+              the first. Golden Key guides you through it and
+              introduces you to the right lenders for your situation,
+              so the mortgage does not become the reason the deal falls
+              apart.
+            </p>
+
+            <div className="content-cards-grid">
+              {serviceCards.map((card) => (
+                <div className="content-card" key={card.title}>
+                  <h3>{card.title}</h3>
+                  <p>{card.text}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* WHY WORK WITH GOLDEN KEY */}
+        <section className="section" style={{ background: "#f3f1ec" }}>
+          <div className="wrap">
+            <p className="pm-gold-label centered">
+              WHY WORK WITH GOLDEN KEY ON FINANCING
+            </p>
+
+            <h2 className="pm-serif centered">
+              Why buyers bring us into the mortgage conversation
+            </h2>
+
+            <div className="content-cards-grid">
+              {whyCards.map((card) => (
+                <div className="content-card" key={card.number}>
+                  <span className="circle-mark">{card.number}</span>
+                  <h3>{card.title}</h3>
+                  <p>{card.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* UNDERSTANDING MORTGAGES */}
+        <section className="section">
+          <div className="wrap" style={{ maxWidth: 820 }}>
+            <p className="pm-gold-label centered">
+              UNDERSTANDING MORTGAGES IN THE UAE
+            </p>
+
+            <h2 className="pm-serif centered">What is a mortgage?</h2>
+
+            <p className="section-intro-text centered">
+              A mortgage is a loan secured against the property you are
+              buying. Because the property itself acts as security for
+              the lender, mortgage rates are typically lower than those
+              on unsecured borrowing such as personal loans. You repay
+              the loan in monthly instalments over an agreed term, with
+              each payment covering both interest and a portion of the
+              amount borrowed.
+            </p>
+
+            <h3 className="pm-serif" style={{ marginTop: 34 }}>
+              Types of mortgage available
+            </h3>
+
+            <p>
+              <strong>Fixed-rate —</strong> your rate is locked for an
+              agreed initial period. Payments are predictable during
+              that time, which makes budgeting straightforward. When
+              the fixed period ends, the loan usually moves to a
+              variable rate.
+            </p>
+
+            <p>
+              <strong>Variable-rate —</strong> the rate moves in line
+              with the lender's rate or a benchmark. Payments can fall
+              as well as rise, which suits buyers comfortable with some
+              fluctuation.
+            </p>
+
+            <p>
+              <strong>Islamic (Sharia-compliant) home finance —</strong>{" "}
+              structured to avoid interest, typically through Ijara or
+              Murabaha arrangements. The bank's return is built into
+              the purchase and lease structure rather than charged as
+              interest. Widely available across UAE banks.
+            </p>
+
+            <p>
+              <strong>Offset —</strong> links your savings to your
+              mortgage so the balance you hold reduces the amount
+              interest is charged on. Useful if you hold meaningful
+              savings you do not want to lock away.
+            </p>
+
+            <h3 className="pm-serif" style={{ marginTop: 34 }}>
+              What lenders look at
+            </h3>
+
+            <p>
+              Every bank assesses applications slightly differently,
+              but broadly they consider your income and how stable it
+              is, your existing debts and commitments, your credit
+              history, your age relative to the loan term, whether the
+              property is ready or off-plan, and whether it is your
+              first purchase in the UAE or an additional one. The
+              combination of these determines how much you can borrow
+              and on what terms — which is why two people buying the
+              same property can be offered very different deals.
+            </p>
+
+            <h3 className="pm-serif" style={{ marginTop: 34 }}>
+              Costs beyond the monthly payment
+            </h3>
+
+            <p>
+              The monthly instalment is the number everyone focuses on,
+              but it is not the whole cost of buying. Depending on the
+              transaction you should also budget for property
+              registration and transfer fees, the bank's arrangement
+              and valuation fees, agency fees, mortgage registration,
+              and property and life insurance where the lender requires
+              them. These are generally payable upfront rather than
+              added to the loan. We will give you a full breakdown for
+              your specific purchase before you commit.
+            </p>
+          </div>
+        </section>
+
+        {/* GLOSSARY */}
+        <section className="section" style={{ background: "#f3f1ec" }}>
+          <div className="wrap" style={{ maxWidth: 820 }}>
+            <p className="pm-gold-label centered">KEY TERMS EXPLAINED</p>
+
+            <h2 className="pm-serif centered">
+              Mortgage terms, in plain English
+            </h2>
+
+            <div className="content-checklist" style={{ marginTop: 30 }}>
+              {glossary.map((item) => (
+                <div className="content-checklist-item" key={item.term}>
+                  <h4>{item.term}</h4>
+                  <p>{item.meaning}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ENQUIRY FORM */}
+        <section className="pm-final-cta" id="mortgage-contact">
+          <div className="wrap">
+            <p className="pm-gold-label">TALK TO US ABOUT YOUR MORTGAGE</p>
+
+            <h2>
+              Know your budget
+              <br />
+              before you start looking
+            </h2>
+
+            <p>
+              A short conversation now saves months later. Tell us
+              where you are and we will set out your realistic options.
+            </p>
+
+            <form
+              className="valuation-final-form"
+              style={{ textAlign: "left", maxWidth: 560, margin: "30px auto 0" }}
+              onSubmit={(e) => {
+                e.preventDefault();
+                alert(
+                  "Thank you — we have received your details. A member of our team will be in touch shortly to talk through your options."
+                );
+              }}
+            >
+              <div className="valuation-form-row">
+                <input required placeholder="Full name" />
+                <input required type="email" placeholder="Email address" />
+              </div>
+
+              <div className="valuation-form-row">
+                <input required placeholder="Mobile number (+971)" />
+
+                <select required defaultValue="">
+                  <option value="" disabled>
+                    Are you a...
+                  </option>
+                  <option>UAE national</option>
+                  <option>UAE resident</option>
+                  <option>Non-resident buyer</option>
+                </select>
+              </div>
+
+              <div className="valuation-form-row">
+                <select required defaultValue="">
+                  <option value="" disabled>
+                    What do you need?
+                  </option>
+                  <option>New mortgage</option>
+                  <option>Pre-approval</option>
+                  <option>Refinancing</option>
+                  <option>Equity release</option>
+                  <option>Not sure yet</option>
+                </select>
+
+                <select required defaultValue="">
+                  <option value="" disabled>
+                    Have you found a property?
+                  </option>
+                  <option>Yes, made an offer</option>
+                  <option>Yes, still deciding</option>
+                  <option>Still searching</option>
+                  <option>Just exploring</option>
+                </select>
+              </div>
+
+              <div className="valuation-form-row">
+                <input placeholder="Approximate property budget" />
+
+                <select defaultValue="">
+                  <option value="" disabled>
+                    Employment
+                  </option>
+                  <option>Salaried</option>
+                  <option>Self-employed</option>
+                  <option>Business owner</option>
+                  <option>Other</option>
+                </select>
+              </div>
+
+              <textarea rows="4" placeholder="Anything we should know?" />
+
+              <button type="submit" className="pm-gold-button">
+                Request a Call Back
+              </button>
+
+              <p className="form-consent-note">
+                By submitting this form you agree to be contacted by
+                Golden Key Real Estate regarding your enquiry. We never
+                share your details with third parties.
+              </p>
+            </form>
+          </div>
+        </section>
+
+        {/* FAQ */}
+        <section className="section pm-dashboard-section">
+          <div className="wrap">
+            <p className="pm-gold-label centered">FREQUENTLY ASKED QUESTIONS</p>
+
+            <h2 className="pm-serif centered">Your questions, answered</h2>
+
+            <div
+              className="valuation-faq"
+              style={{ maxWidth: 820, margin: "30px auto 0" }}
+            >
+              {faqs.map((faq, index) => (
+                <details key={faq.question} open={index === 0}>
+                  <summary>
+                    {faq.question}
+                    <span>⌃</span>
+                  </summary>
+
+                  <div>
+                    <p>{faq.answer}</p>
+                  </div>
+                </details>
+              ))}
+            </div>
+          </div>
+        </section>
+
       </main>
 
       <Footer />
@@ -7199,35 +8787,29 @@ function LandlordGuide() {
 function TenantGuide() {
   const faqs = [
     {
-      question: "What documents will I need to rent a home in Dubai?",
+      question: "What documents are usually needed to rent in Dubai?",
       answer:
-        "You will generally need your passport, Emirates ID and residency or visa documentation, together with any supporting information requested for your tenancy application. Your Golden Key consultant will let you know exactly what is required for your property.",
+        "Tenants commonly provide a passport, residence visa or visa application, and Emirates ID or Emirates ID application. Exact requirements can vary by landlord and property.",
     },
     {
-      question:
-        "How do I set up water, electricity and cooling once I move in?",
+      question: "What is Ejari?",
       answer:
-        "Once your tenancy documentation is completed, your Golden Key consultant can guide you through the utility connections you need for your new home, including electricity, water and cooling services.",
-    },
-    {
-      question: "What is Ejari, and why do I need it?",
-      answer:
-        "Ejari is the tenancy registration system used in Dubai. Registering your tenancy helps formally document the rental agreement and provides an important part of the tenancy process.",
-    },
-    {
-      question: "Can I bring my pet with me?",
-      answer:
-        "Pet policies vary by property and community. Before signing a tenancy agreement, confirm that the property and building allow your type of pet and check any applicable community rules.",
+        "Ejari is Dubai's official tenancy contract registration system. It is commonly required for services connected to the home, including DEWA activation. Dubai Land Department currently allows registration through Dubai REST / its online services or authorised Real Estate Services Trustee centres — online registration needs a copy of the Unified Tenancy Contract, while trustee-centre applications require the original contract and the applicant's Emirates ID.",
     },
     {
       question: "Do I need a move-in permit?",
       answer:
-        "Some buildings and communities require tenants to arrange a move-in permit before moving into the property. Your Golden Key consultant can help you understand what your building requires.",
+        "Many apartment buildings and gated communities require one. The process is usually arranged with the building or community management after the tenancy and Ejari are in place.",
     },
     {
-      question: "Who handles maintenance during my tenancy?",
+      question: "Who is responsible for maintenance?",
       answer:
-        "Maintenance arrangements depend on the tenancy agreement and property management structure. Golden Key can help coordinate communication between you, the landlord and the relevant maintenance team.",
+        "Responsibility depends on the tenancy contract. Major maintenance is commonly handled by the landlord, while minor maintenance thresholds may be assigned to the tenant. Always confirm the wording before signing.",
+    },
+    {
+      question: "How much is the DEWA security deposit?",
+      answer:
+        "DEWA currently lists a refundable security deposit of AED 2,000 for an apartment and AED 4,000 for a villa, in addition to applicable activation charges.",
     },
   ];
 
@@ -7646,7 +9228,10 @@ function TenantGuide() {
                 <p>
                   Depending on the property, this can include
                   electricity, water, cooling and other
-                  essential services.
+                  essential services. DEWA currently lists a
+                  refundable security deposit of AED 2,000 for
+                  an apartment and AED 4,000 for a villa, in
+                  addition to applicable activation charges.
                 </p>
 
                 <p>
@@ -7789,34 +9374,32 @@ function BuyerGuide() {
             <article className="buyer-copy">
 
               <h2 className="buyer-serif">
-                Buying a home in Dubai
+                Buying a property in
                 <br />
-                is more than a
+                Dubai should feel
                 <br />
-                transaction; it’s the
-                <br />
-                start of a new chapter.
+                clear, not complicated.
               </h2>
 
               <p>
-                Whether you're buying your first home
-                or making your next investment, the
-                process can feel overwhelming without
-                the right guidance.
+                Whether you are looking for your first home, a ready
+                property, an off-plan opportunity, or an investment
+                with long-term potential, Golden Key Real Estate helps
+                you understand the options and connect with properties
+                that match your goals.
               </p>
 
               <p>
-                Golden Key has created this practical
-                buyer's guide to help you understand
-                the journey from your first property
-                search through to completing your purchase.
+                Our consultants can help you compare locations,
+                developers, payment plans, expected costs, mortgage
+                options and the key steps involved in completing a
+                purchase in Dubai.
               </p>
 
               <p className="buyer-highlight">
-                Our guide walks you through the key
-                stages of buying property in Dubai,
-                helping you make informed decisions
-                and move forward with confidence.
+                Start with the right property strategy: tell us what
+                you need, compare suitable options, review price and
+                payment plan, then move forward with guidance.
               </p>
 
             </article>
@@ -7828,9 +9411,7 @@ function BuyerGuide() {
               </p>
 
               <h3>
-                Need help buying?
-                <br />
-                Schedule a call with us
+                Need help buying in Dubai?
               </h3>
 
               <form
@@ -7845,30 +9426,61 @@ function BuyerGuide() {
 
                 <input
                   required
-                  placeholder="Name"
+                  placeholder="Full name"
                 />
 
                 <input
                   required
                   type="email"
-                  placeholder="Email Address"
+                  placeholder="Email address"
                 />
 
                 <input
                   required
-                  placeholder="Phone Number"
+                  placeholder="Phone number (+971)"
                 />
 
+                <select defaultValue="">
+                  <option value="" disabled>
+                    Buyer type
+                  </option>
+                  <option>End user</option>
+                  <option>Investor</option>
+                </select>
+
+                <select defaultValue="">
+                  <option value="" disabled>
+                    Property preference
+                  </option>
+                  <option>Ready</option>
+                  <option>Off-plan</option>
+                  <option>Not sure</option>
+                </select>
+
+                <input placeholder="Budget range" />
+
+                <input placeholder="Preferred area (e.g. Dubai South, Arjan, JVC)" />
+
+                <select defaultValue="">
+                  <option value="" disabled>
+                    Bedrooms
+                  </option>
+                  <option>Studio</option>
+                  <option>1BR</option>
+                  <option>2BR</option>
+                  <option>3BR+</option>
+                </select>
+
                 <textarea
-                  rows="6"
-                  placeholder="Message"
+                  rows="4"
+                  placeholder="Anything else about your preferred location, payment plan, handover timeline or investment goal"
                 />
 
                 <button
                   type="submit"
                   className="buyer-coral-button"
                 >
-                  Submit
+                  Submit Your Requirement
                 </button>
 
               </form>
@@ -7984,45 +9596,35 @@ function SellerGuide() {
             <article className="seller-copy">
 
               <p className="seller-intro-small">
-                Selling a home is a major decision,
-                and the process should feel clear
-                from the start.
+                A straightforward way to prepare, position
+                and sell your property.
               </p>
 
               <h2 className="seller-serif">
-                Selling a home is a major
-                decision, and the process
-                should feel clear from the
-                start.
+                Selling your property in
+                Dubai should be clear,
+                strategic and well
+                managed.
               </h2>
 
               <p>
-                Your property deserves a considered
-                approach. From understanding its market
-                position and choosing the right strategy
-                to preparing, marketing and negotiating,
-                every step can make a difference.
+                Whether you own an apartment, villa, townhouse or
+                investment property, Golden Key Real Estate helps you
+                understand the market, position your property correctly
+                and connect with serious buyers.
               </p>
 
               <p>
-                Golden Key's seller guide is designed
-                to help you understand the journey,
-                prepare your property effectively and
-                make decisions with greater clarity.
-              </p>
-
-              <p>
-                We cover the practical stages involved
-                in selling, from pricing and presentation
-                to viewings, offers and completion, so
-                you know what to expect throughout the
-                process.
+                Our consultants can support you with market pricing,
+                property presentation, marketing, buyer enquiries,
+                viewings, negotiations and the key steps involved in
+                completing a property sale in Dubai.
               </p>
 
               <p className="seller-highlight">
-                With the right preparation and the right
-                guidance, selling your property can feel
-                straightforward, informed and well supported.
+                A smarter way to sell: share your property details,
+                review market positioning, market to serious buyers,
+                then negotiate and complete the sale.
               </p>
 
             </article>
@@ -8034,9 +9636,8 @@ function SellerGuide() {
               </p>
 
               <h3>
-                Need help selling?
-                <br />
-                Schedule a call with us
+                Thinking of selling
+                your property?
               </h3>
 
               <form
@@ -8051,30 +9652,55 @@ function SellerGuide() {
 
                 <input
                   required
-                  placeholder="Name"
+                  placeholder="Full name"
                 />
 
                 <input
                   required
                   type="email"
-                  placeholder="Email Address"
+                  placeholder="Email address"
                 />
 
                 <input
                   required
-                  placeholder="Phone Number"
+                  placeholder="Phone number (+971)"
                 />
 
+                <select defaultValue="">
+                  <option value="" disabled>
+                    Property type
+                  </option>
+                  <option>Apartment</option>
+                  <option>Villa</option>
+                  <option>Townhouse</option>
+                </select>
+
+                <input required placeholder="Community / area (e.g. Arjan, JVC, Dubai South)" />
+
+                <input placeholder="Building / project" />
+
+                <select defaultValue="">
+                  <option value="" disabled>
+                    Bedrooms
+                  </option>
+                  <option>Studio</option>
+                  <option>1BR</option>
+                  <option>2BR</option>
+                  <option>3BR+</option>
+                </select>
+
+                <input placeholder="Expected selling price" />
+
                 <textarea
-                  rows="6"
-                  placeholder="Tell us about your property"
+                  rows="4"
+                  placeholder="Is the property vacant or tenanted, furnished or unfurnished, its condition, availability for viewings, or anything else"
                 />
 
                 <button
                   type="submit"
                   className="seller-coral-button"
                 >
-                  Submit
+                  Request a Seller Consultation
                 </button>
 
               </form>
@@ -8936,29 +10562,12 @@ if (path === "/services/property-valuation") {
   return <PropertyValuation />;
 }
 
+if (path === "/services/mortgage-services") {
+  return <MortgageServices />;
+}
+
 if (path === "/services/holiday-home-services") {
-  return (
-    <ServiceDetail
-      eyebrow="Holiday Home Services"
-      title="Make short-term property ownership simpler"
-      description="Support for owners who want their holiday home presented, managed and cared for while they are away."
-      image="https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=1800&q=90"
-      sections={[
-        {
-          eyebrow: "PRESENTATION",
-          title: "Make every stay count",
-          text: "Strong presentation, guest-ready standards and thoughtful property care help create a better experience for both owners and guests.",
-          image: "https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=1200&q=88",
-        },
-        {
-          eyebrow: "MANAGEMENT",
-          title: "More convenience, less operational work",
-          text: "We help coordinate the practical side of short-term stays so owners can enjoy greater visibility without being involved in every detail.",
-          image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=88",
-        },
-      ]}
-    />
-  );
+  return <VibrantHolidayHomes />;
 }
 
 if (path === "/services/citizenship-program") {
@@ -8989,6 +10598,11 @@ if (path === "/services/citizenship-program") {
   // INSIGHTS
   if (path === "/insights") {
     return <Insights />;
+  }
+
+  if (path.startsWith("/insights/")) {
+    const slug = path.split("/insights/")[1];
+    return <InsightArticleDetail slug={slug} />;
   }
 
   if (path === "/guides/area-guides") {
