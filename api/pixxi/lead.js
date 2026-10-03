@@ -26,6 +26,23 @@ export default async function handler(req, res) {
 
     const body = req.body || {};
 
+    // Extra form fields (page/source, interest, budget, etc.) are
+    // appended to the message so they reach the CRM instead of
+    // being dropped. If none are sent, the message is unchanged.
+    const extraLines = [
+      body.source && `Source: ${body.source}`,
+      body.propertyType && `Interested in: ${body.propertyType}`,
+      body.budget && `Budget: ${body.budget}`,
+      body.preferredSize && `Preferred size: ${body.preferredSize}`,
+      body.nationality && `Nationality: ${body.nationality}`,
+      body.propertyReference && `Property reference: ${body.propertyReference}`,
+      body.details,
+    ].filter(Boolean);
+
+    const message = [body.message, extraLines.join("\n")]
+      .filter(Boolean)
+      .join("\n\n");
+
     const payload = {
       formName: "GK Website",
       formId,
@@ -34,7 +51,7 @@ export default async function handler(req, res) {
       email: body.email || "",
       phone: body.phone || "",
 
-      message: body.message || "",
+      message,
     };
 
     const response = await fetch(
