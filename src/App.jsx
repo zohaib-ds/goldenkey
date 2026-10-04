@@ -952,12 +952,41 @@ function useProperties() {
   return properties;
 }
 function ListingStrip() {
-  const all = useProperties();
+  const [properties, setProperties] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const properties = all
-    .filter(p => p.status === "published" && p.purpose === "sale")
-    .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))
-    .slice(0, 4);
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadLatest() {
+      try {
+        const response = await fetch(
+          "/api/pixxi/properties?purpose=buy&page=1&size=4"
+        );
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+          throw new Error(data.error || "Could not load listings.");
+        }
+
+        if (!cancelled) {
+          setProperties(
+            Array.isArray(data.properties) ? data.properties.slice(0, 4) : []
+          );
+        }
+      } catch (err) {
+        console.error("Featured listings failed:", err);
+        if (!cancelled) setProperties([]);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+
+    loadLatest();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   return (
     <section className="section offplan">
@@ -969,16 +998,27 @@ function ListingStrip() {
           </div>
           <a href="/buy" className="underlink">View all →</a>
         </div>
-        {properties.length === 0
-          ? <p className="empty-copy">No published listings yet.</p>
-          : <div className="cards">{properties.map(x => <PropertyCard key={x.id} x={x} />)}</div>}
+
+        {loading ? (
+          <p className="empty-copy">Loading latest listings…</p>
+        ) : properties.length === 0 ? (
+          <p className="empty-copy">No listings available right now.</p>
+        ) : (
+          <div className="cards">
+            {properties.map((x) => (
+              <PropertyCard key={x.id || x.reference} x={x} />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
 }
 function PropertyCard({ x }) {
+  const first = x.images?.[0] || x.photos?.[0];
   const image =
-    x.images?.[0] ||
+    (typeof first === "string" ? first : first?.url) ||
+    x.image1 ||
     x.image ||
     IMG[0];
 
