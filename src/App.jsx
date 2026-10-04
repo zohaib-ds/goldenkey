@@ -952,12 +952,30 @@ function useProperties() {
   return properties;
 }
 function ListingStrip() {
-  const properties = useProperties().filter(p=>p.status==="published").slice(0,4);
-  return <section className="section offplan"><div className="wrap"><div className="row-head"><div><p className="kicker">Featured properties</p><h2 className="serif">Find your next move</h2></div><a href="/buy" className="underlink">View all →</a></div>
-    {properties.length===0?<p className="empty-copy">No published listings yet.</p>:<div className="cards">{properties.map(x=><PropertyCard key={x.id} x={x}/>)}</div>}
-  </div></section>;
-}
+  const all = useProperties();
 
+  const properties = all
+    .filter(p => p.status === "published" && p.purpose === "sale")
+    .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))
+    .slice(0, 4);
+
+  return (
+    <section className="section offplan">
+      <div className="wrap">
+        <div className="row-head">
+          <div>
+            <p className="kicker">Featured properties</p>
+            <h2 className="serif">Find your next move</h2>
+          </div>
+          <a href="/buy" className="underlink">View all →</a>
+        </div>
+        {properties.length === 0
+          ? <p className="empty-copy">No published listings yet.</p>
+          : <div className="cards">{properties.map(x => <PropertyCard key={x.id} x={x} />)}</div>}
+      </div>
+    </section>
+  );
+}
 function PropertyCard({ x }) {
   const image =
     x.images?.[0] ||
@@ -1068,7 +1086,6 @@ function MarketPanel() {
     </section>
   );
 }
-function GlobalSection(){return <section className="section"><div className="wrap global"><div><p className="kicker">A wider audience for your property</p><h2 className="serif">Better exposure. Better opportunities.</h2><p>When the right property meets the right audience, the result is more than a listing.</p><a href="/services" className="underlink">How we work →</a></div><div className="global-box">{[["70","countries"],["550","companies"],["4,800","offices"],["134k","associates"]].map(([a,b])=><div key={b}><b>{a}</b><span>{b}</span></div>)}</div></div></section>;}
 
 function Reviews(){const r=["Exceptional service from the first conversation to the final handover.","Clear advice, excellent communication and a team that genuinely listened.","A smooth, professional experience. We always knew what came next."];const [i,setI]=useState(0);useEffect(()=>{const t=setInterval(()=>setI(x=>(x+1)%r.length),3200);return()=>clearInterval(t)},[]);return <section className="section review-section"><div className="wrap review-wrap"><p className="kicker centered">Your experience is our measure of success</p><h2 className="serif centered">What our clients say</h2><div className="review"><div className="stars">★★★★★</div><p>“{r[i]}”</p><span>Verified client</span><div className="dots">{r.map((_,x)=><button key={x} className={x===i?"active":""} onClick={()=>setI(x)}/>)}</div></div></div></section>;}
 
@@ -3180,6 +3197,16 @@ const team = [
     role: "Property Consultant",
     image: "/team/sofia.jpg",
   },
+  {
+    name: "Maham",
+    role: "Property Consultant",
+    image: "/team/Maham.JPG",
+  },
+  {
+    name: "Asma Balbout",
+    role: "Property Consultant",
+    image: "/team/Asmaa_Balbout.JPG",
+  },
 ];
   const testimonials = [
     {
@@ -3287,79 +3314,80 @@ const team = [
 </section>
 
         {/* STORY 02 */}
-        <section className="about-story section">
+<section className="about-story section">
 
-          <div className="wrap about-story-row reverse">
+  <div className="wrap about-story-row reverse">
 
-            <div className="about-story-image">
-              <img
-                src="public\story2.jpg"
-                alt="Professional meeting"
-              />
-            </div>
+    <div className="about-story-image">
+      <img
+        src="/story2.jpg"
+        alt="Professional meeting"
+      />
+    </div>
 
-            <div className="about-story-copy">
+    <div className="about-story-copy">
 
-              <p className="about-label gold">
-                OUR STORY
-              </p>
+      <p className="about-label gold">
+        OUR STORY
+      </p>
 
-              <h2 className="serif">
-                Understanding the Sentiment Behind
-                Real Estate Acquisition
-              </h2>
+      <h2 className="serif">
+        Understanding the Sentiment Behind
+        Real Estate Acquisition
+      </h2>
 
-              <p>
-                We believe every property transaction is deeply
-                personal. Whether you are buying your first
-                investment, moving into a new home, or expanding
-                your portfolio, our job is to understand your
-                priorities and financial goals.
-              </p>
+      <p>
+        We believe every property transaction is deeply
+        personal. Whether you are buying your first
+        investment, moving into a new home, or expanding
+        your portfolio, our job is to understand your
+        priorities and financial goals.
+      </p>
 
-            </div>
+    </div>
 
-          </div>
+  </div>
 
-        </section>
+</section>
 
-        {/* STORY 03 */}
-        <section className="about-story section">
 
-          <div className="wrap about-story-row">
+{/* STORY 03 */}
+<section className="about-story section">
 
-            <div className="about-story-copy">
+  <div className="wrap about-story-row">
 
-              <p className="about-label gold">
-                OUR STORY
-              </p>
+    <div className="about-story-copy">
 
-              <h2 className="serif">
-                Simplifying the Real Estate Buying Process
-              </h2>
+      <p className="about-label gold">
+        OUR STORY
+      </p>
 
-              <p>
-                Our commitment is to ensure that buying real
-                estate should be a seamless journey. We handle
-                the complexity — from market analysis to legal
-                formalities — so you can focus on what matters
-                most: finding your perfect property.
-              </p>
+      <h2 className="serif">
+        Simplifying the Real Estate Buying Process
+      </h2>
 
-            </div>
+      <p>
+        Our commitment is to ensure that buying real
+        estate should be a seamless journey. We handle
+        the complexity — from market analysis to legal
+        formalities — so you can focus on what matters
+        most: finding your perfect property.
+      </p>
 
-            <div className="about-story-image">
+    </div>
 
-              <img
-                src="public\image.jpg"
-                alt="Real estate team"
-              />
+    <div className="about-story-image">
 
-            </div>
+      <img
+        src="/image.jpg"
+        alt="Real estate team"
+      />
 
-          </div>
+    </div>
 
-        </section>
+  </div>
+
+</section>
 
         {/* RIGHT PRINCIPLE */}
         <section className="about-philosophy">
@@ -8994,7 +9022,6 @@ function App() {
         <Story />
         <MarketPanel />
         <ServicesTeaser />
-        <GlobalSection />
         <Reviews />
         <Articles />
         <Enquire />
